@@ -72,8 +72,8 @@ function Formulaire() {
         </tr>
         </table>
 
-        <br /><br />
-        <center><a href="/">Webmail</a></center>
+        <!--<br /><br />
+        <center><a href="/">Webmail</a></center>-->
 
         </form>
 
