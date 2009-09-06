@@ -48,6 +48,7 @@ print STDERR << "EOF";
     -d        : ajoute un domaine
     -a        : ajoute un alias
     -p        : modifie un mot de passe
+    -x        : supprime un compte
 
 EOF
 exit;
