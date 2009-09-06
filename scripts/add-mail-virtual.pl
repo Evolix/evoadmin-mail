@@ -60,6 +60,34 @@ sub add()
     chomp $mail;
     # TODO : Voir si le mail est correct... 
 
+    my ($login,$domain) = split(/@/,$mail);
+
+    my $ldap = Net::LDAP->new($host) or die "$@";
+    my $mesg = $ldap->bind($binddn,password => $password, version => 3);
+
+    # Voir si le domaine existe deja et recuperer son GID
+    my $gid;
+    my $result = $ldap->search(
+        base => $dn,
+	filter => "(cn=$domain)",
+	attrs => "gidNumber"
+	);
+    $result->code && die $result->error;
+  
+    if ($result->count != 1) { printf("Erreur, ce domaine n'existe pas...\n"); exit;
+    } else {
+	my @entries = $result->entries;
+	$gid = $entries[0]->get_value("gidNumber");
+    }
+   
+    $result = $ldap->search(
+        base => $dn,
+	filter => "(uid=$mail)",
+	attrs => "mail"
+	);
+    $result->code && die $result->error;
+    if ($result->entries) { printf("Erreur, ce compte mail existe deja...\n"); exit; }
+
     printf("Entrez le mot de passe (vide pour aleatoire) : ");
     ReadMode('noecho');  
     my $pass = ReadLine(0);
@@ -69,37 +97,9 @@ sub add()
 
     # Generation aleatoire
     if($pass eq "") {
-        $pass = `apg -n1 -E oOlL10\&\\\/`;
+        $pass = `apg -n1 -E oOlL10`;
         chomp $pass;
 	print "Mot de passe pseudo-aleatoire genere : $pass\n";
-    }
-
-    my ($login,$domain) = split(/@/,$mail);
-
-    my $ldap = Net::LDAP->new($host) or die "$@";
-    my $mesg = $ldap->bind($binddn,password => $password, version => 3);
-   
-    my $result = $ldap->search(
-        base => $dn,
-	filter => "(uid=$mail)",
-	attrs => "mail"
-	);
-    $result->code && die $result->error;
-    if ($result->entries) { printf("Erreur, ce compte mail existe deja...\n"); exit; }
-
-    # Voir si le domaine existe deja et recuperer son GID
-    my $gid;
-    $result = $ldap->search(
-        base => $dn,
-	filter => "(cn=$domain)",
-	attrs => "postfixGID"
-	);
-    $result->code && die $result->error;
-  
-    if ($result->count != 1) { printf("Erreur, ce domaine n'existe pas...\n"); exit;
-    } else {
-	my @entries = $result->entries;
-	$gid = $entries[0]->get_value("postfixGID");
     }
 
     # Recuperer le max(UID) +1
@@ -127,7 +127,7 @@ sub add()
     my $hashedPasswd = '{SSHA}' . encode_base64($ctx->digest . 'salt' ,'');
     $result = $ldap->add( 'uid='. $mail .',cn=' . $domain .','. $dn ,
     attr => [	
-         'mail' =>  $mail,
+         'uid' =>  $mail,
          'cn' =>  $mail,
 	 'mailacceptinggeneralid' => $mail,
 	 'objectclass' => ['organizationalRole','posixAccount','mailAccount'],
@@ -139,7 +139,7 @@ sub add()
 	 'accountActive'   => 'TRUE',
 	 'webmailActive'   => 'TRUE',
 	 'authsmtpActive'   => 'FALSE',
-	 'homeDirectory' => "/home/$domain/$login/",
+	 'homeDirectory' => "/home/vmail/$domain/$login/",
 	 'amavisSpamTagLevel' => '-1999.0',
 	 'amavisSpamTag2Level' => '6.3'
 	     ]
@@ -367,7 +367,7 @@ sub passwd() {
 
     # Generation aleatoire
     if($pass eq "") {
-        $pass = `apg -n1 -E oOlL10\&\\\/`;
+        $pass = `apg -n1 -E oOlL10`;
         chomp $pass;
 	print "Mot de passe pseudo-aleatoire genere : $pass\n";
     }
@@ -444,10 +444,54 @@ sub aadd()
     close F;
 }
 
+# suppression d'un compte
+sub del()
+{
+    printf("Entrez le mail a supprimer : ");
+    my $mail = <STDIN>;
+    chomp $mail;
+
+    # initialisation de la connexion LDAP 
+    my $ldap = Net::LDAP->new($host) or die "$@";
+    my $mesg = $ldap->bind($binddn,password => $password, version => 3);
+
+    my $result = $ldap->search(
+        base => $dn,
+        filter => "(uid=$mail)",
+    );
+    $result->code && die $result->error;
+    if (! $result->entries) {
+        $ldap->unbind;
+    printf("Erreur, ce mail n'existe pas...\n"); exit;}
+
+    print "Compte " . $result->entry(0)->get_value("uid") . " trouvé\n";
+
+    my ($login,$domain) = split(/@/,$mail);
+
+    my $dndelete = 'uid=' . $mail .",cn=$domain,". $dn;
+
+    $ldap->delete( $dndelete );
+    print "Suppression de l'annuaire LDAP OK\n";
+
+    # On vire le $HOME
+    my $day = $date;
+    $day =~ s/ .*//;
+    `mv /home/vmail/$domain/$login /home/vmail/$domain/$login.backup$day`;
+    print "Suppression du repertoire /home/vmail/$domain/$login\n";
+
+    open F, ">>$file";
+    print F ("$date, suppression compte $login\n");
+    close F;
+
+    $ldap->unbind;
+}
+
+
+
 # main() : options possibles
 
 my %options=();
-my $opt_string = 'hudpa';
+my $opt_string = 'hudpax';
 getopts("$opt_string",\%options);
 
 if    ($options{h}) { &usage; }
@@ -455,5 +499,6 @@ elsif ($options{u}) { &add; }
 elsif ($options{d}) { &gadd; }
 elsif ($options{p}) { &passwd; }
 elsif ($options{a}) { &aadd; }
+elsif ($options{x}) { &del; }
 else                { &usage; }
 
