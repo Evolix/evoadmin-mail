@@ -1,0 +1,76 @@
+body {
+margin: 0 auto;
+padding: 0;
+font-size: 14px;
+}
+
+.light {
+color: #333;
+}
+
+/* Form styles. */
+/* from Horde3  */
+input, select, textarea {
+font-family: Geneva, Arial, Helvetica, sans-serif;
+font-size: 12px;
+color: #000;
+background-color: #f3f3f9;
+border: 1px solid #669;
+}
+
+input:focus, textarea:focus {
+background-color: #fff;
+border: 1px solid #99f;
+}
+
+.button, .button:focus {
+background-color: #339;
+border-bottom: 1px solid #333;
+border-right: 1px solid #000;
+border-left: 1px solid #C4C4B8;
+border-top: 1px solid #C4C4B8;
+-moz-border-radius: 5px;
+color: #fff;
+}
+
+.button:hover {
+background-color: #66a;
+}
+
+p.login {
+border: 1px solid #aaa;
+color: #666;
+font-size: 12px;
+text-align: center;
+background-color: #ccc;
+}
+
+img {
+border: 0;
+}
+
+table {
+background-color: #fff;
+text-align: center;
+}
+
+p.display {
+background-color: #ddd;
+text-align: center;
+color: red;
+font-size: 11px;
+}
+
+p.error {
+background-color: #999;
+color: red;
+text-align: center;
+}
+
+.italic {
+font-style: italic
+}
+
+.strong {
+font-weight: bold;
+}

@@ -1,0 +1,10 @@
+cp evoadmin.sh /usr/share/scripts/
+chmod +x evoadmin.sh
+visudo
+
+User_Alias WWW = www-data
+Cmnd_Alias EVOAUTH = /usr/share/scripts/evoadmin.sh
+WWW ALL= NOPASSWD: EVOAUTH
+
+apt-get install php5-mhash
+
