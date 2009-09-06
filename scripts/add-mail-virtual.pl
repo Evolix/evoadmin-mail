@@ -33,6 +33,10 @@ our $password='XXX';
 
 our $adminmail='admin@example.com';
 
+our $file='/var/log/evolix.log';
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+our $date= sprintf("%4d-%02d-%02d %02d:%02d ",$year+1900,$mon+1,$mday,$hour,$min);
+
 sub usage()
 {
 print STDERR << "EOF";
@@ -42,14 +46,11 @@ print STDERR << "EOF";
     -h        : aide
     -u        : ajoute un compte
     -d        : ajoute un domaine
+    -a        : ajoute un alias
+    -p        : modifie un mot de passe
 
 EOF
 exit;
-}
-
-sub execldap();
-{
-    my $test;
 }
 
 sub add()
@@ -253,10 +254,15 @@ EOF
                  Disposition => 'attachment'
                  );
 
-   MIME::Lite->send('smtp', "localhost", Timeout=>60);
-   $msg -> send;
+    MIME::Lite->send('smtp', "localhost", Timeout=>60);
+    $msg -> send;
 
-   printf("Ajout OK\n");
+    printf("Ajout OK\n");
+
+    open F, ">>$file";
+    print F ("$date [add.pl] Ajout mail $login\n");
+    close F;
+
 }
 
 sub gadd()
@@ -319,14 +325,135 @@ sub gadd()
 
     printf("Ajout OK\n");
        
+    open F, ">>$file";
+    print F ("$date [add.pl] Ajout domaine $domain\n");
+    close F;
+}
+
+# modification d'un password
+sub passwd() {
+
+    printf("Entrez le compte pour réinitialiser le mot de passe : ");
+    my $login = <STDIN>;
+    chomp $login;
+    my $uid;
+    my $uidn;
+
+    my $ldap = Net::LDAP->new($host) or die "$@";
+    my $mesg = $ldap->bind($binddn,password => $password, version => 3);
+
+    my $result = $ldap->search(
+                        base => $dn,
+                        filter => "(uid=$login)",
+                        );
+    $result->code && die $result->error;
+
+    if ($result->count != 1) { printf("Erreur, ce mail n'existe pas...\n"); exit;
+    } else {
+        my @entries = $result->entries;
+        $uid = $entries[0]->get_value("uid");
+        $uidn = $entries[0]->dn();
+    }
+
+    print "Compte " . $uid . " trouvé\n";
+    my $actiondn = $uidn;
+
+    print "Entrez le nouveau mot de passe (vide pour aleatoire) : ";
+    ReadMode('noecho');
+    my $pass = ReadLine(0);
+    chomp $pass;
+    ReadMode('normal');
+    printf("\n");
+
+    # Generation aleatoire
+    if($pass eq "") {
+        $pass = `apg -n1 -E oOlL10\&\\\/`;
+        chomp $pass;
+	print "Mot de passe pseudo-aleatoire genere : $pass\n";
+    }
+
+    # set SSHA1 LDAP passwd with http://www.taclug.org/documents/openldap_presentation.html
+    my $ctx = Digest::SHA1->new;
+    $ctx->add($pass);
+    $ctx->add('salt');
+    my $hashedPasswd = '{SSHA}' . encode_base64($ctx->digest . 'salt' ,'');
+
+    $ldap->modify( $actiondn, replace => { 'userPassword' => $hashedPasswd } );
+    print "Réinitialisation password $login OK\n";
+
+    open F, ">>$file";
+    print F ("$date [add.pl] Modification passwd sur le mail $login\n");
+    close F;
+
+    $ldap->unbind;
+}
+
+sub aadd()
+{
+    printf("Entrez l'alias a creer : ");
+    my $alias = <STDIN>;
+    chomp $alias;
+    # TODO : voir si l'alias est correct...
+
+    my ($login,$domain) = split(/@/,$alias);
+
+    my $ldap = Net::LDAP->new($host) or die "$@";
+    my $mesg = $ldap->bind($binddn,password => $password, version => 3);
+   
+    # Voir si le domaine existe
+    my $result = $ldap->search(
+        base => $dn,
+	filter => "(cn=$domain)",
+	attrs => "cn"
+	);
+    $result->code && die $result->error;
+  
+    if ($result->count != 1) { printf("Erreur, ce domaine n'existe pas...\n"); exit;}
+
+    our $edn = "cn=$domain," . $dn;
+
+    # Voir si l'alias existe deja
+    $result = $ldap->search(
+        base => $edn,
+	filter => "(cn=$login)",
+	attrs => "mail"
+	);
+    $result->code && die $result->error;
+    if ($result->entries) { printf("Erreur, cet alias existe deja...\n"); exit; }
+
+    printf("Entrez vers ou l'alias pointe : ");
+    my $drop = <STDIN>;
+    chomp $drop;
+
+    $result = $ldap->add( 'cn='. $login .','. $edn ,
+      attr => [
+                'mailacceptinggeneralid' => $alias,
+                'maildrop' =>  $drop,
+		'objectclass' => ['mailAlias'],
+                'isActive'  => 'TRUE'
+              ]
+          ) or die "heh : $!";
+
+    $mesg->code && die $mesg->error;
+    $ldap->unbind;
+
+    printf("Ajout OK\n");
+
+    open F, ">>$file";
+    print F ("$date [add.pl] Ajout alias $alias\n");
+    close F;
 }
 
 # main() : options possibles
 
 my %options=();
-my $opt_string = 'hud';
+my $opt_string = 'hudpa';
 getopts("$opt_string",\%options);
-&usage() if $options{h};
-&add() if $options{u};
-&gadd() if $options{d};
+
+if    ($options{h}) { &usage; }
+elsif ($options{u}) { &add; }
+elsif ($options{d}) { &gadd; }
+elsif ($options{p}) { &passwd; }
+elsif ($options{a}) { &aadd; }
+else                { &usage; }
 
