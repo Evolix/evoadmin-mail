@@ -1,9 +1,11 @@
 #!/bin/sh
+
+# vim: expandtab softtabstop=4 tabstop=4 shiftwidth=4 showtabline=2
     
 PASSWORD='xxx'
 DATE=$(date +"%d-%m-%Y")
 
-while getopts "p:qu:g:sad" option ; do
+while getopts "p:qu:g:sadv" option ; do
 case $option in
 
     p)
@@ -34,6 +36,10 @@ case $option in
     DEL='on'
     ;;
 
+    v)
+    VIRTUAL='on'
+    ;;
+
     *) 
     echo "script error"
     exit 1
@@ -45,6 +51,22 @@ if [ "$PASSWORD" != "$READPASS" ]; then
     echo "Invalid password"
     echo "Use -p <password>"
     exit 1
+fi
+
+# Mode virtuel : permet pour l'instant la création du répertoire d'un domaine
+#                ex : evoadmin.sh -a -v -g example.com
+if [ "$VIRTUAL" = "on" ]; then
+    if [ "$ADD" == "on" ]; then
+        if [[ -z $USERIS && $GROUPIS && ! -e "/home/vmail/$GROUPIS" ]]; then
+            DOMAIN_DIR="/home/vmail/$GROUPIS"
+            mkdir $DOMAIN_DIR
+            # nécessite d'avoir un NSS/LDAP fonctionnel
+            chown root:$GROUPIS $DOMAIN_DIR
+            chmod 770 $DOMAIN_DIR
+        fi
+    fi
+
+    exit 0
 fi
 
 if [ "$QUOTA" == "on" ]; then

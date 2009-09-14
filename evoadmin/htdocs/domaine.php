@@ -155,6 +155,8 @@ if (isset($_SESSION['login'])) {
                 // on teste si LDAP est content
                 if (ldap_add($ldapconn,"cn=" .$domain. "," .LDAP_BASE, $info)) {
 
+                    domain_add($domain);
+
                     print "<p class='strong'>Ajout effectu&eacute;.</p>";
                     EvoLog::log("Add domain ".$domain);
 

@@ -58,6 +58,11 @@ function unix_add($user,$group=NULL) {
     evoexec("-a -u $user -g $group");
 }
 
+// commande shell a lancer pour creer un domaine
+function domain_add($group) {
+    evoexec("-a -v -g $group");
+}
+
 // commande shell a lancer pour supprimer un utilisateur
 function unix_del($user) {
 
