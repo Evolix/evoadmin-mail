@@ -648,9 +648,10 @@ if (isset($_SESSION['login']))
                }
 
                $info["mailacceptinggeneralid"] = $aliases;
-               if (!$conf['domaines']['ldap']['virtual']) {
+               // tmartin 26/11/2009 : on ajoute un maildrop dans tous les cas
+               //if (!$conf['domaines']['ldap']['virtual']) {
                    $info["maildrop"] = $uid;
-               }
+               //}
 
                $info["accountActive"] = (isset($_POST['accountactive'])) ? "TRUE" : "FALSE";
                $info["courierActive"] = (isset($_POST['courieractive'])) ? "TRUE" : "FALSE";
