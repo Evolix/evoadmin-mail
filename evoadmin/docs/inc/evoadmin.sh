@@ -114,6 +114,7 @@ fi
 if [ "$DEL" == "on" ]; then
     if [[ -n $USERIS && -e "/home/$USERIS" ]]; then
         mv /home/$USERIS /home/$USERIS.$DATE
+        chown -R root:root /home/$USERIS.$DATE
         exit 0
     fi
 fi
