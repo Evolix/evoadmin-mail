@@ -135,7 +135,47 @@ if (isset($_SESSION['login'])) {
                 } elseif ( $conf['evoadmin']['version'] == 2) {
                     // TODO : cf worldsat, etc.
 
-                }
+                } elseif ( $conf['evoadmin']['version'] == 3) {
+                    // Version specifique pour steloi
+                    $info["cn"] = $domain;
+                    $info["objectclass"][0] = "postfixDomain";
+                    $info["postfixTransport"] = "local:";
+                    //$info["accountActive"] = (isset($_POST['isactive'])) ? "TRUE" : "FALSE";
+                    // recuperer un uid number valide
+                    // TODO : erreur si uid non compris entre 1000 et 29999
+                    $info["gidNumber"]= getfreegid();
+
+                    $info2["cn"] = $domain;
+                    $info2["objectclass"][0]="posixGroup";
+                    $info2["objectclass"][1]="sambaGroupMapping";
+                    $info2["gidNumber"]= $info["gidNumber"];
+                    $info2["displayName"]= $domain;
+                    $info2["sambaGroupType"]= "2";
+                    // generation du sambaSID comme dans le add.pl.
+                    $info2["sambaSID"]= "S-1-5-21-2090869494-1231639256-2433574416-" . (2*$info["gidNumber"]+1000);
+
+                    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+
+                    // on teste si LDAP est content
+                    if ( ldap_add($ldapconn,"cn=" .$domain. "," .LDAP_BASE, $info)
+                        && ldap_add($ldapconn,"cn=" .$domain. ",ou=groups," .LDAP_BASE, $info2) ) {
+
+                        // script ajout systeme (TODO : quota)
+                        //unix_add($uid,getgid($_SESSION['domain']));
+                        print "<p class='strong'>Ajout effectu&eacute;.</p>";
+                        EvoLog::log("Add domain ".$domain);
+
+                        // notification par mail
+                        domainnotify($domain); 
+
+                    } else {
+                        print "<p class='error'>Erreur, envoyez le message d'erreur
+                            suivant &agrave; votre administrateur :</p>";
+                        var_dump($info);
+                        var_dump($info2);
+                        EvoLog::log("Add $domain failed");
+                    }
+		}
             } else {
 
                 // Ajout d'un domaine virtuel
