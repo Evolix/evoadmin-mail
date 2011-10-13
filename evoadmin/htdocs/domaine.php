@@ -152,7 +152,7 @@ if (isset($_SESSION['login'])) {
                     $info2["displayName"]= $domain;
                     $info2["sambaGroupType"]= "2";
                     // generation du sambaSID comme dans le add.pl.
-                    $info2["sambaSID"]= "S-1-5-21-2090869494-1231639256-2433574416-" . (2*$info["gidNumber"]+1000);
+                    $info2["sambaSID"]= $conf['samba']['sid'] . (2*$info["gidNumber"]+1000);
 
                     $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
