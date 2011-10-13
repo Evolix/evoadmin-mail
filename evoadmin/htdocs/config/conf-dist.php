@@ -29,6 +29,10 @@ $conf['domaines']['file']['gid'] = 1000;
 // auth SMTP by default ?
 $conf['evoadmin']['useauthsmtp'] = false;
 
+// Si comptes virtuels
+$conf['unix']['uid'] = 2022;
+
+// Si pas virtuel
 $conf['unix']['minuid'] = 1000;
 $conf['unix']['mingid'] = 1000;
 

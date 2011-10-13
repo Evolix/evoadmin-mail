@@ -571,7 +571,12 @@ if (isset($_SESSION['login']))
             $info["uid"]=$uid;
             // recuperer un uid number valide
             // TODO : erreur si uid non compris entre 1000 et 29999
-            $info["uidNumber"]= getfreeuid();
+            if ( $conf['domaines']['ldap']['virtual'] ) {
+                $info["uidNumber"]= $conf['unix']['uid'];
+            }
+            else {
+                $info["uidNumber"]= getfreeuid();
+            }
             $info["gidNumber"]= $gid;
             $info["objectclass"][0] = "posixAccount";
             
