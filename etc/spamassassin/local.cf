@@ -1,0 +1,173 @@
+# This is the right place to customize your installation of SpamAssassin.
+#
+# See 'perldoc Mail::SpamAssassin::Conf' for details of what can be
+# tweaked.
+#
+# Only a small subset of options are listed below
+#
+###########################################################################
+
+#   Add *****SPAM***** to the Subject header of spam e-mails
+#
+rewrite_header Subject *****SPAM*****
+
+
+#   Save spam messages as a message/rfc822 MIME attachment instead of
+#   modifying the original message (0: off, 2: use text/plain instead)
+#
+report_safe 0
+
+
+#   Set which networks or hosts are considered 'trusted' by your mail
+#   server (i.e. not spammers)
+#
+# trusted_networks 212.17.35.
+
+
+#   Set file-locking method (flock is not safe over NFS, but is faster)
+#
+# lock_method flock
+
+
+#   Set the threshold at which a message is considered spam (default: 5.0)
+#
+# required_score 5.0
+
+
+#   Use Bayesian classifier (default: 1)
+#
+# use_bayes 1
+
+
+#   Bayesian classifier auto-learning (default: 1)
+#
+# bayes_auto_learn 1
+
+
+#   Set headers which may provide inappropriate cues to the Bayesian
+#   classifier
+#
+# bayes_ignore_header X-Bogosity
+# bayes_ignore_header X-Spam-Flag
+# bayes_ignore_header X-Spam-Status
+
+bayes_path /var/spool/spamassassin/bayes
+bayes_file_mode 0777
+
+#   Some shortcircuiting, if the plugin is enabled
+# 
+ifplugin Mail::SpamAssassin::Plugin::Shortcircuit
+#
+#   default: strongly-whitelisted mails are *really* whitelisted now, if the
+#   shortcircuiting plugin is active, causing early exit to save CPU load.
+#   Uncomment to turn this on
+#
+# shortcircuit USER_IN_WHITELIST       on
+# shortcircuit USER_IN_DEF_WHITELIST   on
+# shortcircuit USER_IN_ALL_SPAM_TO     on
+# shortcircuit SUBJECT_IN_WHITELIST    on
+
+#   the opposite; blacklisted mails can also save CPU
+#
+# shortcircuit USER_IN_BLACKLIST       on
+# shortcircuit USER_IN_BLACKLIST_TO    on
+# shortcircuit SUBJECT_IN_BLACKLIST    on
+
+#   if you have taken the time to correctly specify your "trusted_networks",
+#   this is another good way to save CPU
+#
+# shortcircuit ALL_TRUSTED             on
+
+#   and a well-trained bayes DB can save running rules, too
+#
+# shortcircuit BAYES_99                spam
+# shortcircuit BAYES_00                ham
+
+endif # Mail::SpamAssassin::Plugin::Shortcircuit
+
+# AWL : AutoWhitelist
+use_auto_whitelist 1
+auto_whitelist_path /var/spool/spamassassin/auto_whitelist
+auto_whitelist_file_mode 0666
+
+# LANG TESTS
+ok_languages en fr es it
+ok_locales en fr es it
+
+score BODY_8BITS 1.500
+score CHARSET_FARAWAY 3.200
+score CHARSET_FARAWAY_HEADER 3.200
+score HTML_CHARSET_FARAWAY 0.500
+score MIME_CHARSET_FARAWAY 2.450
+score UNWANTED_LANGUAGE_BODY 2.800
+
+# DCC
+# use_dcc 1 => un plugin maintenant...
+score DCC_CHECK 2.9
+
+# RAZOR : http://razor.sourceforge.net
+use_razor2 1
+razor_timeout 10
+score RAZOR2_CHECK 2.9
+score RAZOR2_CF_RANGE_51_100 1.3
+
+# pyzor : http://pyzor.sourceforge.net/
+use_pyzor 0
+
+# RBL (Realtime Blackhole List)
+skip_rbl_checks 0
+score RCVD_IN_BL_SPAMCOP_NET 3
+
+# misc
+score HELO_DYNAMIC_IPADDR 0.3
+score BIZ_TLD 0.1
+score PRIORITY_NO_NAME 0.2
+
+# disable HTML tests
+
+score HTML_MESSAGE 0
+score HTML_00_10 0
+score HTML_10_20 0
+score HTML_20_30 0
+score HTML_30_40 0
+score HTML_40_50 0
+score HTML_50_60 0
+score HTML_60_70 0
+score HTML_70_80 0
+score HTML_80_90 0
+score HTML_90_100 0
+#score HTML_COMMENT_8BITS 0
+score UPPERCASE_25_50 0
+score UPPERCASE_50_75 0
+score UPPERCASE_75_100 0
+score MIME_HTML_ONLY 0.1
+# From http://maxime.ritter.eu.org/Spam/user_prefs
+# Trop de faux negatifs avec BAYES_(0|1|2|3|4)*
+score BAYES_00                       0 0 -0.01 -0.01
+score BAYES_01                       0 0 -0.01 -0.01
+score BAYES_10                       0 0 -0.01 -0.01
+score BAYES_20                       0 0 -0.01 -0.01
+score BAYES_30                       0 0 -0.01 -0.01
+score BAYES_40                       0 0 -0.01 -0.01
+score BAYES_44                       0 0 -0.01 -0.01
+score BAYES_50                       0 0 0.1 0.1
+score BAYES_56                       0 0 0.5 0.5
+score BAYES_60                       0 0 1.0 1.0
+score BAYES_70                       0 0 2.5 2.5
+score BAYES_80                       0 0 3.5 3.5
+score BAYES_90                       0 0 4.5 4.5
+score BAYES_99                       0 0 8.0 8.0
+
+score RCVD_IN_SORBS_DUL 0.3
+score SUBJ_ILLEGAL_CHARS      0
+score RCVD_IN_NJABL_DUL 0.3
+
+score ADDRESS_IN_SUBJECT 0.1
+
+score HELO_LH_HOME 1.0
+
+internal_networks 192.168.XXX/24
+#score ALL_TRUSTED 0.3
+score HELO_DYNAMIC_IPADDR 0.3
+
+score FORGED_MUA_OUTLOOK 0.5
