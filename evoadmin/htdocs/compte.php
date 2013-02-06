@@ -131,6 +131,10 @@ if (isset($_SESSION['login']))
             if ( $info[0]["isadmin"][0] != $postisadmin ) { 
                 $new["isAdmin"] = $postisadmin;
             }
+            
+            if ($_POST['loginshell'] != $info[0]['loginshell'][0]) {
+                $new["loginShell"] = Html::clean($_POST['loginshell']);
+            }
 
             // only for mail mode
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
@@ -314,7 +318,16 @@ if (isset($_SESSION['login']))
             print "<tr><td align='right'>Nom dans Samba :</td>
                 <td align='left'><input type='text' name='displayname' tabindex='" .$tab++. "'
                 value='$displayname' /></td></tr>\n";
-
+                
+            print '
+            <tr>
+                <td align="right">Shell :</td>
+                <td align="left">
+                    <input type="text" name="loginshell" value="' 
+                        . $info[0]['loginshell'][0] . '" />
+                </td>
+            </tr>';
+            
             print "<tr><td align='right'>Groupe Samba :</td>
                 <td align='left'>$sambagroup</td></tr>\n";
             }
@@ -612,7 +625,7 @@ if (isset($_SESSION['login']))
 
            $info["cn"] = $cn;
            if (!$conf['domaines']['ldap']['virtual']) {
-               $info["loginShell"] = "/bin/bash";
+               $info["loginShell"] = Html::clean($_POST['loginshell']);
                $info["sn"] = $sn;
                $info["homeDirectory"] = "/home/" .$uid;
        
@@ -799,7 +812,7 @@ if (isset($_SESSION['login']))
             <tr><td align="right">Groupe Samba :</td>
             <td align="left"><select name="smbgroup">
             <option value="" disabled selected>Choisir un groupe</option>
-
+            
             <?php
                 foreach (getsambagroups('smb') as $key=>$value) {
                     print "<option value='" . $key . "'> $key </option>\n";
@@ -807,7 +820,14 @@ if (isset($_SESSION['login']))
             ?>
 
             </select>
-
+            
+            <tr>
+                <td align="right">Shell :</td>
+                <td align="left">
+                    <input type="text" name="loginshell" value="/bin/bash" />
+                </td>
+            </tr>
+            
             <?php
             }
 
