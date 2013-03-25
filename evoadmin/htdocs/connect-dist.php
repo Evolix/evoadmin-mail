@@ -9,7 +9,8 @@
  * @version 1.0
  */
 
-define("LDAP_URI","ldap://127.0.0.1");
+#define("LDAP_URI","ldap://127.0.0.1");
+$ldap_servers = array('ldap://127.0.0.1', 'ldap://12');
 define("LDAP_BASE","dc=example,dc=com");
 define("LDAP_ADMIN_DN","cn=admin,dc=example,dc=com");
 define("LDAP_ADMIN_PASS","xxxxx");

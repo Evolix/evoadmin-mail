@@ -82,7 +82,16 @@ if (isset($_SESSION['login'])) {
         // driver 'ldap'
         if ( $conf['domaines']['driver'] == 'ldap' ) {
 
-            $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+            //TODO: foreach LDAP serveurs
+            if ($conf['evoadmin']['cluster']) {
+                $ldapconns = array();
+                foreach ($ldap_servers as $server) {
+                    array_push($ldapconns, Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS));
+                }
+            }
+            else {
+                $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+            }
 
             if ($ldapconn) {
 
@@ -124,8 +133,15 @@ if (isset($_SESSION['login'])) {
         // you view only your domain if using driver 'ldap'
         // we select domain in your DN
         // thanks to http://www.physiol.ox.ac.uk/~trp/regexp.html
-        $mydomain = preg_replace("/uid=" .$login. ",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
+        if ($conf['evoadmin']['version'] <= 2) {
+            $mydomain = preg_replace("/uid=" .$login. ",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
                 . LDAP_BASE ."/","$1",$_SESSION['dn']);
+        }
+        else {
+            $mydomain = preg_replace("/uid=" .$login. ",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
+                . LDAP_BASE ."/","$1",$_SESSION['dn']);
+        }
+
         array_push($domaines,$mydomain);
     }
 

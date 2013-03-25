@@ -26,6 +26,10 @@ $conf['domaines']['file']['gid'] = 1000;
 // uniquement possible si $conf['admin']['what']=1 !!
 //$conf['domaines']['ldap']['virtual'] = false;
 
+// Mode cluster
+// Uniquement en mode mail seul et des utilisateurs virtuels
+$conf['evoadmin']['cluster'] = true;
+
 // auth SMTP by default ?
 $conf['evoadmin']['useauthsmtp'] = false;
 
