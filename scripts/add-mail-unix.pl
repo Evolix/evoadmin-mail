@@ -20,7 +20,7 @@ use Switch;
 
 our $dn='dc=example,dc=com';
 our $host='127.0.0.1';
-our $binddn='cn=perl,ou=ldapuser,dc=example,dc=com';
+our $binddn='cn=perl,ou=ldapusers,dc=example,dc=com';
 our $password='XXX';
 
 our $adminmail='admin@example.com';
