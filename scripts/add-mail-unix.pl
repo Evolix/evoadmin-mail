@@ -128,7 +128,7 @@ sub add()
                ]
           ) or die "heh : $!";
 
-    $mesg->code && die $mesg->error;
+    $result->code && die $result->error;
     $ldap->unbind;
 
     # $HOME

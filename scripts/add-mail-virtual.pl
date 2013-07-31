@@ -141,12 +141,10 @@ sub add()
 	 'webmailActive'   => 'TRUE',
 	 'authsmtpActive'   => 'FALSE',
 	 'homeDirectory' => "/home/vmail/$domain/$login/",
-	 'amavisSpamTagLevel' => '-1999.0',
-	 'amavisSpamTag2Level' => '6.3'
 	     ]
 	  );
 
-    $mesg->code && die $mesg->error;
+    $result->code && die $result->error;
     $ldap->unbind;
 
     # HOMEDIR (obsolete ?)
