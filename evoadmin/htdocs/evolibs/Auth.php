@@ -35,7 +35,7 @@ class Auth
 
 	function badpassword($pass)
 	{
-		return ( (strlen($pass) > 12) ||
+		return ( (strlen($pass) > 42) ||
 				(strlen($pass) < 5) ||
 				(!ereg('^([[:graph:]]*)$',$pass)) );
 
