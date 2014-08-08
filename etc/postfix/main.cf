@@ -34,7 +34,7 @@ home_mailbox = Maildir/
 #mailbox_command = /usr/bin/procmail
 
 # Separateur entre noms d'utilisateur et extensions d'adresse
-# mettre + pour intégration avec amavis
+# mettre + pour integration avec amavis
 #par defaut, =
 recipient_delimiter = +
 
@@ -350,7 +350,7 @@ header_checks =
 #par defaut, = yes
 #smtpd_delay_reject = 
 
-# Définition des plages IP appartenant à mynetworks
+# Definition des plages IP appartenant a mynetworks
 #par defaut, toutes les plages d'adresses IPv4 (et IPv6) des interfaces
 mynetworks = 127.0.0.0/8,[::1]/128,10.0.0.0/16
 

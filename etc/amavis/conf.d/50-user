@@ -34,7 +34,17 @@ $sa_spam_subject_tag = '[SPAM]';
 $log_level = 2;
 
 # En fonction besoin/ressources, on a juste le nbre de process
-$max_servers = 10;
+$max_servers = 2;
+
+$enable_ldap = 1;
+$default_ldap = {
+   hostname => '127.0.0.1', tls => 0,
+   base => 'dc=cpnt,dc=fr', scope => 'sub',
+   query_filter => '(&(mailacceptinggeneralid=%m)(isActive=TRUE))'
+};
+
+#@local_domains_acl = qw(.);
+#@local_domains_acl = ( "example.com","example.net" );
 
 #------------ Do not modify anything below this line -------------
 #1;  # ensure a defined return
