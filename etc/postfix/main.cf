@@ -150,7 +150,7 @@ alias_database = hash:/etc/aliases
 # Base de donnes d'alias virtuels
 # ne pas oublier : postmap /etc/postfix/virtual
 #par defaut, = $virtual_maps
-virtual_alias_maps = hash:/etc/postfix/virtual, ldap:$config_directory/virtual_aliases.cf
+virtual_alias_maps = hash:$config_directory/virtual, ldap:$config_directory/virtual_aliases.cf
 
 # Base de donners des boites virtuelles
 # ne pas oublier : postmap /etc/postfix/vmailbox
@@ -207,6 +207,10 @@ dovecot_destination_recipient_limit = 1
 # Delai au-dela duquel les messages non delivres seront renvoyes a l'expediteur
 #par defaut, = 5d
 #maximal_queue_lifetime = 
+
+# Delai au-dela duquel les *bounces* non delivres ne seront plus envoyes
+#par defaut, = 5d
+bounce_queue_lifetime = 1d
 
 # Intervalle de temps ou postfix examinera la file 
 # Il examine notamment la file deferred pour voir si de NOUVEAUX messages sont arrives
@@ -276,6 +280,11 @@ dovecot_destination_recipient_limit = 1
 #par defaut, = 1000
 #default_extra_recipient_limit = 
 
+slow_destination_rate_delay = 0
+slow_destination_concurrency_limit = 1
+slow_destination_recipient_limit = 25
+slow_destination_concurrency_failed_cohort_limit = 100
+
 # Types d'incidents a rapporter
 # resource : message non delivre pour probleme de ressource
 # software : message non delivre pour probleme de logiciels 
@@ -322,7 +331,7 @@ smtpd_helo_restrictions =
 #par defaut, = 
 smtpd_sender_restrictions =
     permit_mynetworks,
-    check_sender_access hash:/etc/postfix/sa-blacklist.access
+    check_sender_access hash:$config_directory/sa-blacklist.access
 
 # Restrictions au niveau de la commande MAIL FROM
 #par defaut, = permit_mynetworks, reject_unauth_destination
@@ -342,8 +351,10 @@ smtpd_recipient_restrictions =
     reject_unauth_pipelining,
 
 header_checks =
-    regexp:/etc/postfix/header_kill_local,
-    regexp:/etc/postfix/header_kill
+    regexp:$config_directory/header_kill_local,
+    regexp:$config_directory/header_kill
+
+transport_maps = hash:$config_directory/transport
 
 # Attendre la commande 'RCPT TO' avant d'evaluer les restrictions ?
 # (peut poser pb avec certains clients et permet d'avoir renseignements suppl)
