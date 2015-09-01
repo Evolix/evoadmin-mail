@@ -57,13 +57,19 @@ fi
 #                ex : evoadmin.sh -a -v -g example.com
 if [ "$VIRTUAL" = "on" ]; then
     if [ "$ADD" == "on" ]; then
-        if [[ -z $USERIS && $GROUPIS && ! -e "/home/vmail/$GROUPIS" ]]; then
+        if [[ -z $USERIS && -n $GROUPIS && ! -e "/home/vmail/$GROUPIS" ]]; then
             DOMAIN_DIR="/home/vmail/$GROUPIS"
             mkdir $DOMAIN_DIR
             # nécessite d'avoir un NSS/LDAP fonctionnel
             chown root:$GROUPIS $DOMAIN_DIR
             chmod 770 $DOMAIN_DIR
         fi
+    fi
+
+    if [ "$DEL" == "on" ]; then
+        if [[ -n $USERIS && -n $GROUPIS && -e "/home/vmail/$GROUPIS" && -e "/home/vmail/$GROUPIS/$USERIS" ]]; then
+            mv /home/vmail/$GROUPIS/$USERIS /home/vmail/$GROUPIS/$USERIS.$DATE
+            chown -R root:root /home/vmail/$GROUPIS/$USERIS.$DATE
     fi
 
     exit 0
