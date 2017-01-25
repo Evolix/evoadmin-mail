@@ -10,7 +10,7 @@ use Net::LDAP;      # libnet-ldap-perl debian package
 use Getopt::Std;
 use Term::ReadKey;  # libterm-readkey-perl debian package
 use MIME::Base64;   #
-use Digest::SHA1;   # libdigest-sha1-perl debian package
+use Digest::SHA1;   # libdigest-sha?(1)-perl debian package
 use Quota;          # libquota-perl debian package
 use Crypt::SmbHash; # libcrypt-smbhash-perl debian package
 use MIME::Lite;     # libmime-lite-perl debian package
