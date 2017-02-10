@@ -101,7 +101,7 @@ if (isset($_SESSION['login'])) {
 
     // We use uid attribute for account
     for ($i=0;$i<$info["count"];$i++) {
-        array_push($comptes,$info[$i]["uid"][0]);
+        array_push($comptes,strtolower($info[$i]["uid"][0]));
     }
 
     // We use cn attribute for alias
