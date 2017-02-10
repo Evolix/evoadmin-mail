@@ -13,6 +13,8 @@ $conf['admin']['logins'] = array('foo');
 $conf['admin']['what'] = 3;
 // use hook.php instead of hook-dist.php
 $conf['admin']['use_hook'] = false;
+// enable quota
+$conf['admin']['quota'] = true;
 
 // compatibilite LDAP
 $conf['evoadmin']['version'] = 3;

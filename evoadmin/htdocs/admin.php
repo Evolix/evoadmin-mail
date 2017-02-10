@@ -25,7 +25,7 @@ function show_my_details($name,$type) {
     print '<tr><td><a href="' .$type. '.php?view='
         .$name. '">' .$name. '</a></td>';
 
-    if ( $type == 'compte' ) {
+    if ( $type == 'compte' && $conf['admin']['quota']) {
         print '<td>' .getquota($name,'user'). '</td>';
     }
 
@@ -153,7 +153,15 @@ if (isset($_SESSION['login'])) {
              <table width="500px" bgcolor="#ddd" border="1">
              <tr>
              <td><strong>Nom du compte</strong></td>
+             <?php
+                 if ( $type == 'compte' && $conf['admin']['quota']) {
+             ?>
+
              <td>Quota</td>
+             <?php
+                 }
+             ?>
+
              <td width="50px">Suppr</td>
              </tr>
 
