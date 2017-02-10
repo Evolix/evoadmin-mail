@@ -33,6 +33,15 @@ function show_my_details($name,$type,$letter=NULL) {
         print '<td>' .getquota($name,'user'). '</td>';
     }
 
+    if(($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
+        print '<td><b>' .get_expiration_date($name). '</b></td>';
+        print '<td><b>';
+        if(account_is_locked($name)) {
+            print 'Oui';
+        }
+        print '</b></td>';
+    }
+
     print '<td>';
     print '<a href="' .$type. '.php?del=' .$name. '">
         <img src="inc/suppr.png" /></a>';
@@ -183,6 +192,11 @@ if (isset($_SESSION['login'])) {
              <?php
                  }
              ?>
+
+             <?php if(($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) { ?>
+                 <td>Expiration</td>
+                 <td>Verrouillé</td>
+             <?php } ?>
 
              <td width="50px">Suppr</td>
              </tr>
