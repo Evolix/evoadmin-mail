@@ -459,7 +459,7 @@ if (isset($_SESSION['login']))
                 EvoLog::log("Delete $uid failed (user doesn't exist).");
             // *Try* to verify if user is always in aliases...
             } elseif (Ldap::is_what($uid,'maildrop')>1) {
-                print "<p class='error>Erreur, compte encore pr&eacute;sent dans certains alias</p>";
+                print "<p class='error'>Erreur, compte encore pr&eacute;sent dans certains alias</p>";
                 EvoLog::log("Delete $uid failed (user always in aliases).");
             // LDAP deletion
             } elseif (Ldap::lda_del($ldapconn,"uid=" .$uid. "," .$rdn)) {
