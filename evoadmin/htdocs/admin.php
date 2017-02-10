@@ -20,9 +20,13 @@
  * @param string $type
  * @return NULL
  */
-function show_my_details($name,$type) {
-
-    print '<tr><td><a href="' .$type. '.php?view='
+function show_my_details($name,$type,$letter=NULL) {
+    global $conf;
+    print '<tr><td>';
+    if($letter) {
+        printf('<a name="%s"></a>', $letter);
+    }
+    print '<a href="' .$type. '.php?view='
         .$name. '">' .$name. '</a></td>';
 
     if ( $type == 'compte' && $conf['admin']['quota']) {
@@ -150,6 +154,24 @@ if (isset($_SESSION['login'])) {
        
              <h3>Liste des comptes&nbsp;:</h3>
 
+             <?php
+                $alpha = array();
+                foreach($comptes as $compte) {
+                    $letter = strtoupper(substr($compte, 0, 1));
+                    $alpha[$letter] = 1;
+                }
+
+                $letters = array_keys($alpha);
+                sort($letters);
+                foreach($letters as $letter) {
+                    printf('<a href="#%s">%s</a>&nbsp;', $letter, $letter);
+                }
+             ?>
+
+             <br/>
+             <br/>
+
+
              <table width="500px" bgcolor="#ddd" border="1">
              <tr>
              <td><strong>Nom du compte</strong></td>
@@ -167,7 +189,13 @@ if (isset($_SESSION['login'])) {
 
              <?php
                 foreach ($comptes as $compte) {
-                show_my_details($compte,'compte');
+                    $letter = strtoupper(substr($compte, 0, 1));
+                    if($alpha[$letter] == 1) {
+                        $alpha[$letter] = 0;
+                    } else {
+                        $letter = NULL;
+                    }
+                    show_my_details($compte,'compte', $letter);
                 }
        
                 print "</table>";
