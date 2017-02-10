@@ -104,7 +104,13 @@ if (isset($_SESSION['login'])) {
  
     $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
-    $filter="(objectClass=mailAccount)";
+    //$filter="(objectClass=mailAccount)";
+    if($conf['admin']['what'] == 2) {
+        $filter="(objectClass=sambaSamAccount)";
+    } else {
+        $filter="(objectClass=mailAccount)";
+    }
+
     $sr=ldap_search($ldapconn, $rdn, $filter);
     $info = ldap_get_entries($ldapconn, $sr);
 
