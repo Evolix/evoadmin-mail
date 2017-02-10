@@ -153,6 +153,8 @@ if (isset($_POST['login']))
             EvoLog::log("Login failed : " . $login);
             Formulaire();
         }
+    } else {
+        die( "Echec de la connexion LDAP" );
     }
 /**
  * Case with no $_POST data
