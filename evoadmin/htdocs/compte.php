@@ -455,7 +455,7 @@ if (isset($_SESSION['login']))
             // Verify if person exists...
             // TODO : /!\ il faudrait verifier le DN plutot que le uid
             if (!Ldap::is_uid($uid)) {
-                print "<p class='error>Erreur, compte inexistant</p>";
+                print "<p class='error'>Erreur, compte inexistant</p>";
                 EvoLog::log("Delete $uid failed (user doesn't exist).");
             // *Try* to verify if user is always in aliases...
             } elseif (Ldap::is_what($uid,'maildrop')>1) {
