@@ -26,14 +26,19 @@ function show_domaine_details($domain) {
     print '<tr><td><a href="admin.php?domain='
         .$domain. '">' .$domain. '</a></td>';
 
-    // TODO : synchronization OpenLDAP<-Active Directory
-    print '<td>N/A</td>';
     print '<td><b>' .getnumber($domain,'compte'). '</b></td>';
-    print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
-    print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
-    print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
-    print '<td>' .getquota($domain,'group'). '</td>';
-     
+    if($conf['admin']['what'] == 3) {
+       print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
+       print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
+    }
+    if(($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
+       print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
+    }
+    if($conf['admin']['quota']) {
+       print '<td>' .getquota($domain,'group'). '</td>';
+    }
+
+
     print '<td>';
 
     // suppression possible que si utilisation de LDAP
@@ -69,7 +74,7 @@ if (isset($_SESSION['login'])) {
     $login = $_SESSION['login'];
 
     // pas de domaine/variable domaine sur superadmin.php
-    unset($_SESSION['domain']); 
+    unset($_SESSION['domain']);
 
     global $conf;
 
@@ -164,12 +169,17 @@ if (isset($_SESSION['login'])) {
         <table width="500px" bgcolor="#ddd" border="1">
         <tr>
         <td><strong>Nom du domaine</strong></td>
-        <td>Synchro AD/LDAP</td>
         <td>Nombre de comptes</td>
+        <?php if($conf['admin']['what'] == 3) { ?>
         <td>dont comptes mail</td>
         <td>dont comptes Samba</td>
+        <?php } ?>
+        <?php if(($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) { ?>
         <td>Nombre d'alias mail</td>
+        <?php } ?>
+        <?php if($conf['admin']['quota']) { ?>
         <td>Taille/Quota</td>
+        <?php } ?>
         <td>Suppression du domaine</td>
         </tr>
 
