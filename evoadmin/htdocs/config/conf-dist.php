@@ -53,4 +53,4 @@ $conf['log']['enabled'] = true;
 // samba
 $conf['samba']['dn'] = 'DOMAINNAME';
 $conf['samba']['sid'] = 'S-1-5-21-XXX-XXX-XXX';
-
+$conf['samba']['admin_default'] = false;

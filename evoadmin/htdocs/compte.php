@@ -734,6 +734,12 @@ if (isset($_SESSION['login']))
                // notification par mail
                mailnotify($info,$_SESSION['domain'],$_POST['pass1']);
 
+               if ($conf['samba']['admin_default'] == true) {
+                    // ajout dans le groupe smbadmins par defaut #7015
+                    $entry_group_smbadmins["memberUid"] = $uid;
+                    ldap_mod_add($ldapconn, "cn=smbadmins,ou=group,dc=cleo,dc=cnrs,dc=fr", $entry_group_smbadmins);
+              }
+
            } else {
                print "<p class='error'>Erreur, envoyez le message d'erreur
                    suivant &agrave; votre administrateur :</p>";
