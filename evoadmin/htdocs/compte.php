@@ -77,20 +77,20 @@ if (isset($_SESSION['login']))
             print "<p>Modification en cours...</p>";
 
             // TODO : contraintes sur cn, sn, etc.
-            if ( $cn != Html::clean($_POST['cn']) ) { 
+            if ( $cn != Html::clean($_POST['cn']) ) {
                 $new["cn"] = Html::justclean(Html::purgeaccents(utf8_decode($_POST['cn'])));
-                
+
                 if ($conf['evoadmin']['version'] == 1) {
                     $new["sn"] = $new["cn"];
                 }
 
             }
 
-            if ( ($conf['evoadmin']['version'] > 1) && (!$conf['domaines']['ldap']['virtual']) && ( $sn != Html::clean($_POST['sn']) ) ) { 
+            if ( ($conf['evoadmin']['version'] > 1) && (!$conf['domaines']['ldap']['virtual']) && ( $sn != Html::clean($_POST['sn']) ) ) {
                 $new["sn"] = Html::justclean(Html::purgeaccents(utf8_decode($_POST['sn'])));
             }
 
-            if ( (!$conf['domaines']['ldap']['virtual']) && ( $mail != Html::clean($_POST['mail']) )) { 
+            if ( (!$conf['domaines']['ldap']['virtual']) && ( $mail != Html::clean($_POST['mail']) )) {
                 $new["mail"] = Html::clean($_POST['mail']);
             }
 
@@ -122,16 +122,16 @@ if (isset($_SESSION['login']))
 
             }
 
-            $postisactive = (isset($_POST['isactive']) ? 'TRUE' : 'FALSE'); 
-            if ( $info[0]["isactive"][0] != $postisactive ) { 
+            $postisactive = (isset($_POST['isactive']) ? 'TRUE' : 'FALSE');
+            if ( $info[0]["isactive"][0] != $postisactive ) {
                 $new["isActive"] = $postisactive;
             }
 
-            $postisadmin = (isset($_POST['isadmin']) ? 'TRUE' : 'FALSE'); 
-            if ( $info[0]["isadmin"][0] != $postisadmin ) { 
+            $postisadmin = (isset($_POST['isadmin']) ? 'TRUE' : 'FALSE');
+            if ( $info[0]["isadmin"][0] != $postisadmin ) {
                 $new["isAdmin"] = $postisadmin;
             }
-            
+
             if ($_POST['loginshell'] != $info[0]['loginshell'][0]) {
                 $new["loginShell"] = Html::clean($_POST['loginshell']);
             }
@@ -139,23 +139,23 @@ if (isset($_SESSION['login']))
             // only for mail mode
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
-                $postaccountactive = (isset($_POST['accountactive']) ? 'TRUE' : 'FALSE'); 
-                if ( $info[0]["accountactive"][0] != $postaccountactive ) { 
+                $postaccountactive = (isset($_POST['accountactive']) ? 'TRUE' : 'FALSE');
+                if ( $info[0]["accountactive"][0] != $postaccountactive ) {
                     $new["accountActive"] = $postaccountactive;
                 }
 
-                $postauthsmtpactive = (isset($_POST['authsmtpactive']) ? 'TRUE' : 'FALSE'); 
-                if ( $info[0]["authsmtpactive"][0] != $postauthsmtpactive ) { 
+                $postauthsmtpactive = (isset($_POST['authsmtpactive']) ? 'TRUE' : 'FALSE');
+                if ( $info[0]["authsmtpactive"][0] != $postauthsmtpactive ) {
                     $new["authsmtpActive"] = $postauthsmtpactive;
                 }
 
-                $postwebmailactive = (isset($_POST['webmailactive']) ? 'TRUE' : 'FALSE'); 
-                if ( $info[0]["webmailactive"][0] != $postwebmailactive ) { 
+                $postwebmailactive = (isset($_POST['webmailactive']) ? 'TRUE' : 'FALSE');
+                if ( $info[0]["webmailactive"][0] != $postwebmailactive ) {
                     $new["webmailActive"] = $postwebmailactive;
                 }
 
-                $postcourieractive = (isset($_POST['courieractive']) ? 'TRUE' : 'FALSE'); 
-                if ( $info[0]["courieractive"][0] != $postcourieractive ) { 
+                $postcourieractive = (isset($_POST['courieractive']) ? 'TRUE' : 'FALSE');
+                if ( $info[0]["courieractive"][0] != $postcourieractive ) {
                     $new["courierActive"] = $postcourieractive;
                 }
 
@@ -170,7 +170,7 @@ if (isset($_SESSION['login']))
                 }
 
                 $newmailaccept = array_pop($_POST['mailaccept']);
-                if ( ($newmailaccept != NULL) | 
+                if ( ($newmailaccept != NULL) |
                         array_diff($info[0]["mailacceptinggeneralid"],$_POST['mailaccept']) ) {
                     $new["mailacceptinggeneralid"] = $_POST['mailaccept'];
                     $new["mailacceptinggeneralid"][$count]= $newmailaccept;
@@ -180,7 +180,7 @@ if (isset($_SESSION['login']))
                     while ( $new["mailacceptinggeneralid"][0] == NULL ) {
                         array_shift($new["mailacceptinggeneralid"]);
 
-                        // on evite une boucle infinie 
+                        // on evite une boucle infinie
                         if ( count($new["mailacceptinggeneralid"]) == 0 ) {
                             print "Erreur, vous devez avoir au moins un mail entrant\n";
                             exit(1);
@@ -191,7 +191,7 @@ if (isset($_SESSION['login']))
                 // idem avec maildrop
                 $count = array_shift($info[0]["maildrop"]);
                 $newmaildrop = array_pop($_POST['maildrop']);
-                if ( ($newmaildrop != NULL) | 
+                if ( ($newmaildrop != NULL) |
                         array_diff($info[0]["maildrop"],$_POST['maildrop']) ) {
                     $new["maildrop"] = $_POST['maildrop'];
                     $new["maildrop"][$count]= $newmaildrop;
@@ -214,12 +214,12 @@ if (isset($_SESSION['login']))
             // only for samba mode
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
 
-                $postsmbactive = (isset($_POST['smbactive']) ? 'TRUE' : 'FALSE'); 
-                if ( $info[0]["smbactive"][0] != $postsmbactive ) { 
+                $postsmbactive = (isset($_POST['smbactive']) ? 'TRUE' : 'FALSE');
+                if ( $info[0]["smbactive"][0] != $postsmbactive ) {
                     $new["smbActive"] = $postsmbactive;
                 }
 
-                if ( $displayname != Html::clean($_POST['displayname']) ) { 
+                if ( $displayname != Html::clean($_POST['displayname']) ) {
                     $new["displayname"] = Html::clean($_POST['displayname']);
                 }
             }
@@ -242,7 +242,7 @@ if (isset($_SESSION['login']))
             } else {
                 print "<p class='strong'>Aucune modification n&eacute;cessaire.</p>";
             }
-	    
+
 	    print "</center>";
 
         /*
@@ -259,7 +259,7 @@ if (isset($_SESSION['login']))
                 print "<p class='error'>Erreur, compte inexistant</p>";
                 EvoLog::log("login $uid unknown");
                 exit(1);
-            } 
+            }
 
             print "<center>\n";
             print "<h4>Modification du compte $uid</h4>\n";
@@ -294,7 +294,7 @@ if (isset($_SESSION['login']))
 
             // Compatibilite anciens schemas LDAP
             if ($conf['evoadmin']['version'] == 1) {
-                
+
                 print "<tr><td align='right'>Mail principal :";
                 print "</td><td align='left'>$mail</td></tr>\n";
                 print "<input type='hidden' name='mail' value='$mail' />";
@@ -318,16 +318,16 @@ if (isset($_SESSION['login']))
             print "<tr><td align='right'>Nom dans Samba :</td>
                 <td align='left'><input type='text' name='displayname' tabindex='" .$tab++. "'
                 value='$displayname' /></td></tr>\n";
-                
+
             print '
             <tr>
                 <td align="right">Shell :</td>
                 <td align="left">
-                    <input type="text" name="loginshell" value="' 
+                    <input type="text" name="loginshell" value="'
                         . $info[0]['loginshell'][0] . '" />
                 </td>
             </tr>';
-            
+
             print "<tr><td align='right'>Groupe Samba :</td>
                 <td align='left'>$sambagroup</td></tr>\n";
             }
@@ -344,7 +344,7 @@ if (isset($_SESSION['login']))
 
 
                 for ($i=0;$i<$info[0]["mailacceptinggeneralid"]['count'];$i++) {
-                    
+
                     if (!$conf['domaines']['onlyone']) {
                         $info[0]['mailacceptinggeneralid'][$i] =
                             ereg_replace('@'.$_SESSION['domain'],'',$info[0]['mailacceptinggeneralid'][$i]);
@@ -432,7 +432,7 @@ if (isset($_SESSION['login']))
             print "<p><input type='submit' class='button' onclick='return submit_add();'
                 value='Valider' name='valider' tabindex='" .$tab++. "' /></p>\n";
             print "</td></tr>";
-                
+
             print "</table>\n";
             print '</form>';
         }
@@ -443,7 +443,7 @@ if (isset($_SESSION['login']))
     } elseif ( isset($_GET['del']) ) {
 
         $uid = Html::clean($_GET['del']);
-        
+
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
 
             $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
@@ -463,7 +463,7 @@ if (isset($_SESSION['login']))
                 EvoLog::log("Delete $uid failed (user always in aliases).");
             // LDAP deletion
             } elseif (Ldap::lda_del($ldapconn,"uid=" .$uid. "," .$rdn)) {
-           
+
                 if (!$conf['domaines']['ldap']['virtual']) {
                     // script suppression systeme
                     unix_del($uid);
@@ -473,7 +473,7 @@ if (isset($_SESSION['login']))
                 // $query = 'delete from horde_prefs where pref_uid="' .$uid. '"';
 
                 print "<p class='strong'>Suppression $uid effectu&eacute;e.</p>";
-                
+
                 EvoLog::log("Del user ".$uid);
 
             } else {
@@ -482,13 +482,13 @@ if (isset($_SESSION['login']))
             }
 
             print "</center>";
-        
+
         } else {
-            print "<center>"; 
+            print "<center>";
             print "<p>Vous allez effacer compl&egrave;tement l'utilisateur <b>$uid</b><br />";
             print "Tous ses messages et param&egrave;tres seront d&eacute;finitivement perdus.</p>";
             print "<a href='compte.php?del=$uid&modif=yes'>Confirmer la suppression</a>";
-            print "</center>"; 
+            print "</center>";
         }
 
     // Ajouter un compte
@@ -503,7 +503,7 @@ if (isset($_SESSION['login']))
          */
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
 
-            //	Verification coherence des mots de passe	
+            //	Verification coherence des mots de passe
             if ( $_POST['pass1'] != $_POST['pass2'] ) {
                 print "<p class='error>Erreur, vous avez tape deux mots de passe differents</p>";
                 exit(1);
@@ -518,7 +518,7 @@ if (isset($_SESSION['login']))
                 exit(1);
             }
 
-            $cn = Html::justclean(Html::purgeaccents(utf8_decode($_POST['cn']))); 
+            $cn = Html::justclean(Html::purgeaccents(utf8_decode($_POST['cn'])));
 
             if (badname($postuid)) {
                 print "<p class='error>Erreur, <u>$postuid</u> est invalide.";
@@ -527,7 +527,7 @@ if (isset($_SESSION['login']))
                 EvoLog::log("Add $postuid failed (bad name).");
                 exit(1);
             }
-                
+
             // Compatibilite anciens schemas LDAP
             //if (!$conf['evoadmin']['version'] == 1) {
                 // mail and cn are auto-generated...
@@ -563,7 +563,7 @@ if (isset($_SESSION['login']))
 
             // Cas d'un compte Samba
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
-            
+
                 $smbgroup = Html::clean($_POST['smbgroup']);
                 $tmp = getsambagroups('unix');
                 $gid = $tmp[$smbgroup];
@@ -579,7 +579,7 @@ if (isset($_SESSION['login']))
 
             print "<center>";
             print "Ajout en cours...";
-          
+
             // TODO : generer un UID different en LDAP non-virtual !!!
             $info["uid"]=$uid;
             // recuperer un uid number valide
@@ -592,7 +592,7 @@ if (isset($_SESSION['login']))
             }
             $info["gidNumber"]= $gid;
             $info["objectclass"][0] = "posixAccount";
-            
+
             if (!$conf['domaines']['ldap']['virtual']) {
                 $info["objectclass"][1] = "shadowAccount";
                 $info["objectclass"][2] = "inetorgperson";
@@ -628,7 +628,7 @@ if (isset($_SESSION['login']))
                $info["loginShell"] = Html::clean($_POST['loginshell']);
                $info["sn"] = $sn;
                $info["homeDirectory"] = "/home/" .$uid;
-       
+
                // TODO: rajouter un isset pour verifier la presence de ce champ optionnel
                if ( $mail != '') {
                    $info["mail"] = $mail;
@@ -640,7 +640,7 @@ if (isset($_SESSION['login']))
            // Cas d'un compte mail
            if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
-               // Aliases 
+               // Aliases
                $aliases = $_POST['alias'];
 
                // Compatibilite anciens schemas LDAP et mode "virtuel"
@@ -732,7 +732,7 @@ if (isset($_SESSION['login']))
                EvoLog::log("Add user ".$uid);
 
                // notification par mail
-               mailnotify($info,$_SESSION['domain'],$_POST['pass1']); 
+               mailnotify($info,$_SESSION['domain'],$_POST['pass1']);
 
            } else {
                print "<p class='error'>Erreur, envoyez le message d'erreur
@@ -746,13 +746,13 @@ if (isset($_SESSION['login']))
         } else {
             ?>
                 <center>
-                
+
                 <h4>Ajout d'un compte</h4>
 
             <form name="add"
                 action="compte.php?modif=yes"
                 method="post">
- 
+
             <p class="italic">Remplissez lez champs, ceux contenant [*] sont obligatoires.</p>
 
             <table>
@@ -787,7 +787,7 @@ if (isset($_SESSION['login']))
 
             <tr><td align="right">Confirmation du mot de passe [*] :</td>
             <td align="left"><input type="password" name="pass2" tabindex='5' /></td></tr>
-           
+
             <?php
                 // Compatibilite anciens schemas LDAP
                 if (!$conf['evoadmin']['version'] == 1) {
@@ -812,7 +812,7 @@ if (isset($_SESSION['login']))
             <tr><td align="right">Groupe Samba :</td>
             <td align="left"><select name="smbgroup">
             <option value="" disabled selected>Choisir un groupe</option>
-            
+
             <?php
                 foreach (getsambagroups('smb') as $key=>$value) {
                     print "<option value='" . $key . "'> $key </option>\n";
@@ -820,14 +820,14 @@ if (isset($_SESSION['login']))
             ?>
 
             </select>
-            
+
             <tr>
                 <td align="right">Shell :</td>
                 <td align="left">
                     <input type="text" name="loginshell" value="/bin/bash" />
                 </td>
             </tr>
-            
+
             <?php
             }
 
@@ -856,7 +856,7 @@ if (isset($_SESSION['login']))
                 }
             ?>
             </td></tr>
-           
+
             <tr><td align="right">Alias :</td>
             <td align="left"><input type='text' name='alias[2]' tabindex='9' />
             <?php
@@ -875,11 +875,11 @@ if (isset($_SESSION['login']))
             </td></tr>
 
             <tr><td align="right">Activation globale :</td>
-            <td align="left"><input type='checkbox' tabindex='11' 
+            <td align="left"><input type='checkbox' tabindex='11'
                 name='isactive' checked /></td></tr>
 
             <tr><td align="right">Compte admin :</td>
-            <td align="left"><input type='checkbox' tabindex='14' 
+            <td align="left"><input type='checkbox' tabindex='14'
                 name='isadmin' /></td></tr>
 
             <?php // only for samba mode
@@ -887,29 +887,29 @@ if (isset($_SESSION['login']))
             ?>
 
             <tr><td align="right">Compte Samba actif :</td>
-            <td align="left"><input type='checkbox' tabindex='13' 
+            <td align="left"><input type='checkbox' tabindex='13'
                 name='smbactive' checked /></td></tr>
 
-            <?php 
+            <?php
                 }
                 // only for mail mode
                 if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
             ?>
 
             <tr><td align="right">Compte mail actif :</td>
-            <td align="left"><input type='checkbox' tabindex='12' 
+            <td align="left"><input type='checkbox' tabindex='12'
                 name='accountactive' checked /></td></tr>
 
             <tr><td align="right">Utilisation POP/IMAP :</td>
-            <td align="left"><input type='checkbox' tabindex='15' 
+            <td align="left"><input type='checkbox' tabindex='15'
                 name='courieractive' checked /></td></tr>
-                
+
             <tr><td align="right">Webmail actif :</td>
-            <td align="left"><input type='checkbox' tabindex='16' 
+            <td align="left"><input type='checkbox' tabindex='16'
                 name='webmailactive' checked /></td></tr>
-                
+
             <tr><td align="right">Authentification SMTP :</td>
-            <td align="left"><input type='checkbox' tabindex='17' 
+            <td align="left"><input type='checkbox' tabindex='17'
                 name='authsmtpactive' <?php if ($conf['evoadmin']['useauthsmtp']) print "checked" ?> /></td></tr>
 
             <?php
@@ -917,7 +917,7 @@ if (isset($_SESSION['login']))
             ?>
 
             <tr><td>&nbsp;</td><td align="left">
-            <p><input type="submit" class="button" tabindex='18' 
+            <p><input type="submit" class="button" tabindex='18'
                 value="Valider" name="valider" onclick='return submit_add();'  /></p>
             </td></tr>
 
@@ -930,7 +930,7 @@ if (isset($_SESSION['login']))
         }
     }
 
-} //if (isset($_SESSION['login'])) 
+} //if (isset($_SESSION['login']))
 else
 {
     header("location: auth.php\n\n");

@@ -9,7 +9,7 @@ function display($msg)
 function superadmin($login) {
 
     global $conf;
-    
+
     foreach ($conf['admin']['logins'] as $admin) {
         if ( Html::clean($login) == $admin ) {
             return TRUE;
@@ -160,11 +160,11 @@ function getnumber($domain,$type) {
         // compatibilite anciens schemas
         if ($conf['evoadmin']['version'] == 1) {
 		    $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
-        } 
+        }
 
     }  elseif ( $type == 'smb' ) {
         $filter="(objectClass=sambaSamAccount)";
-    } 
+    }
 
     if (! $conf['domaines']['onlyone'])  {
 

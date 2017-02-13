@@ -91,9 +91,9 @@ if (isset($_SESSION['login'])) {
         }
 
     } else {
-        $rdn= "ou=people," .LDAP_BASE;    
+        $rdn= "ou=people," .LDAP_BASE;
     }
-    $_SESSION['rdn'] = $rdn;    
+    $_SESSION['rdn'] = $rdn;
 
     include EVOADMIN_BASE . 'debut.php';
 
@@ -101,7 +101,7 @@ if (isset($_SESSION['login'])) {
     $comptes = array();
     // tableau contenant tous les alias
     $aliases = array();
- 
+
     $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
     //$filter="(objectClass=mailAccount)";
@@ -124,14 +124,14 @@ if (isset($_SESSION['login'])) {
     // compatibilite anciens schemas
     if ($conf['evoadmin']['version'] == 1) {
 	    $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
-    } 
+    }
     $sr=ldap_search($ldapconn, $rdn, $filter);
     $info = ldap_get_entries($ldapconn, $sr);
- 
+
     for ($i=0;$i<$info["count"];$i++) {
         array_push($aliases,$info[$i]["cn"][0]);
     }
-  
+
     ldap_unbind($ldapconn);
 
     //tri alphanumeriques des tableaux
@@ -164,9 +164,9 @@ if (isset($_SESSION['login'])) {
             }
 
             if ( (!isset($_POST['viewonly'])) || ($_POST['viewonly']==1) ) {
-    
+
         ?>
-       
+
              <h3>Liste des comptes&nbsp;:</h3>
 
              <?php
@@ -217,15 +217,15 @@ if (isset($_SESSION['login'])) {
                     }
                     show_my_details($compte,'compte', $letter);
                 }
-       
+
                 print "</table>";
 
            } elseif ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) {
-    
+
         ?>
 
             <h3>Liste des alias/groupe de diffusion&nbsp;:</h3>
-    
+
             <table width="500px" bgcolor="#ddd" border="1">
             <tr>
             <td><strong>Nom de l'alias/groupe de diffusion</strong></td>
@@ -244,7 +244,7 @@ if (isset($_SESSION['login'])) {
     </center>
 
 <?php
-   
+
 } else { //if (isset($_SESSION['login']))
     header("location: auth.php\n\n");
     exit(0);
@@ -252,4 +252,4 @@ if (isset($_SESSION['login'])) {
 
 include EVOADMIN_BASE . 'fin.php';
 
-?> 
+?>
