@@ -149,7 +149,7 @@ function getnumber($domain,$type) {
 
     $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
     if ( $type == 'compte' ) {
-        $filter="(objectClass=posixAccount)";
+        $filter="(&(objectClass=posixAccount)(!(uid=*$)))";
 
     } elseif ( $type == 'mail' ) {
         $filter="(objectClass=mailAccount)";
