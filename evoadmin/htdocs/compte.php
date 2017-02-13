@@ -772,14 +772,14 @@ if (isset($_SESSION['login']))
             ?>
 
             <tr><td align="right">Nom [*] :</td>
-            <td align="left"><input type='text' name='sn' tabindex='3' /></td></tr>
+            <td align="left"><input type='text' name='sn' tabindex='2' /></td></tr>
 
             <?php
                 }
             ?>
 
             <tr><td align="right">Nom Complet [*] :</td>
-            <td align="left"><input type='text' name='cn' tabindex='2' /></td></tr>
+            <td align="left"><input type='text' name='cn' tabindex='3' /></td></tr>
 
 
             <tr><td align="right">Mot de passe [*] :</td>
