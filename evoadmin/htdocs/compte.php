@@ -820,9 +820,18 @@ if (isset($_SESSION['login']))
             <option value="" disabled selected>Choisir un groupe</option>
 
             <?php
-                foreach (getsambagroups('smb') as $key=>$value) {
-                    print "<option value='" . $key . "'> $key </option>\n";
+                $sambagroups = getsambagroups('smb');
+                if(count($sambagroups) != 1) {
+                    print '<option value="" disabled selected>Choisir un groupe</option>';
                 }
+                foreach ($sambagroups as $key=>$value) {
+                    print "<option value='" . $key . "'";
+                    if($key == $_SESSION['domain']) {
+                        print ' selected="selected"';
+                    }
+                    print "> $key </option>\n";
+                }
+
             ?>
 
             </select>
