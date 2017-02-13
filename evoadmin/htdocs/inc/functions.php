@@ -254,4 +254,70 @@ function adddomain(&$item,$key)
     }
 }
 
+// renvoie la date d'expiration d'un compte
+function get_expiration_date($name) {
+    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+    $filter="(&(uid=" .$name. "))";
+    $sr=ldap_search($ldapconn, LDAP_BASE, $filter);
+    $info = ldap_get_entries($ldapconn, $sr);
+    ldap_unbind($ldapconn);
+    $val = $info[0]["sambakickofftime"][0];
+    if($val > 0) {
+        return date('d/m/Y', $val);
+    } else {
+        return '';
+    }
+}
 
+// change la date d'expiration d'un compte
+function set_expiration_date($name, $date) {
+    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+    list($day, $month, $year) = explode('/', $date);
+    $timestamp = mktime(0, 0, 0, $month, $day, $year);
+    $val = array('sambakickofftime' => $timestamp);
+    if(!ldap_modify($ldapconn, "uid=$name,ou=people,".LDAP_BASE, $val)) {
+        die('Echec de la modification de la date d\'expiration');
+    }
+    ldap_unbind($ldapconn);
+}
+
+function account_is_locked($name) {
+    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+    $filter="(&(uid=" .$name. "))";
+    $sr=ldap_search($ldapconn, LDAP_BASE, $filter);
+    $info = ldap_get_entries($ldapconn, $sr);
+    ldap_unbind($ldapconn);
+    $val = $info[0]["sambaacctflags"][0];
+    if(strpos($val, 'L')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function account_lock($name, $lock_state) {
+    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+    $filter="(&(uid=" .$name. "))";
+    $sr=ldap_search($ldapconn, LDAP_BASE, $filter);
+    $info = ldap_get_entries($ldapconn, $sr);
+    $val = $info[0]["sambaacctflags"][0];
+    if($lock_state == true) {
+        if(!strpos($val, 'L')) {
+            // ajouter le L
+            $newval = substr_replace($val, 'L', 2, 0);
+        }
+    } else {
+        if(strpos($val, 'L')) {
+            // virer le L
+            $newval = str_replace('L', '', $val);
+        }
+    }
+    if($newval) {
+        //print "$val -> $newval";
+        $info = array('sambaacctflags' => $newval);
+        if(!ldap_modify($ldapconn, "uid=$name,ou=people,".LDAP_BASE, $info)) {
+            die('Echec de la modification du verrouillage');
+        }
+    }
+    ldap_unbind($ldapconn);
+}
