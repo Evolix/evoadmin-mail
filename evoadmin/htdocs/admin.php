@@ -38,6 +38,8 @@ function show_my_details($name,$type,$letter=NULL) {
         print '<td><b>';
         if(account_is_locked($name)) {
             print 'Oui';
+        } else {
+            print 'Non';
         }
         print '</b></td>';
     }
@@ -191,7 +193,7 @@ if (isset($_SESSION['login'])) {
              <tr>
              <td><strong>Nom du compte</strong></td>
              <?php
-                 if ( $type == 'compte' && $conf['admin']['quota']) {
+                 if ( $conf['admin']['quota']) {
              ?>
 
              <td>Quota</td>
