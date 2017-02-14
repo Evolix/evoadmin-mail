@@ -38,6 +38,7 @@ if (isset($_SESSION['login']))
     include EVOADMIN_BASE . 'debut.php';
 
     $rdn = $_SESSION['rdn'];
+    $group_dn = "ou=group,".LDAP_BASE;
 
     /**
      * Account modification
@@ -120,6 +121,44 @@ if (isset($_SESSION['login']))
                     $new["shadowLastChange"] = floor(strtotime("now")/(3600*24));
                 }
 
+            }
+                if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
+
+                $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+
+                $dn =  $group_dn;
+                $filter = "(memberUid=$uid)";
+                $attr = array("cn");
+
+                $sr=ldap_search($ldapconn, $dn, $filter, $attr);
+                $result = ldap_get_entries($ldapconn, $sr);
+                $arraycn = array();
+
+                for ($i=0; $i < $result["count"] ; $i++)
+                {
+                    $arraycn[] = $result[$i]["cn"][0];
+                }
+
+                if((isset($_POST['smbgroupsecondaire']) && !empty($_POST['smbgroupsecondaire'])) || (isset($_POST['smbgroupsecondaire']) == NULL)){
+                    if ($_POST['smbgroupsecondaire'] == NULL ){
+                        $arrayGroupes = [];
+                        if ($arrayGroupes != $arraycn)
+                        {
+                            $new2["cntosuppr"] = array_diff($arraycn, $arrayGroupes);
+                        }
+                    }
+                    else {
+                        $arrayGroupes = $_POST['smbgroupsecondaire'];
+                        foreach($arrayGroupes as $nameGroupe){
+                            $arrayCnNew[] = $nameGroupe;
+                        }
+                        if ($arrayCnNew != $arraycn)
+                        {
+                            $new2["cntoadd"] = array_diff($arrayCnNew, $arraycn);
+                            $new2["cntosuppr"] = array_diff($arraycn, $arrayCnNew);
+                        }
+                    }
+                }
             }
 
             $postisactive = (isset($_POST['isactive']) ? 'TRUE' : 'FALSE');
@@ -225,20 +264,37 @@ if (isset($_SESSION['login']))
             }
 
             // if $new not null, set modification
-            if ( (isset($new)) && ($new != NULL) ) {
-                $sr=ldap_modify($ldapconn,"uid=" .$uid. ",".$rdn,$new);
+            if ((isset($new)) || (isset($new2))) {
 
-                // Si LDAP est content, c'est bon :)
-                if ( $sr ) {
-                    print "<p class='strong'>Modifications effectu&eacute;es.</p>";
-                    print "<a href='compte.php?view=$uid'>Voir le compte modifi&eacute;</a>";
-                } else {
-                    print "<p class='error'>Erreur, envoyez le message d'erreur
-                        suivant &agrave; votre administrateur :</p>";
-                    var_dump($new);
-                    Evolog::log("Modify error of $uid by $login");
+                if ((isset($new)))
+                {
+                    $sr=ldap_modify($ldapconn,"uid=" .$uid. ",".$rdn,$new);
                 }
 
+                if(count($new2["cntoadd"]) > 0)
+                {
+                    foreach($new2["cntoadd"] as $nameGroupe){
+                        $entry_groupe["memberUid"] = $uid;
+                        $addGroupe = ldap_mod_add($ldapconn, "cn=".$nameGroupe.",".$group_dn, $entry_groupe);
+                    }
+                }
+                if(count($new2["cntosuppr"]) > 0)
+                {
+                    foreach($new2["cntosuppr"] as $nameGroupe){
+                        $remove_groupe["memberUid"] = $uid;
+                        $rmGroupe = ldap_mod_del($ldapconn, "cn=".$nameGroupe.",".$group_dn, $remove_groupe);
+                    }
+                }
+
+                // Si LDAP est content, c'est bon :)
+                    if (!$sr && !$addGroupe && !$rmGroupe) {
+                    print "<p class='error'>Erreur, envoyez le message d'erreur
+                        suivant &agrave; votre administrateur :</p>";
+                    Evolog::log("Modify error of $uid by $login");
+                    } else {
+                    print "<p class='strong'>Modifications effectu&eacute;es.</p>";
+                    print "<a href='compte.php?view=$uid'>Voir le compte modifi&eacute;</a>";
+                }
             } else {
                 print "<p class='strong'>Aucune modification n&eacute;cessaire.</p>";
             }
@@ -310,6 +366,13 @@ if (isset($_SESSION['login']))
 
             // only for samba mode
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
+                $dn = $group_dn;
+                $filter = "(memberUid=$uid)";
+                $attr = array("cn");
+
+                $sr=ldap_search($ldapconn, $dn, $filter, $attr);
+                $result = ldap_get_entries($ldapconn, $sr);
+                $arraycn = array();
 
             print "<tr><td colspan='2'>";
             print "<p class='italic'>Modification pour Samba</p>";
@@ -328,8 +391,26 @@ if (isset($_SESSION['login']))
                 </td>
             </tr>';
 
-            print "<tr><td align='right'>Groupe Samba :</td>
+            print "<tr><td align='right'>Groupe Samba primaire :</td>
                 <td align='left'>$sambagroup</td></tr>\n";
+                print '<tr><td align="right">Groupe Samba secondaire :</td>
+                <td align="left"><select style="margin-top:5px;" name="smbgroupsecondaire[]" multiple size=6>';
+
+                $sambagroups = getsambagroups('smb');
+                foreach ($sambagroups as $key=>$value) {
+                        print "<option value='" . $key . "'";
+                        for ($i=0; $i < $result["count"] ; $i++)
+                        {
+                            $arraycn[] = $result[$i]["cn"][0];
+                            if($key == $_SESSION['domain'] || in_array($key, $arraycn)) {
+                            print ' selected="selected"';
+                            }
+                        }
+                        print "> $key </option>\n";
+                }
+
+            print "</select>";
+
             }
 
             // only for mail mode
@@ -564,9 +645,19 @@ if (isset($_SESSION['login']))
             // Cas d'un compte Samba
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
 
+                $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
+
                 $smbgroup = Html::clean($_POST['smbgroup']);
                 $tmp = getsambagroups('unix');
                 $gid = $tmp[$smbgroup];
+
+                if(isset($_POST['smbgroupsecondaire']) && !empty($_POST['smbgroupsecondaire'])){
+                    $arrayGroupes = $_POST['smbgroupsecondaire'];
+                    foreach($arrayGroupes as $nameGroupe){
+                        $entry_groupe["memberUid"] = $uid;
+                        ldap_mod_add($ldapconn, "cn=".$nameGroupe.",".$group_dn, $entry_groupe);
+                    }
+                }
             } else {
 
                 $gid = getgid($_SESSION['domain']);
@@ -737,7 +828,7 @@ if (isset($_SESSION['login']))
                if ($conf['samba']['admin_default'] == true) {
                     // ajout dans le groupe smbadmins par defaut #7015
                     $entry_group_smbadmins["memberUid"] = $uid;
-                    ldap_mod_add($ldapconn, "cn=smbadmins,ou=group,dc=cleo,dc=cnrs,dc=fr", $entry_group_smbadmins);
+                    ldap_mod_add($ldapconn, "cn=smbadmins,".$group_dn, $entry_group_smbadmins);
               }
 
            } else {
@@ -815,7 +906,7 @@ if (isset($_SESSION['login']))
             <tr><td align="right">Nom dans Samba :</td>
             <td align="left"><input type='text' name='displayname' tabindex='10' /></td></tr>
 
-            <tr><td align="right">Groupe Samba :</td>
+            <tr><td align="right">Groupe Samba primaire :</td>
             <td align="left"><select name="smbgroup">
             <option value="" disabled selected>Choisir un groupe</option>
 
@@ -835,6 +926,23 @@ if (isset($_SESSION['login']))
             ?>
 
             </select>
+
+            <tr><td align="right">Groupe Samba secondaire :</td>
+            <td align="left"><select style="margin-top:5px;" name="smbgroupsecondaire[]" multiple size=6>
+
+                <?php
+                $sambagroups = getsambagroups('smb');
+                foreach ($sambagroups as $key=>$value) {
+                        print "<option value='" . $key . "'";
+                        if($key == $_SESSION['domain']) {
+                            print ' selected="selected"';
+                        }
+                        print "> $key </option>\n";
+                }
+                ?>
+
+                </select>
+
 
             <tr>
                 <td align="right">Shell :</td>
