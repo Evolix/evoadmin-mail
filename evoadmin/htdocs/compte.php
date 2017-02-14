@@ -908,7 +908,6 @@ if (isset($_SESSION['login']))
 
             <tr><td align="right">Groupe Samba primaire :</td>
             <td align="left"><select name="smbgroup">
-            <option value="" disabled selected>Choisir un groupe</option>
 
             <?php
                 $sambagroups = getsambagroups('smb');
