@@ -1,10 +1,10 @@
-<?php 
+<?php
 
-print '<?xml version="1.0" encoding="utf8" ?>'; 
+print '<?xml version="1.0" encoding="utf8" ?>';
 
 ?>
 
-<!DOCTYPE html 
+<!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//FR"
     "DTD/xhtml1-strict.dtd">
 
@@ -12,6 +12,7 @@ print '<?xml version="1.0" encoding="utf8" ?>';
 <head>
 <title><?php print $conf['html']['title']; ?></title>
 <link href="inc/style.css" rel="stylesheet" type="text/css" />
+<meta charset="UTF-8">
 </head>
 
 <body>
