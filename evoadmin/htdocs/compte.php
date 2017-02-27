@@ -529,6 +529,13 @@ if (isset($_SESSION['login']))
 
             $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
+            $filter = "(memberUid=$uid)";
+            $attr = array("cn");
+
+            $sr=ldap_search($ldapconn, $group_dn, $filter, $attr);
+            $result = ldap_get_entries($ldapconn, $sr);
+            $arraycn = array();
+
             print "<center>";
 
             print "<p>Suppression $uid en cours...</p>";
@@ -546,6 +553,19 @@ if (isset($_SESSION['login']))
             } elseif (Ldap::lda_del($ldapconn,"uid=" .$uid. "," .$rdn)) {
 
                 if (!$conf['domaines']['ldap']['virtual']) {
+
+                    if($result["count"] > 0) {
+                        for ($i=0; $i < $result["count"] ; $i++)
+                        {
+                            $arraycn[] = $result[$i]["cn"][0];
+                        }
+                        foreach($arraycn as $nameGroupe){
+                            $remove_groupe["memberUid"] = $uid;
+                            $rmGroupe = ldap_mod_del($ldapconn, "cn=".$nameGroupe.",".$group_dn, $remove_groupe);
+                        }
+
+                    }
+
                     // script suppression systeme
                     unix_del($uid);
                 }
