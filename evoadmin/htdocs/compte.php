@@ -126,11 +126,10 @@ if (isset($_SESSION['login']))
 
                 $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
-                $dn =  $group_dn;
                 $filter = "(memberUid=$uid)";
                 $attr = array("cn");
 
-                $sr=ldap_search($ldapconn, $dn, $filter, $attr);
+                $sr=ldap_search($ldapconn, $group_dn, $filter, $attr);
                 $result = ldap_get_entries($ldapconn, $sr);
                 $arraycn = array();
 
@@ -366,11 +365,10 @@ if (isset($_SESSION['login']))
 
             // only for samba mode
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
-                $dn = $group_dn;
                 $filter = "(memberUid=$uid)";
                 $attr = array("cn");
 
-                $sr=ldap_search($ldapconn, $dn, $filter, $attr);
+                $sr=ldap_search($ldapconn, $group_dn, $filter, $attr);
                 $result = ldap_get_entries($ldapconn, $sr);
                 $arraycn = array();
 
