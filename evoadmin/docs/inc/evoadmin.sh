@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+# This is a bash script, not sh compatible!
 
 # vim: expandtab softtabstop=4 tabstop=4 shiftwidth=4 showtabline=2
     
@@ -70,6 +71,7 @@ if [ "$VIRTUAL" = "on" ]; then
         if [[ -n $USERIS && -n $GROUPIS && -e "/home/vmail/$GROUPIS" && -e "/home/vmail/$GROUPIS/$USERIS" ]]; then
             mv /home/vmail/$GROUPIS/$USERIS /home/vmail/$GROUPIS/$USERIS.$DATE
             chown -R root:root /home/vmail/$GROUPIS/$USERIS.$DATE
+        fi
     fi
 
     exit 0
