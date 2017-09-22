@@ -1,0 +1,165 @@
+#!/bin/bash
+
+# vim: expandtab softtabstop=4 tabstop=4 shiftwidth=4 showtabline=2
+
+PASSWORD='xxx'
+DATE=$(date +"%d-%m-%Y")
+
+while getopts "p:qu:g:sadv" option ; do
+case $option in
+
+    p)
+    READPASS=$OPTARG
+    ;;
+
+    q)
+    QUOTA='on'
+    ;;
+
+    u)
+    USERIS=$OPTARG
+    ;;
+
+    g)
+    GROUPIS=$OPTARG
+    ;;
+
+    s)
+    SIZE='on'
+    ;;
+
+    a)
+    ADD='on'
+    ;;
+
+    d)
+    DEL='on'
+    ;;
+
+    v)
+    VIRTUAL='on'
+    ;;
+
+    *)
+    echo "script error"
+    exit 1
+    ;;
+esac
+done
+
+if [ "$PASSWORD" != "$READPASS" ]; then
+    echo "Invalid password"
+    echo "Use -p <password>"
+    exit 1
+fi
+
+# Mode virtuel : permet pour l'instant la création du répertoire d'un domaine
+#                ex : evoadmin.sh -a -v -g example.com
+if [ "$VIRTUAL" == "on" ]; then
+    if [ "$ADD" == "on" ]; then
+        if [[ -z $USERIS && -n $GROUPIS && ! -e "/home/vmail/$GROUPIS" ]]; then
+            DOMAIN_DIR="/home/vmail/$GROUPIS"
+            mkdir $DOMAIN_DIR
+            # nécessite d'avoir un NSS/LDAP fonctionnel
+            chown vmail:vmail $DOMAIN_DIR
+            chmod 700 $DOMAIN_DIR
+        fi
+    fi
+
+    if [ "$DEL" == "on" ]; then
+        if [[ -n $USERIS && -n $GROUPIS && -e "/home/vmail/$GROUPIS" && -e "/home/vmail/$GROUPIS/$USERIS" ]]; then
+            mv /home/vmail/$GROUPIS/$USERIS /home/vmail/$GROUPIS/$USERIS.$DATE
+            chown -R vmail:vmail /home/vmail/$GROUPIS/$USERIS.$DATE
+        fi
+    fi
+
+    exit 0
+fi
+
+if [ "$QUOTA" == "on" ]; then
+    if [ -n "$USERIS" ]; then
+        domain=${USERIS##*@}
+        user=${USERIS%%@*}
+        sizeFile="/home/vmail/${domain}/${user}/size.txt"
+        if [ -f "$sizeFile" ]; then
+            dateNowInSeconds=$(date +%s)
+            statFileInSeconds=$(stat -c %Y "$sizeFile")
+            dateMinusStat=$((dateNowInSeconds - statFileInSeconds))
+            if [ $dateMinusStat -lt 36000 ]; then
+                size=$(<"$sizeFile")
+            else
+            size=$(du -s /home/vmail/${domain}/${user} | tr -s '\t' ' ' | cut -d' ' -f1)
+            echo "$size" > "$sizeFile"
+            fi
+        else
+           size=$(du -s /home/vmail/${domain}/${user} | tr -s '\t' ' ' | cut -d' ' -f1)
+           echo "$size" > "$sizeFile"
+        fi
+
+        echo "$size/0"
+        ###NOW=`LANG=C quota $USERIS | tr -d "\n" | sed -e "s/^.*\/dev\///" | tr -s " " | cut -d" " -f2`
+        ###LIMIT=`LANG=C quota $USERIS | tr -d "\n" | sed -e "s/^.*\/dev\///" | tr -s " " | cut -d" " -f3`
+        ###echo "$NOW/$LIMIT"
+        ###exit 0
+    fi
+
+    if [ -n "$GROUPIS" ]; then
+        sizeFile="/home/vmail/${GROUPIS}/size.txt"
+        if [ -f "$sizeFile" ]; then
+            dateNowInSeconds=$(date +%s)
+            statFileInSeconds=$(stat -c %Y "$sizeFile")
+            dateMinusStat=$((dateNowInSeconds - statFileInSeconds))
+            if [ $dateMinusStat -lt 36000 ]; then
+                size=$(<"$sizeFile")
+            else
+            size=$(du -s /home/vmail/${GROUPIS} | tr -s '\t' ' ' | cut -d' ' -f1)
+            echo "$size" > "$sizeFile"
+            fi
+        else
+           size=$(du -s /home/vmail/${GROUPIS} | tr -s '\t' ' ' | cut -d' ' -f1)
+           echo "$size" > "$sizeFile"
+        fi
+
+        echo "$size/0"
+        # no quota
+        ###if LANG=C quota -g $GROUPIS | grep none > /dev/null; then
+        ###        echo "0/0"
+        ###        exit 0
+        ###fi
+        ###NOW=`LANG=C quota -g $GROUPIS | tr -d "\n" | sed -e "s/^.*\/dev\///" | tr -s " " | cut -d" " -f2`
+        ###LIMIT=`LANG=C quota -g $GROUPIS | tr -d "\n" | sed -e "s/^.*\/dev\///" | tr -s " " | cut -d" " -f3`
+        ###echo "$NOW/$LIMIT"
+        ###exit 0
+    fi
+
+fi
+
+if [ "$SIZE" == "on" ]; then
+    NOW=`df | grep "/home" | tr -s " " | cut -d " " -f3`
+    LIMIT=`df | grep "/home" | tr -s " " | cut -d " " -f2`
+    echo "$NOW/$LIMIT"
+    exit 0
+fi
+
+if [ "$ADD" == "on" ]; then
+    if [[ -n $USERIS && $GROUPIS && ! -e "/home/$USERIS" ]]; then
+        mkdir /home/$USERIS
+        chmod 0700 /home/$USERIS
+        chown "$USERIS:$GROUPIS" /home/$USERIS
+        setquota -u $USERIS 5000000 8000000 0 0 -a
+        echo "Mail d'initialisation du compte." |\
+            mail -s "Premier message" $USERIS@localhost
+        exit 0
+    fi
+fi
+
+
+if [ "$DEL" == "on" ]; then
+    if [[ -n $USERIS && -e "/home/$USERIS" ]]; then
+        mv /home/$USERIS /home/$USERIS.$DATE
+        chown -R root:root /home/$USERIS.$DATE
+        exit 0
+    fi
+fi
+
+exit 1
