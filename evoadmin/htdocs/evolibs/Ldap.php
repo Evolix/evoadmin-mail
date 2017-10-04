@@ -171,7 +171,7 @@ class Ldap {
     // necessite Crypt/CHAP -> http://gcolpart.evolix.net/debian/php-crypt-chap/
     // inspire de lib/Driver/smbldap.php (Horde Password)
     function sambalm($pass) {
-        $hash = &new Crypt_CHAP_MSv2();
+        $hash = new Crypt_CHAP_MSv2();
         $hash->password = $pass;
         return strtoupper(bin2hex($hash->lmPasswordHash()));
     }
@@ -179,7 +179,7 @@ class Ldap {
     // necessite Crypt/CHAP -> http://gcolpart.evolix.net/debian/php-crypt-chap/
     // inspire de lib/Driver/smbldap.php (Horde Password)
     function sambant($pass) {
-        $hash = &new Crypt_CHAP_MSv2();
+        $hash = new Crypt_CHAP_MSv2();
         $hash->password = $pass;
         return strtoupper(bin2hex($hash->ntPasswordHash()));
     }
