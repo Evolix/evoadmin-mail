@@ -20,33 +20,18 @@
  * @param string $type
  * @return NULL
  */
-function show_my_details($name,$type,$letter=NULL) {
-    global $conf;
-    print '<tr><td>';
-    if($letter) {
-        printf('<a name="%s"></a>', $letter);
-    }
-    print '<a href="' .$type. '.php?view='
+function show_my_details($name,$type) {
+
+    print '<tr><td style="text-align:left;"><a href="' .$type. '.php?view='
         .$name. '">' .$name. '</a></td>';
 
-    if ( $type == 'compte' && $conf['admin']['quota']) {
+    if ( $type == 'compte' ) {
         print '<td>' .getquota($name,'user'). '</td>';
-    }
-
-    if(($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
-        print '<td><b>' .get_expiration_date($name). '</b></td>';
-        print '<td><b>';
-        if(account_is_locked($name)) {
-            print 'Oui';
-        } else {
-            print 'Non';
-        }
-        print '</b></td>';
     }
 
     print '<td>';
     print '<a href="' .$type. '.php?del=' .$name. '">
-        <img src="inc/suppr.png" /></a>';
+        <span class="glyphicon glyphicon-trash"></span></a>';
     print '</td></tr>';
 }
 
@@ -106,19 +91,13 @@ if (isset($_SESSION['login'])) {
 
     $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
 
-    //$filter="(objectClass=mailAccount)";
-    if($conf['admin']['what'] == 2) {
-        $filter="(objectClass=sambaSamAccount)";
-    } else {
-        $filter="(objectClass=mailAccount)";
-    }
-
+    $filter="(objectClass=mailAccount)";
     $sr=ldap_search($ldapconn, $rdn, $filter);
     $info = ldap_get_entries($ldapconn, $sr);
 
     // We use uid attribute for account
     for ($i=0;$i<$info["count"];$i++) {
-        array_push($comptes,strtolower($info[$i]["uid"][0]));
+        array_push($comptes,$info[$i]["uid"][0]);
     }
 
     // We use cn attribute for alias
@@ -140,9 +119,9 @@ if (isset($_SESSION['login'])) {
     sort($comptes);
     sort($aliases);
 ?>
-        <center>
-
-        <a href="compte.php">Ajouter un nouveau compte</a><br />
+       <div class="container">
+	   	<div class="text-center">
+        <a href="compte.php"><button class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
 
         <?php
             // only for mail mode
@@ -152,14 +131,17 @@ if (isset($_SESSION['login'])) {
             $viewonly2= ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) ? "selected='selected'" : "";
         ?>
 
-            <a href="alias.php">Ajouter un nouvel alias/groupe de diffusion</a><br /><br />
+            <a href="alias.php"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
+	   	</div>
+            <hr>
             <form class='center' action='<?php print $_SERVER['PHP_SELF'];?>'
                 method='POST' name='listing'>
-
-                <select name='viewonly' onchange="document.listing.submit()">
-                <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
-                <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
-                </select>
+				<div class="form-group">
+	                <select class="form-control" name='viewonly' onchange="document.listing.submit()">
+		                <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
+		                <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
+					</select>
+				</div>
             </form>
 
         <?php
@@ -169,70 +151,40 @@ if (isset($_SESSION['login'])) {
 
         ?>
 
-             <h3>Liste des comptes&nbsp;:</h3>
+<!-- 			<h2>Liste des comptes :</h2><hr> -->
 
-             <?php
-                $alpha = array();
-                foreach($comptes as $compte) {
-                    $letter = strtoupper(substr($compte, 0, 1));
-                    $alpha[$letter] = 1;
-                }
-
-                $letters = array_keys($alpha);
-                sort($letters);
-                foreach($letters as $letter) {
-                    printf('<a href="#%s">%s</a>&nbsp;', $letter, $letter);
-                }
-             ?>
-
-             <br/>
-             <br/>
-
-
-             <table width="500px" bgcolor="#ddd" border="1">
-             <tr>
-             <td><strong>Nom du compte</strong></td>
-             <?php
-                 if ( $conf['admin']['quota']) {
-             ?>
-
-             <td>Quota</td>
-             <?php
-                 }
-             ?>
-
-             <?php if(($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) { ?>
-                 <td>Expiration</td>
-                 <td>Verrouillé</td>
-             <?php } ?>
-
-             <td width="50px">Suppr</td>
-             </tr>
+            <table class="table table-striped table-condensed">
+	            <thead>
+			        <tr>
+						<th><strong>Nom du compte</strong></th>
+						<th>Quota</th>
+						<th width="50px">Suppr</th>
+					</tr>
+				</thead>
+				<tbody>
 
              <?php
                 foreach ($comptes as $compte) {
-                    $letter = strtoupper(substr($compte, 0, 1));
-                    if($alpha[$letter] == 1) {
-                        $alpha[$letter] = 0;
-                    } else {
-                        $letter = NULL;
-                    }
-                    show_my_details($compte,'compte', $letter);
+                show_my_details($compte,'compte');
                 }
-
-                print "</table>";
+      
+                print "</tbody></table>";
 
            } elseif ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) {
-
+    
         ?>
 
-            <h3>Liste des alias/groupe de diffusion&nbsp;:</h3>
+<!--             <h2>Liste des alias/groupe de diffusion&nbsp;:</h2> -->
+    
+            <table class="table table-striped table-condensed">
+	            <thead>
+		            <tr>
+		            <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
+		            <th width="50px">Suppr</th>
+		            </tr>
+				</thead>
+				<tbody>
 
-            <table width="500px" bgcolor="#ddd" border="1">
-            <tr>
-            <td><strong>Nom de l'alias/groupe de diffusion</strong></td>
-            <td width="50px">Suppr</td>
-            </tr>
 
             <?php
 
@@ -243,7 +195,7 @@ if (isset($_SESSION['login'])) {
         ?>
 
     </table>
-    </center>
+    </div>
 
 <?php
 

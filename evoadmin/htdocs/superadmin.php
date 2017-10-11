@@ -23,28 +23,22 @@ function show_domaine_details($domain) {
 
     global $conf;
 
-    print '<tr><td><a href="admin.php?domain='
+    print '<tr><td style="text-align:left;"><a href="admin.php?domain='
         .$domain. '">' .$domain. '</a></td>';
 
-    print '<td><b>' .getnumber($domain,'compte'). '</b></td>';
-    if($conf['admin']['what'] == 3) {
-       print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
-       print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
-    }
-    if(($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
-       print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
-    }
-    if($conf['admin']['quota']) {
-       print '<td>' .getquota($domain,'group'). '</td>';
-    }
-
-
+    // TODO : synchronization OpenLDAP<-Active Directory
+    // print '<td>N/A</td>';
+    print '<td><b>' .(getnumber($domain,'compte')+getnumber($domain,'alias')). '</b></td>';
+    print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
+    //print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
+    print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
+    print '<td>' .getquota($domain,'group'). '</td>';
+     
     print '<td>';
 
     // suppression possible que si utilisation de LDAP
     if ( $conf['domaines']['driver'] == 'ldap' ) {
-        print '<a href="domaine.php?del=' .$domain. '">
-            <img src="inc/suppr.png" /></a>';
+        print '<a href="domaine.php?del=' .$domain. '"><span class="glyphicon glyphicon-trash"></span></a>';
     } else {
         print "Impossible";
     }
@@ -74,7 +68,7 @@ if (isset($_SESSION['login'])) {
     $login = $_SESSION['login'];
 
     // pas de domaine/variable domaine sur superadmin.php
-    unset($_SESSION['domain']);
+    unset($_SESSION['domain']); 
 
     global $conf;
 
@@ -121,7 +115,7 @@ if (isset($_SESSION['login'])) {
                 ldap_unbind($ldapconn);
 
             } else {
-                print "<p class='error'>Erreur de connexion : $ldapconn</p>";
+                print "<div class=\"alert alert-danger\" role=\"alert\">Erreur de connexion : $ldapconn</div>";
                 EvoLog::log("LDAP connection failed");
             }
 
@@ -139,10 +133,12 @@ if (isset($_SESSION['login'])) {
         // we select domain in your DN
         // thanks to http://www.physiol.ox.ac.uk/~trp/regexp.html
         if ($conf['evoadmin']['version'] <= 2) {
-            $mydomain = preg_replace("/\/uid=".$login.",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),".LDAP_BASE."\//","$1",$_SESSION['dn']);
+            $mydomain = preg_replace("/uid=" .$login. ",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
+                . LDAP_BASE ."/","$1",$_SESSION['dn']);
         }
         else {
-            $mydomain = preg_replace("/\/uid=".$login.",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),".LDAP_BASE."\//","$1",$_SESSION['dn']);
+            $mydomain = preg_replace("/uid=" .$login. ",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
+                . LDAP_BASE ."/","$1",$_SESSION['dn']);
         }
 
         array_push($domaines,$mydomain);
@@ -155,42 +151,41 @@ if (isset($_SESSION['login'])) {
 
         // with driver 'ldap', we can add a domain
         // TODO : retrict to superadmin guys
-        if ( $conf['domaines']['driver'] == 'ldap' ) {
-            print '<p><a href="domaine.php">
-                Ajouter un domaine...</a></p>';
-        }
+        // if ( $conf['domaines']['driver'] == 'ldap' ) {
+        //    print '<p><a href="domaine.php">
+        //        Ajouter un domaine...</a></p>';
+        // }
 
     ?>
-        <center>
-        <h4>Liste des domaines administrables :</h4>
+    	
+       <div class="container">
+        <h2>Liste des domaines administrables :</h2><hr>
 
-        <table width="500px" bgcolor="#ddd" border="1">
-        <tr>
-        <td><strong>Nom du domaine</strong></td>
-        <td>Nombre de comptes</td>
-        <?php if($conf['admin']['what'] == 3) { ?>
-        <td>dont comptes mail</td>
-        <td>dont comptes Samba</td>
-        <?php } ?>
-        <?php if(($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) { ?>
-        <td>Nombre d'alias mail</td>
-        <?php } ?>
-        <?php if($conf['admin']['quota']) { ?>
-        <td>Taille/Quota</td>
-        <?php } ?>
-        <td>Suppression du domaine</td>
-        </tr>
-
+        <table class="table table-striped table-condensed">
+	    <thead>
+	        <tr>
+		        <th>Nom du domaine</th>
+		        <th>Nombre de comptes</th>
+		        <th>dont comptes mail</th>
+		        <th>Nombre d'alias mail</th>
+		        <th>Taille / Quota</th>
+		        <th width="50px">Suppr.</th>
+	        </tr>
+        </thead>
+		<tbody>
         <?php
 
         // lignes avec les details sur les domaines
         foreach ($domaines as $domaine) {
             show_domaine_details($domaine);
         }
+		?>
 
-        print '</table></center>';
-        print '<br />';
+       </tbody>
+       </table>
+       </div>
 
+		<?php
 //if (isset($_SESSION['login']))
 } else {
 

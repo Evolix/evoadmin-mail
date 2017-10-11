@@ -32,12 +32,11 @@ if (isset($_SESSION['login'])) {
     $login = $_SESSION['login'];
 
     include EVOADMIN_BASE . 'haut.php';
-    include EVOADMIN_BASE . 'inc/add.js';
     include EVOADMIN_BASE . 'debut.php';
 
     if ( (!superadmin($login)) || ($conf['domaines']['driver'] != 'ldap') ) {
 
-	print "<p class='error'>Vous n'avez pas les droits pour cette page</p>";
+	print "<div class=\"alert alert-danger\" role=\"alert\">Vous n'avez pas les droits pour cette page</div>";
 	EvoLog::log("Access denied on domaine.php");
 
 	include EVOADMIN_BASE . 'fin.php';
@@ -50,11 +49,20 @@ if (isset($_SESSION['login'])) {
         $domain = Html::clean($_GET['del']);
         
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
+            print "<div class=\"alert alert-warning\" role=\"alert\">Votre demande a été envoyé au support. <br> Concernant le domaine <b>$domain</b>...</div>";
 
-            print "<center>";
-
-            print "<p>Suppression $domain en cours...</p>";
-
+            // Envoit d'une demande de suppression
+    	$entete   = "From: ".$conf['admin']['mail']."\n";
+	    $entete  .= "MIME-Version: 1.0\n";
+	    $entete  .= "Content-type: text/plain; charset=utf-8\n";
+	    $entete  .= "Content-Transfer-Encoding: quoted-printable\n";            
+      
+	    $contenu  = "Bonjour,\n\n";
+	    $contenu .= "Pourriez vous supprimer le domaine : $domain\n";
+	    $contenu .= "Cordialement,\n";
+            
+            mail($conf['admin']['mail'], 'Suppression d\'un domaine mail',$contenu,$entete);
+           
             // TODO : Verifier que l'objet existe avant sa suppression
             //$ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
             //$sr = Ldap::lda_del($ldapconn,"domain=" .$domain. "," .$rdn);
@@ -62,28 +70,19 @@ if (isset($_SESSION['login'])) {
             if ( $sr ) {
                 // script suppression systeme
                 //unix_del_dom($domain);
-
                 // TODO : suppression comptes associes
-
-                print "<p class='strong'>Suppression $domain effectu&eacute;e.</p>";
-
+                print "<div class=\"alert alert-succes\" role=\"alert\">Suppression $domain effectu&eacute;e.</div>";
                 EvoLog::log("Del domain ".$domain);
 
             } else {
-                print "<p class='error>Erreur, suppression non effectu&eacute;e.</p>";
+                print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, suppression non effectu&eacute;e.</div>";
                 EvoLog::log("Delete $domain failed");
             }
 
-            print "</center>";
         
         } else {
-            print "<center>"; 
-            print "<p>Vous souhaitez effacer compl&egrave;tement le domaine <b>$domain</b>...<br />";
-            print "Mais cette option n'est pas disponible par l'interface web.<br />";
-            print "Veuillez prendre contact avec l'administrateur pour faire cela.</p>";
-            //print "Tous les messages et param&egrave;tres seront d&eacute;finitivement perdus.</p>";
-            //print "<a href='compte.php?del=$uid&modif=yes'>Confirmer la suppression</a>";
-            print "</center>"; 
+            print "<div class=\"alert alert-info\" role=\"alert\">Vous souhaitez effacer compl&egrave;tement le domaine <b>$domain</b>...<br /> Tous les messages et param&egrave;tres seront d&eacute;finitivement perdus.</p><a href='domaine.php?del=$domain&modif=yes'>Confirmer la suppression</a></div>"; 
+            
         }
 
     } else {
@@ -92,9 +91,9 @@ if (isset($_SESSION['login'])) {
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
         
             $domain = Html::clean($_POST['domain']); 
-
-            print "<center>";
-            print "Ajout en cours...";
+			
+			print "<div class='container'>";
+            print "<div class=\"alert alert-warning\" role=\"alert\">Ajout en cours...</div>";
           
             if (!$conf['domaines']['ldap']['virtual']) {
 
@@ -119,18 +118,18 @@ if (isset($_SESSION['login'])) {
 
                         // script ajout systeme (TODO : quota)
                         //unix_add($uid,getgid($_SESSION['domain']));
-                        print "<p class='strong'>Ajout effectu&eacute;.</p>";
+                        print "<div class=\"alert alert-succes\" role=\"alert\">Ajout effectu&eacute;.</div>";
                         EvoLog::log("Add domain ".$domain);
 
                         // notification par mail
                         domainnotify($domain); 
 
                     } else {
-                        print "<p class='error'>Erreur, envoyez le message d'erreur
-                            suivant &agrave; votre administrateur :</p>";
+                        print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, envoyez le message d'erreur suivant &agrave; votre administrateur :<pre>";
                         var_dump($info);
                         var_dump($info2);
                         EvoLog::log("Add $domain failed");
+                        print "</pre></div>";
                     }
                 } elseif ( $conf['evoadmin']['version'] == 2) {
                     // TODO : cf worldsat, etc.
@@ -162,20 +161,20 @@ if (isset($_SESSION['login'])) {
 
                         // script ajout systeme (TODO : quota)
                         //unix_add($uid,getgid($_SESSION['domain']));
-                        print "<p class='strong'>Ajout effectu&eacute;.</p>";
+                        print "<div class=\"alert alert-success\" role=\"alert\">Ajout effectu&eacute;.</div>";
                         EvoLog::log("Add domain ".$domain);
 
                         // notification par mail
                         domainnotify($domain); 
 
                     } else {
-                        print "<p class='error'>Erreur, envoyez le message d'erreur
-                            suivant &agrave; votre administrateur :</p>";
+                        print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, envoyez le message d'erreur suivant &agrave; votre administrateur :<pre>";
                         var_dump($info);
                         var_dump($info2);
                         EvoLog::log("Add $domain failed");
+                        print "</pre></div>";
                     }
-		}
+				}
             } else {
 
                 // Ajout d'un domaine virtuel
@@ -197,55 +196,49 @@ if (isset($_SESSION['login'])) {
 
                     domain_add($domain);
 
-                    print "<p class='strong'>Ajout effectu&eacute;.</p>";
+                    print "<div class=\"alert alert-success\" role=\"alert\">Ajout effectu&eacute;.</div>";
                     EvoLog::log("Add domain ".$domain);
 
                     // notification par mail
                     domainnotify($domain); 
 
                 } else {
-                    print "<p class='error'>Erreur, envoyez le message d'erreur
-                        suivant &agrave; votre administrateur :</p>";
+                    print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, envoyez le message d'erreur suivant &agrave; votre administrateur :<pre>";
                     var_dump($info);
                     EvoLog::log("Add $domain failed");
+					print "</pre></div>";
+
                 }
 
             }
-
-        print "</center>";
+			print "</div>";
 
         // Formulaire d'ajout d'un domaine
         } else {
             ?>
-                <center>
+                <div class="container">
                 
                 <h4>Ajout d'un domaine</h4>
 
-            <form name="add"
-                action="domaine.php?modif=yes"
-                method="post">
+            <form name="add" action="domaine.php?modif=yes" method="post" class="form-horizontal">
  
-            <p class="italic">Remplissez lez champs, ceux contenant [*] sont obligatoires.</p>
+            <div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
 
-            <table>
+			<div class="form-group">
+				<label for="domain" class="col-sm-3 control-label">Domaine [*] :</label>
+				<div class="col-sm-9"><input type="text" name="domain" class="form-control" /></div>
+			</div>
 
-            <tr><td align="right">Domaine [*] :</td>
-            <td align="left"><input type="text" name="domain" tabindex='1' /></td></tr>
+			<div class="form-group">
+				<label for="isactive" class="col-sm-3 control-label">Activation globale :</label>
+				<div class="col-sm-9"><input type='checkbox' name='isactive' checked  class="form-control move-left"/></div>
+			</div>
 
-            <tr><td align="right">Activation globale :</td>
-            <td align="left"><input type='checkbox' tabindex='2' 
-                name='isactive' checked /></td></tr>
+			<div class="text-center"><button type="submit" class="btn btn-primary">Valider</button></div>
 
-            <tr><td>&nbsp;</td><td align="left">
-            <p><input type="submit" class="button" tabindex='3' 
-                value="Valider" name="valider" /></p>
-            </td></tr>
-
-
-            </table>
             </form>
 
-	       </center>
+	       </div>
 	   
         <?php
         }

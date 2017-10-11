@@ -31,57 +31,10 @@ require_once EVOADMIN_BASE . 'common.php';
  * @return NULL
  */
 function badauth() {
-
     global $conf;
-
-    display("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.<br />
-        Si vous avez oubli&eacute; votre mot de passe, contactez <a href='
-        mailto:" .$conf['admin']['mail']. "'>" .$conf['admin']['mail']. "</a>");
-
+    display("<div class='alert alert-danger' role='alert'>&Eacute;chec de l\'authentification, utilisateur ou mot de passe incorrect.<br />Si vous avez oubli&eacute; votre mot de passe, contactez <a href='mailto:" .$conf['admin']['mail']. "'>" .$conf['admin']['mail']. "</a></div>");
 }
 
-/**
- * Display FORM HTML formular for connexion
- *
- * @param NULL
- * @return NULL
- */
-function Formulaire() {
-
-    ?>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>"
-            method="post" name="auth">
-
-        <table width="100%">
-        <tr>
-        <td align="right" class="light"><b>Utilisateur</b></td>
-        <td align="left" class="light">
-        <input type="text" tabindex="1" name="login" value="" />
-        </td>
-        </tr>
-        <tr>
-        <td align="right" class="light"><b>Mot de passe</b></td>
-        <td align="left"><input type="password" tabindex="2" name="password" /></td>
-        </tr>
-        <tr>
-        <td>&nbsp;</td>
-        <td align="left" class="light">
-        <input type="submit" class="button" name="loginButton"
-            tabindex="3" value="Connexion" onclick="return submit_login();" />
-        </td>
-        </tr>
-        </table>
-
-        <!--<br /><br />
-        <center><a href="/">Webmail</a></center>-->
-
-        </form>
-
-        </body>
-        </html>
-
-        <?php
-}
 
 // we start PHP output buffering to use HTTP header later
 ob_start();
@@ -90,7 +43,6 @@ ob_start();
  * Requires and includes
  */
 include EVOADMIN_BASE . 'haut.php';
-include EVOADMIN_BASE . 'inc/login.js';
 
 /**
  * PHP cookies session
@@ -104,7 +56,7 @@ include EVOADMIN_BASE . 'inc/login.js';
 session_name('EVOADMIN_SESS');
 session_start();
 if (isset($_SESSION['login'])) {
-    display("D&eacute;connexion");
+    display("<div class='login-info bg-info'>D&eacute;connecté</div>");
 }
 session_unset('EVOADMIN_SESS');
 session_destroy();
@@ -153,15 +105,35 @@ if (isset($_POST['login']))
             EvoLog::log("Login failed : " . $login);
             Formulaire();
         }
-    } else {
-        die( "Echec de la connexion LDAP" );
     }
 /**
  * Case with no $_POST data
  * we display Formular
  */
 } else {
-    Formulaire();
+?>
+	<div class="loginpage">
+		<div class="loginbox">
+			<div class="illustration">
+				<img src="/img/logo.png" class="img-responsive" alt="Responsive image">
+			</div>
+			<form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>"method="post" name="auth">
+				<div class="form-group has-feedback has-feedback-left">
+				    <input type="text" name="login" class="form-control" placeholder="Utilisateur" autofocus="autofocus"/>
+				    <i class="glyphicon glyphicon-user form-control-feedback"></i>
+				</div>   
+				<div class="form-group has-feedback has-feedback-left">
+				    <input type="password" name="password"  class="form-control" placeholder="Mot de passe" />
+				    <i class="glyphicon glyphicon-lock form-control-feedback"></i>
+				</div>
+				<div class="form-group text-center">
+				    <button type="submit" class="btn btn-primary" onclick="return submit_login();">Connexion</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<?php
 }
 
 include EVOADMIN_BASE . 'fin.php';

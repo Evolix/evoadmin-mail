@@ -1,20 +1,16 @@
-<?php
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title><?php print $conf['html']['title']; ?></title>
+        <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/main.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/dataTables.bootstrap.min.css"/>
+        <link type="image/ico" rel="icon" href="img/favicon.ico" />
 
-print '<?xml version="1.0" encoding="utf8" ?>';
-
-?>
-
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//FR"
-    "DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-<head>
-<title><?php print $conf['html']['title']; ?></title>
-<link href="inc/style.css" rel="stylesheet" type="text/css" />
-<meta charset="UTF-8">
-</head>
-
+        <script type="text/javascript" src="scripts/jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="scripts/dataTables.bootstrap.min.js"></script>
+    </head>
 <body>
-
-<h1 align="center"><?php print $conf['html']['title']; ?></h1>
+    <div class="page-wrap">
