@@ -37,7 +37,7 @@ class Auth
 	{
 		return ( (strlen($pass) > 42) ||
 				(strlen($pass) < 5) ||
-				(!ereg('^([[:graph:]]*)$',$pass)) );
+				(!preg_match('^([[:graph:]]*)$',$pass)) );
 
 	}
 
@@ -47,7 +47,7 @@ class Auth
 
 	function badfqdn($domain)
 	{
-		return (!ereg('^([[:alnum:]\.\-]{2,70}.[[:alpha:]]{2,5})$',$domain));
+		return (!preg_match('^([[:alnum:]\.\-]{2,70}.[[:alpha:]]{2,5})$',$domain));
 	}
 
 }

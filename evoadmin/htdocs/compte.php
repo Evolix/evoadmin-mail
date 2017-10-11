@@ -426,7 +426,7 @@ if (isset($_SESSION['login']))
 
                     if (!$conf['domaines']['onlyone']) {
                         $info[0]['mailacceptinggeneralid'][$i] =
-                            ereg_replace('@'.$_SESSION['domain'],'',$info[0]['mailacceptinggeneralid'][$i]);
+                            preg_replace('@'.$_SESSION['domain'],'',$info[0]['mailacceptinggeneralid'][$i]);
                     }
 
                     print "<tr><td align='right'>Mail accept&eacute; en entr&eacute;e :</td>
