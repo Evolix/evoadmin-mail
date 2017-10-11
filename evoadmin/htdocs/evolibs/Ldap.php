@@ -109,8 +109,8 @@ class Ldap {
         $info = ldap_get_entries($ldapconngetgroup, $sr);
         if ($info['count']) {
             $result = $info[0]['dn'];
-            list ($foo,$mydomain,$foo2) = split(',',$result);
-            list ($foo,$group) = split('=',$mydomain);
+            list ($foo,$mydomain,$foo2) = explode(',',$result);
+            list ($foo,$group) = explode('=',$mydomain);
             return $group;
         } else {
             return -1;

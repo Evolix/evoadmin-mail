@@ -41,7 +41,7 @@ global $conf;
 	}
     }
 
-    list ($now,$limit) = split("/",$quota);
+    list ($now,$limit) = explode("/",$quota);
     $now = $now / 1024;
     $limit = $limit / 1024;
     $quota = "<b>" . Math::arrondi($now). "M</b>/" .Math::arrondi($limit). "M";
