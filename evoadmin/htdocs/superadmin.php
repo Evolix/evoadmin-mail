@@ -139,12 +139,10 @@ if (isset($_SESSION['login'])) {
         // we select domain in your DN
         // thanks to http://www.physiol.ox.ac.uk/~trp/regexp.html
         if ($conf['evoadmin']['version'] <= 2) {
-            $mydomain = preg_replace("/uid=" .$login. ",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
-                . LDAP_BASE ."/","$1",$_SESSION['dn']);
+            $mydomain = preg_replace("/\/uid=".$login.",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),".LDAP_BASE."\//","$1",$_SESSION['dn']);
         }
         else {
-            $mydomain = preg_replace("/uid=" .$login. ",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
-                . LDAP_BASE ."/","$1",$_SESSION['dn']);
+            $mydomain = preg_replace("/\/uid=".$login.",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),".LDAP_BASE."\//","$1",$_SESSION['dn']);
         }
 
         array_push($domaines,$mydomain);

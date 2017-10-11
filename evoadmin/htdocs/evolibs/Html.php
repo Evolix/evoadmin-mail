@@ -45,7 +45,7 @@ class Html
 	function clean2($texte)
 	{
 		$texte = htmlentities(strip_tags($texte),ENT_NOQUOTES);
-		$texte = preg_replace('\[([^"^=]+)=(http://[^"^[:space:]]+)\]',
+		$texte = preg_replace('/\[([^"^=]+)=(http:\/\/[^"^[:space:]]+)\]/',
 
 				'<a href="\\2">\\1</a>',$texte);
 		return addslashes($texte);
@@ -82,7 +82,7 @@ class Html
 
 		while(list($car,$val) = each($couple))
 		{
-			$texte = preg_replace($car,$val,$texte);
+			$texte = preg_replace("/".$car."/",$val,$texte);
 		}
 
 		return $texte;

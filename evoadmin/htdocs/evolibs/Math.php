@@ -16,7 +16,7 @@ class Math
 		// Pour eviter -0.00
 		if ( number_format($param, 2, '.', ' ') == -0.00 ) $param = 0.00;
 
-		return preg_replace('x','&nbsp;',number_format($param, 2, '.', 'x'));
+		return preg_replace('/x/','&nbsp;',number_format($param, 2, '.', 'x'));
 	}
 
 	function LongCode($param)
