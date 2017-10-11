@@ -20,7 +20,7 @@ class EvoLog
             return;
         }
 
-        $logger = &Log::singleton('file', $conf['log']['name'] ,'evoadmin');
+        $logger = Log::singleton('file', $conf['log']['name'] ,'evoadmin');
         $logger->log($message, $priority);
     }
 
