@@ -236,7 +236,7 @@ function getsambagroups($type) {
  */
 function badname($login)
 {
-    return (!preg_match('`^([a-z0-9][a-z0-9\-\.\_]{0,28}[a-z0-9])$`',$login));
+    return (!preg_match('/^([a-z0-9][a-z0-9\-\.\_]{0,28}[a-z0-9])$/',$login));
 }
 
 /**
@@ -244,7 +244,7 @@ function badname($login)
  */
 function adddomain(&$item,$key)
 {
-    if (preg_match('`@`',$item)) {
+    if (preg_match('/@/',$item)) {
         print "<p class='error'>Ne pas inclure de @ dans les mails acceptes&nbsp;!</p>";
         exit(1);
     }
