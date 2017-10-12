@@ -18,7 +18,7 @@ define('EVOADMIN_BASE','./');
 /**
  * Requires
  */
-require_once EVOADMIN_BASE . 'common.php';
+require_once EVOADMIN_BASE . 'lib/common.php';
 
 /*
  * Functions

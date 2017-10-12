@@ -26,7 +26,7 @@ if (isset($_SESSION['login'])) {
     /**
      * Requires
      */
-    require_once EVOADMIN_BASE . 'common.php';
+    require_once EVOADMIN_BASE . 'lib/common.php';
 
     // $login var need for debut.php
     $login = $_SESSION['login'];

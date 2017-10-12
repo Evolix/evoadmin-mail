@@ -23,7 +23,7 @@ session_start();
 
 if (isset($_SESSION['login']))
 {
-    require_once EVOADMIN_BASE . 'common.php';
+    require_once EVOADMIN_BASE . 'lib/common.php';
 
     include EVOADMIN_BASE . 'haut.php';
 

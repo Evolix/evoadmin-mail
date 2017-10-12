@@ -25,7 +25,7 @@ if (isset($_SESSION['login']))
 {
 
     $rep = './';
-    require_once($rep. 'common.php');
+    require_once($rep. 'lib/common.php');
 
     include($rep. 'haut.php');
 

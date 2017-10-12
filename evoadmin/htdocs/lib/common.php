@@ -19,12 +19,6 @@ function test_exist($file) {
     }
 }
 
-// We verify if 'install/' directory is removed
-if (file_exists('install')) {
-    die("Erreur 001 : logiciel non installe  ou repertoire 'install/' non
-		    supprime !");
-}
-
 /**
  * Includes
  */
