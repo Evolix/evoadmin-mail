@@ -56,11 +56,11 @@ if (!(ini_set('include_path', ini_get('include_path')))) {
 }
 
 // functions
-require_once 'inc/functions.php';
+require_once 'evolibs/functions.php';
 if ($conf['admin']['use_hook']) {
-    require_once 'inc/hook.php';
+    require_once 'evolibs/hook.php';
 } else {
-    require_once 'inc/hook-dist.php';
+    require_once 'evolibs/hook-dist.php';
 }
 
 // evolibs
