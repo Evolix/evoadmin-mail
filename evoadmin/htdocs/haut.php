@@ -2,10 +2,10 @@
 <html lang="fr">
     <head>
         <title><?php print $conf['html']['title']; ?></title>
-        <link type="text/css" rel="stylesheet" href="styles/main.css"/>
+        <link type="text/css" rel="stylesheet" href="styles.css"/>
         <link type="text/css" rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="vendor/datatables/datatables.bootstrap.min.css"/>
-        <link type="image/ico" rel="icon" href="img/favicon.ico"/>
+        <link type="image/ico" rel="icon" href="favicon.ico"/>
 
         <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="vendor/bootstrap/bootstrap.min.js"></script>

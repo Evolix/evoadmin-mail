@@ -131,9 +131,6 @@ if (isset($_SESSION['login'])) {
                         EvoLog::log("Add $domain failed");
                         print "</pre></div>";
                     }
-                } elseif ( $conf['evoadmin']['version'] == 2) {
-                    // TODO : cf worldsat, etc.
-
                 } elseif ( $conf['evoadmin']['version'] == 3) {
                     // Version specifique pour steloi
                     $info["cn"] = $domain;
