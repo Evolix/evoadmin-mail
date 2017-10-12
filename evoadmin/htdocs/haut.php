@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <title><?php print $conf['html']['title']; ?></title>
-        <link type="text/css" rel="stylesheet" href="styles.css"/>
+        <link type="text/css" rel="stylesheet" href="css/main.css"/>
         <link type="text/css" rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="vendor/datatables/css/datatables.bootstrap.min.css"/>
         <link type="image/ico" rel="icon" href="favicon.ico"/>
