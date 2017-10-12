@@ -56,17 +56,17 @@ if (!(ini_set('include_path', ini_get('include_path')))) {
 }
 
 // functions
-require_once 'evolibs/functions.php';
+require_once 'lib/functions.php';
 if ($conf['admin']['use_hook']) {
-    require_once 'evolibs/hook.php';
+    require_once 'lib/hook.php';
 } else {
-    require_once 'evolibs/hook-dist.php';
+    require_once 'lib/hook-dist.php';
 }
 
-// evolibs
-require_once 'evolibs/Ldap.php';
-require_once 'evolibs/Html.php';
-require_once 'evolibs/Math.php';
-require_once 'evolibs/EvoLog.php';
-require_once 'evolibs/Auth.php';
+// lib
+require_once 'lib/Ldap.php';
+require_once 'lib/Html.php';
+require_once 'lib/Math.php';
+require_once 'lib/EvoLog.php';
+require_once 'lib/Auth.php';
 
