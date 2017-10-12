@@ -25,12 +25,12 @@ if (isset($_SESSION['login']))
 {
     require_once EVOADMIN_BASE . 'lib/common.php';
 
-    include EVOADMIN_BASE . 'haut.php';
+    include EVOADMIN_BASE . 'inc/haut.php';
 
     $login = $_SESSION['login'];
     $rdn = $_SESSION['rdn'];
 
-    include EVOADMIN_BASE . 'debut.php';
+    include EVOADMIN_BASE . 'inc/debut.php';
 
     if (isset($_GET['view'])) {
 
@@ -470,7 +470,7 @@ else
     exit(0);
 }
 
-include EVOADMIN_BASE . 'fin.php';
+include EVOADMIN_BASE . 'inc/fin.php';
 
 ?>
 

@@ -28,18 +28,18 @@ if (isset($_SESSION['login'])) {
      */
     require_once EVOADMIN_BASE . 'lib/common.php';
 
-    // $login var need for debut.php
+    // $login var need for inc/debut.php
     $login = $_SESSION['login'];
 
-    include EVOADMIN_BASE . 'haut.php';
-    include EVOADMIN_BASE . 'debut.php';
+    include EVOADMIN_BASE . 'inc/haut.php';
+    include EVOADMIN_BASE . 'inc/debut.php';
 
     if ( (!superadmin($login)) || ($conf['domaines']['driver'] != 'ldap') ) {
 
 	print "<div class=\"alert alert-danger\" role=\"alert\">Vous n'avez pas les droits pour cette page</div>";
 	EvoLog::log("Access denied on domaine.php");
 
-	include EVOADMIN_BASE . 'fin.php';
+	include EVOADMIN_BASE . 'inc/fin.php';
 	exit(1);
     }
 
@@ -247,6 +247,6 @@ if (isset($_SESSION['login'])) {
     exit(0);
 }
 
-include EVOADMIN_BASE . 'fin.php';
+include EVOADMIN_BASE . 'inc/fin.php';
 
 ?>

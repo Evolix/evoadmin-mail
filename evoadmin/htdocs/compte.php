@@ -25,7 +25,7 @@ session_start();
 if (isset($_SESSION['login']))
 {
 
-    // $login var need for debut.php
+    // $login var need for inc/debut.php
     $login = $_SESSION['login'];
 
     /**
@@ -33,8 +33,8 @@ if (isset($_SESSION['login']))
      */
     require_once EVOADMIN_BASE . 'lib/common.php';
 
-    include EVOADMIN_BASE . 'haut.php';
-    include EVOADMIN_BASE . 'debut.php';
+    include EVOADMIN_BASE . 'inc/haut.php';
+    include EVOADMIN_BASE . 'inc/debut.php';
 
     $rdn = $_SESSION['rdn'];
 
@@ -976,6 +976,6 @@ else
     exit(0);
 }
 
-include EVOADMIN_BASE . 'fin.php';
+include EVOADMIN_BASE . 'inc/fin.php';
 
 ?>

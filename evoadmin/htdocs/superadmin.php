@@ -63,7 +63,7 @@ if (isset($_SESSION['login'])) {
      */
     require_once EVOADMIN_BASE . 'lib/common.php';
 
-    include EVOADMIN_BASE . 'haut.php';
+    include EVOADMIN_BASE . 'inc/haut.php';
 
     $login = $_SESSION['login'];
 
@@ -147,7 +147,7 @@ if (isset($_SESSION['login'])) {
     // alphanumerique sort before displaying domains
     sort($domaines);
 
-    include EVOADMIN_BASE . 'debut.php';
+    include EVOADMIN_BASE . 'inc/debut.php';
 
         // with driver 'ldap', we can add a domain
         // TODO : retrict to superadmin guys
@@ -193,6 +193,6 @@ if (isset($_SESSION['login'])) {
     exit(0);
 }
 
-include(EVOADMIN_BASE . 'fin.php');
+include(EVOADMIN_BASE . 'inc/fin.php');
 
 ?>

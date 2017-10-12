@@ -27,11 +27,11 @@ if (isset($_SESSION['login']))
     $rep = './';
     require_once($rep. 'lib/common.php');
 
-    include($rep. 'haut.php');
+    include($rep. 'inc/haut.php');
 
     $login = $_SESSION['login'];
 
-    include($rep. 'debut.php');
+    include($rep. 'inc/debut.php');
 
 ?>
 
@@ -93,6 +93,6 @@ else
     exit(0);
 }
 
-include EVOADMIN_BASE . 'fin.php';
+include EVOADMIN_BASE . 'inc/fin.php';
 
 ?>

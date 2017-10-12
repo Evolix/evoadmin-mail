@@ -42,7 +42,7 @@ ob_start();
 /**
  * Requires and includes
  */
-include EVOADMIN_BASE . 'haut.php';
+include EVOADMIN_BASE . 'inc/haut.php';
 
 /**
  * PHP cookies session
@@ -136,7 +136,7 @@ if (isset($_POST['login']))
 	<?php
 }
 
-include EVOADMIN_BASE . 'fin.php';
+include EVOADMIN_BASE . 'inc/fin.php';
 
 ob_end_flush();
 
