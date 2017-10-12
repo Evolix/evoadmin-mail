@@ -42,8 +42,8 @@ if (!(ini_set('include_path', ini_get('include_path')))) {
 
     // config files
     // (here because need Log PEAR lib)
-    test_exist('connect.php');
-    require_once('connect.php');
+    test_exist('config/connect.php');
+    require_once('config/connect.php');
     test_exist('config/conf.php');
     require_once('config/conf.php');
 
