@@ -10,7 +10,7 @@
         <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="vendor/bootstrap/bootstrap.min.js"></script>
         <script type="text/javascript" src="vendor/datatables/jquery.datatables.min.js"></script>
-        <script type="text/javascript" src="vendor/datables/datatables.bootstrap.min.js"></script>
+        <script type="text/javascript" src="vendor/datatables/datatables.bootstrap.min.js"></script>
     </head>
 <body>
     <div class="page-wrap">
