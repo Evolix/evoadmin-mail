@@ -58,9 +58,8 @@ if ($conf['admin']['use_hook']) {
 }
 
 // lib
-require_once 'lib/Ldap.php';
-require_once 'lib/Html.php';
-require_once 'lib/Math.php';
-require_once 'lib/EvoLog.php';
-require_once 'lib/Auth.php';
-
+require_once 'vendor/evolibs/Ldap.php';
+require_once 'vendor/evolibs/Html.php';
+require_once 'vendor/evolibs/Math.php';
+require_once 'vendor/evolibs/EvoLog.php';
+require_once 'vendor/evolibs/Auth.php';
