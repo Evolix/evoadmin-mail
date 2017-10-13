@@ -10,4 +10,9 @@ See [INSTALL](INSTALL).
 
 Evoadmin-mail are in GPLv2+, see [LICENSE](LICENSE).
 
-Vendor files in htdocs/vendor are their own license.
+Vendor files in htdocs/vendor have their own license :
+
+* [Evolibs](http://evolix.com/) : GPLv2+
+* [Bootstrap](https://getbootstrap.com/) : MIT
+* [Jquery](https://jquery.org/) : MIT
+* [DataTables](https://www.datatables.net/) : MIT
