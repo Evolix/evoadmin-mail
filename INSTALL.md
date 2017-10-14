@@ -1,18 +1,16 @@
-Pré-requis :
-------------
+# Pré-requis
 
 * Apache
-* PHP4 ou supérieur avec certains modules (MHASH, etc.)
+* PHP5 ou supérieur avec certains modules (MHASH, etc.)
 * Si utilisé avec Samba, besoin du module PEAR Crypt/CHAP
 * sudo
 * LDAP
 
 php5-mhash
 
-Instructions d'installation :
------------------------------
+# Instructions d'installation
 
-* Récupérer les sources SVN et les rendre accessible via Apache
+* Récupérer les sources Git et les rendre accessible via Apache
 
 * Copier config/connect.php et config/conf.php à partir de leur version "-dist"
   et ajuster les paramètres
@@ -123,12 +121,12 @@ include         /etc/ldap/schema/samba.schema
 
 --8<--
 mkdir -p /usr/share/scripts
-cp docs/inc/evoadmin.sh /usr/share/scripts/
-chmod +x /usr/share/scriptsevoadmin.sh
+cp scripts/evoadmin.sh /usr/share/scripts/
+chmod +x /usr/share/scripts/evoadmin.sh
 --8<--
 
   Il faut ensuite générer un mot de passe aléatoire à placer
-  dans /usr/share/scriptsevoadmin.sh et config/connect.php
+  dans /usr/share/scripts/evoadmin.sh et config/connect.php
 
   Et, enfin, permettre son lancement via sudo en ajustant le sudoers :
 
