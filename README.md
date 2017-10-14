@@ -4,7 +4,7 @@ Evoadmin mail is a Web Interface for manage an LDAP directory designed for mail 
 
 # Install
 
-See [INSTALL](INSTALL).
+See [INSTALL](docs/INSTALL.md).
 
 # License
 
