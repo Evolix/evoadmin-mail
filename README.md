@@ -10,6 +10,8 @@ See [INSTALL](docs/INSTALL.md).
 
 Evoadmin-mail are in GPLv2+, see [LICENSE](LICENSE).
 
+Evolix trademark and logo are not freely reusable and are protected by copyright.
+
 Vendor files in htdocs/vendor have their own license :
 
 * [Evolibs](http://evolix.com/) : GPLv2+
