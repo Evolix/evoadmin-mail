@@ -757,7 +757,10 @@ if (isset($_SESSION['login']))
                    // script creation systeme
                    unix_add($uid,getgid($_SESSION['domain']));
                } else {
-                   mail($uid, 'Premier message',"Mail d'initialisation du compte.");
+                   $headers = 'From: postmaster@'.$_SESSION['domain']. "\r\n" .
+                              'Reply-To: postmaster@'.$_SESSION['domain']. "\r\n" .
+                              'X-Mailer: PHP/' . phpversion();
+                   mail($uid, 'Bienvenue', "Mail d'initialisation du compte.", $headers);
                }
 
                print "<div class=\"alert alert-succes\" role=\"alert\">Ajout effectu&eacute;.</div>";
