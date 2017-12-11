@@ -10,32 +10,6 @@
  * @version 1.0
  */
 
-/*
- * Functions
- */
-
-/**
- * Show account/alias details
- * @param string $compte
- * @param string $type
- * @return NULL
- */
-function show_my_details($name,$type) {
-
-    print '<tr><td style="text-align:left;"><a href="' .$type. '.php?view='
-        .$name. '">' .$name. '</a></td>';
-
-    if ( $type == 'compte' ) {
-        print '<td>' .getquota($name,'user'). '</td>';
-    }
-
-    print '<td>';
-    print '<a href="' .$type. '.php?del=' .$name. '">
-        <span class="glyphicon glyphicon-trash"></span></a>';
-    print '</td></tr>';
-}
-
-
 /**
  * Path
  */
@@ -165,11 +139,11 @@ if (isset($_SESSION['login'])) {
 
              <?php
                 foreach ($comptes as $compte) {
-                show_my_details($compte,'compte');
+                    print '<tr><td style="text-align:left;"><a href="compte.php?view='.$compte. '">' .$compte. '</a></td>';
+                    print '<td>' .getquota($compte,'user'). '</td>';
+                    print '<td><a href="compte.php?del=' .$compte. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
                 }
-      
                 print "</tbody></table>";
-
            } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
     
         ?>
@@ -189,7 +163,8 @@ if (isset($_SESSION['login'])) {
             <?php
 
                 foreach ($aliases as $alias) {
-                show_my_details($alias,'alias');
+                    print '<tr><td style="text-align:left;"><a href="alias.php?view='.$alias. '">' .$alias. '</a></td>';
+                    print '<td><a href="alias.php?del=' .$alias. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
                 }
             }
         ?>
