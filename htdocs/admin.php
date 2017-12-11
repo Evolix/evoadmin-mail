@@ -127,15 +127,15 @@ if (isset($_SESSION['login'])) {
             // only for mail mode
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
-            $viewonly1= ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) ? "" : "selected='selected'";
-            $viewonly2= ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) ? "selected='selected'" : "";
+            $viewonly1= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "" : "selected='selected'";
+            $viewonly2= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "selected='selected'" : "";
         ?>
 
             <a href="alias.php"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
 	   	</div>
             <hr>
             <form class='center' action='<?php print $_SERVER['PHP_SELF'];?>'
-                method='POST' name='listing'>
+                method='GET' name='listing'>
 				<div class="form-group">
 	                <select class="form-control" name='viewonly' onchange="document.listing.submit()">
 		                <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
@@ -147,7 +147,7 @@ if (isset($_SESSION['login'])) {
         <?php
             }
 
-            if ( (!isset($_POST['viewonly'])) || ($_POST['viewonly']==1) ) {
+            if ( (!isset($_GET['viewonly'])) || ($_GET['viewonly']==1) ) {
 
         ?>
 
@@ -170,7 +170,7 @@ if (isset($_SESSION['login'])) {
       
                 print "</tbody></table>";
 
-           } elseif ( (isset($_POST['viewonly'])) && ($_POST['viewonly']==2) ) {
+           } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
     
         ?>
 
