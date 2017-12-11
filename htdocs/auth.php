@@ -10,6 +10,9 @@
  * @version 1.0
  */
 
+// Autoload class from lib/class.*.php
+require_once("lib/autoload.php");
+
 /**
  * Path
  */

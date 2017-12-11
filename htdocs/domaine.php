@@ -13,6 +13,9 @@
 // Force authentication on this page
 require_once("lib/auth.php");
 
+// Autoload class from lib/class.*.php
+require_once("lib/autoload.php");
+
 /**
  * Path
  */
