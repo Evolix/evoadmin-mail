@@ -13,41 +13,6 @@
 // Force authentication on this page
 require_once("lib/auth.php");
 
-/*
- * Functions
- */
-
-/**
- * Show domain details
- * @param string $domain
- * @return NULL
- */
-function show_domaine_details($domain) {
-
-    global $conf;
-
-    print '<tr><td style="text-align:left;"><a href="admin.php?domain='
-        .$domain. '">' .$domain. '</a></td>';
-
-    // TODO : synchronization OpenLDAP<-Active Directory
-    // print '<td>N/A</td>';
-    print '<td><b>' .(getnumber($domain,'compte')+getnumber($domain,'alias')). '</b></td>';
-    print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
-    //print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
-    print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
-    print '<td>' .getquota($domain,'group'). '</td>';
-     
-    print '<td>';
-
-    // suppression possible que si utilisation de LDAP
-    if ( $conf['domaines']['driver'] == 'ldap' ) {
-        print '<a href="domaine.php?del=' .$domain. '"><span class="glyphicon glyphicon-trash"></span></a>';
-    } else {
-        print "Impossible";
-    }
-    print '</td></tr>';
-}
-
 /**
  * Path
  */
@@ -169,8 +134,27 @@ define('EVOADMIN_BASE','./');
         <?php
 
         // lignes avec les details sur les domaines
-        foreach ($domaines as $domaine) {
-            show_domaine_details($domaine);
+        foreach ($domaines as $domain) {
+            print '<tr><td style="text-align:left;"><a href="admin.php?domain='
+                .$domain. '">' .$domain. '</a></td>';
+        
+            // TODO : synchronization OpenLDAP<-Active Directory
+            // print '<td>N/A</td>';
+            print '<td><b>' .(getnumber($domain,'compte')+getnumber($domain,'alias')). '</b></td>';
+            print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
+            //print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
+            print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
+            print '<td>' .getquota($domain,'group'). '</td>';
+        
+            print '<td>';
+        
+            // suppression possible que si utilisation de LDAP
+            if ( $conf['domaines']['driver'] == 'ldap' ) {
+                print '<a href="domaine.php?del=' .$domain. '"><span class="glyphicon glyphicon-trash"></span></a>';
+            } else {
+                print "Impossible";
+            }
+            print '</td></tr>';
         }
         ?>
 
