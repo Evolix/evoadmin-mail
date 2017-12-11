@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div id="top" class="container">
 	    <div class="navbar-brand logo">
-			<a href="http://evolix.com/" target="_blank">
+			<a href="https://evolix.com/" target="_blank">
 				<img src="img/logo.png" alt="Evolix" class="img-responsive"/>
 			</a>
 		</div>
