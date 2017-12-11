@@ -150,35 +150,35 @@ define('EVOADMIN_BASE','./');
         // }
 
     ?>
-    	
+        
        <div class="container">
         <h2>Liste des domaines administrables :</h2><hr>
 
         <table class="table table-striped table-condensed">
-	    <thead>
-	        <tr>
-		        <th>Nom du domaine</th>
-		        <th>Nombre de comptes</th>
-		        <th>dont comptes mail</th>
-		        <th>Nombre d'alias mail</th>
-		        <th>Taille / Quota</th>
-		        <th width="50px">Suppr.</th>
-	        </tr>
+        <thead>
+            <tr>
+                <th>Nom du domaine</th>
+                <th>Nombre de comptes</th>
+                <th>dont comptes mail</th>
+                <th>Nombre d'alias mail</th>
+                <th>Taille / Quota</th>
+                <th width="50px">Suppr.</th>
+            </tr>
         </thead>
-		<tbody>
+        <tbody>
         <?php
 
         // lignes avec les details sur les domaines
         foreach ($domaines as $domaine) {
             show_domaine_details($domaine);
         }
-		?>
+        ?>
 
        </tbody>
        </table>
        </div>
 
-		<?php
+        <?php
 
 include(EVOADMIN_BASE . 'inc/fin.php');
 

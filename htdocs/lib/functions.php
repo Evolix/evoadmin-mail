@@ -38,7 +38,7 @@ global $conf;
             $quota = evoexec("-s");
         } elseif ( $conf['domaines']['driver'] == 'ldap' ) {
             $quota = evoexec("-qg $who");
-	}
+    }
     }
 
     list ($now,$limit) = explode("/",$quota);
@@ -159,7 +159,7 @@ function getnumber($domain,$type) {
 
         // compatibilite anciens schemas
         if ($conf['evoadmin']['version'] == 1) {
-		    $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
+            $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
         }
 
     }  elseif ( $type == 'smb' ) {
@@ -191,40 +191,40 @@ function getsambagroups($type) {
 
         global $conf;
 
-	// Si la liste des groupes est defini dans la config on l'utilise
+    // Si la liste des groupes est defini dans la config on l'utilise
 
-	if($type == "unix" && isset($conf['samba']['unixgroups'])) {
-		return $conf['samba']['unixgroups'];
-	}
+    if($type == "unix" && isset($conf['samba']['unixgroups'])) {
+        return $conf['samba']['unixgroups'];
+    }
 
-	if($type == "smb" && isset($conf['samba']['smbgroups'])) {
-		return $conf['samba']['smbgroups'];
-	}
+    if($type == "smb" && isset($conf['samba']['smbgroups'])) {
+        return $conf['samba']['smbgroups'];
+    }
 
-	// sinon on interroge LDAP
+    // sinon on interroge LDAP
 
         $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
-	$filter = "(objectClass=sambaGroupMapping)";
-	$rdn = LDAP_BASE;
+    $filter = "(objectClass=sambaGroupMapping)";
+    $rdn = LDAP_BASE;
         $sr=ldap_search($ldapconn, $rdn, $filter);
         $info = ldap_get_entries($ldapconn, $sr);
         ldap_unbind($ldapconn);
 
-	$ret = array();
-	for($i=0; $i<$info['count']; $i++) {
+    $ret = array();
+    for($i=0; $i<$info['count']; $i++) {
 
-		$entry = $info[$i];
-		$cn = $entry['cn'][0];
+        $entry = $info[$i];
+        $cn = $entry['cn'][0];
 
-		if($type == "unix") {
-			$ret[$cn] = $entry['gidnumber'][0];
-		} elseif($type == "smb") {
-			$tmp = explode('-', $entry['sambasid'][0]);
-			$ret[$cn] = "-".array_pop($tmp);
-		}
-	}
+        if($type == "unix") {
+            $ret[$cn] = $entry['gidnumber'][0];
+        } elseif($type == "smb") {
+            $tmp = explode('-', $entry['sambasid'][0]);
+            $ret[$cn] = "-".array_pop($tmp);
+        }
+    }
 
-	return $ret;
+    return $ret;
 }
 
 /**

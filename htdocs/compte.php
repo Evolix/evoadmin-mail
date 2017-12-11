@@ -236,7 +236,7 @@ define('EVOADMIN_BASE','./');
                 print "<div class=\"alert alert-info\" role=\"alert\">Aucune modification n&eacute;cessaire.</div>";
             }
 
-	    print "</center>";
+        print "</center>";
 
         /*
          * Formular for account modification
@@ -261,76 +261,76 @@ define('EVOADMIN_BASE','./');
 
             print "<form name='add' action='compte.php?view=$uid&modif=yes' method='post' class='form-horizontal'>";
 
-			// Compatibilite anciens schemas LDAP ou mode "virtuel"
+            // Compatibilite anciens schemas LDAP ou mode "virtuel"
             if (($conf['evoadmin']['version'] != 1) && (!$conf['domaines']['ldap']['virtual'])) {
                 print "<div class='form-group'>";
-				print "<label for='sn' class='col-sm-3 control-label'>Nom [*] :</label>";
-				print "<div class='col-sm-7'><input type='text' name='sn' class='form-control' value='$sn' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<label for='sn' class='col-sm-3 control-label'>Nom [*] :</label>";
+                print "<div class='col-sm-7'><input type='text' name='sn' class='form-control' value='$sn' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
             }
             
             print "<div class='form-group'>";
-			print "<label for='cn' class='col-sm-3 control-label'>Nom Complet [*] :</label>";
-			print "<div class='col-sm-7'><input type='text' name='cn' class='form-control' value='$cn' /></div>";
-			print "<div class='col-sm-2 control-label'></div>";
-			print "</div>";
+            print "<label for='cn' class='col-sm-3 control-label'>Nom Complet [*] :</label>";
+            print "<div class='col-sm-7'><input type='text' name='cn' class='form-control' value='$cn' /></div>";
+            print "<div class='col-sm-2 control-label'></div>";
+            print "</div>";
 
             print "<div class='form-group'>";
-			print "<label for='pass1' class='col-sm-3 control-label'>Nouveau mot de passe :</label>";
-			print "<div class='col-sm-7'><input type='password' name='pass1' class='form-control' /></div>";
-			print "<div class='col-sm-2 control-label'></div>";
-			print "</div>";
+            print "<label for='pass1' class='col-sm-3 control-label'>Nouveau mot de passe :</label>";
+            print "<div class='col-sm-7'><input type='password' name='pass1' class='form-control' /></div>";
+            print "<div class='col-sm-2 control-label'></div>";
+            print "</div>";
 
             print "<div class='form-group'>";
-			print "<label for='pass2' class='col-sm-3 control-label'>Confirmation du mot de passe :</label>";
-			print "<div class='col-sm-7'><input type='password' name='pass2' class='form-control' /></div>";
-			print "<div class='col-sm-2 control-label'></div>";
-			print "</div>";
+            print "<label for='pass2' class='col-sm-3 control-label'>Confirmation du mot de passe :</label>";
+            print "<div class='col-sm-7'><input type='password' name='pass2' class='form-control' /></div>";
+            print "<div class='col-sm-2 control-label'></div>";
+            print "</div>";
 
 
             // Compatibilite anciens schemas LDAP
             if ($conf['evoadmin']['version'] == 1) {
-	            print "<div class='form-group'>";
-				print "<label for='mail' class='col-sm-3 control-label'>Mail principal : </label>";
-				print "<div class='col-sm-7'>$mail<input type='hidden' name='mail' value='$mail' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='mail' class='col-sm-3 control-label'>Mail principal : </label>";
+                print "<div class='col-sm-7'>$mail<input type='hidden' name='mail' value='$mail' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
             } elseif (!$conf['domaines']['ldap']['virtual']) {
-	            print "<div class='form-group'>";
-				print "<label for='mail' class='col-sm-3 control-label'>Mail annonc&eacute; dans l'annuaire : </label>";
-				print "<div class='col-sm-7'><input type='text' name='mail' value='$mail' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='mail' class='col-sm-3 control-label'>Mail annonc&eacute; dans l'annuaire : </label>";
+                print "<div class='col-sm-7'><input type='text' name='mail' value='$mail' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
             }
 
             // only for samba mode
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
 
-	            print "<hr><h5>Modification pour Samba</h5>";
-	
-	            print "<div class='form-group'>";
-				print "<label for='displayname' class='col-sm-3 control-label'>Nom dans Samba : </label>";
-				print "<div class='col-sm-7'><input type='text' name='displayname' value='$displayname' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
-	                
-	            print "<div class='form-group'>";
-				print "<label for='loginshell' class='col-sm-3 control-label'>Shell : </label>";
-				print "<div class='col-sm-7'><input type='text' name='loginshell' value='".$info[0]['loginshell'][0]."' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
-				
-	            print "<div class='form-group'>";
-				print "<label for='loginshell' class='col-sm-3 control-label'>Shell : </label>";
-				print "<div class='col-sm-7'><input type='text' name='loginshell' value='".$info[0]['loginshell'][0]."' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
-				
-				print "<hr><h5>Groupe Samba : $sambagroup</h5>";
-			}
-			
-			 // only for mail mode
+                print "<hr><h5>Modification pour Samba</h5>";
+    
+                print "<div class='form-group'>";
+                print "<label for='displayname' class='col-sm-3 control-label'>Nom dans Samba : </label>";
+                print "<div class='col-sm-7'><input type='text' name='displayname' value='$displayname' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
+                    
+                print "<div class='form-group'>";
+                print "<label for='loginshell' class='col-sm-3 control-label'>Shell : </label>";
+                print "<div class='col-sm-7'><input type='text' name='loginshell' value='".$info[0]['loginshell'][0]."' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
+                
+                print "<div class='form-group'>";
+                print "<label for='loginshell' class='col-sm-3 control-label'>Shell : </label>";
+                print "<div class='col-sm-7'><input type='text' name='loginshell' value='".$info[0]['loginshell'][0]."' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
+                
+                print "<hr><h5>Groupe Samba : $sambagroup</h5>";
+            }
+            
+             // only for mail mode
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
                 print "<div class='well'>Ajoutez/modifiez/supprimez les alias (mails accept&eacute;s en entr&eacute;e).<br />Un minimum d'un alias est requis. M&ecirc;mes instructions<br />pour les redirections (compte(s) dans le(s)quel(s) est/sont d&eacute;livr&eacute;(s) les mails).</div>";
@@ -342,87 +342,87 @@ define('EVOADMIN_BASE','./');
                             preg_replace("/@".$_SESSION['domain']."/",'',$info[0]['mailacceptinggeneralid'][$i]);
                     }
 
-		            print "<div class='form-group'>";
-					print "<label for='mailaccept[$i]' class='col-sm-3 control-label'>Mail accept&eacute; en entr&eacute;e : </label>";
-					print "<div class='col-sm-7'><input type='text' name='mailaccept[$i]' value='".$info[0]['mailacceptinggeneralid'][$i]."' class='form-control' /></div>";
-					print "<div class='col-sm-2 control-label'>";
-						if (!$conf['domaines']['onlyone']) {
-	                        print "@" .$_SESSION['domain'];
-	                    }
-					print "</div>";
-					print "</div>";
+                    print "<div class='form-group'>";
+                    print "<label for='mailaccept[$i]' class='col-sm-3 control-label'>Mail accept&eacute; en entr&eacute;e : </label>";
+                    print "<div class='col-sm-7'><input type='text' name='mailaccept[$i]' value='".$info[0]['mailacceptinggeneralid'][$i]."' class='form-control' /></div>";
+                    print "<div class='col-sm-2 control-label'>";
+                        if (!$conf['domaines']['onlyone']) {
+                            print "@" .$_SESSION['domain'];
+                        }
+                    print "</div>";
+                    print "</div>";
 
                 }
                 
-            	print "<div class='form-group'>";
-				print "<label for='mailaccept[$i]' class='col-sm-3 control-label'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e : </label>";
-				print "<div class='col-sm-7'><input type='text' name='mailaccept[$i]' value='".$info[0]['mailacceptinggeneralid'][$i]."' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'>";
-					if (!$conf['domaines']['onlyone']) {
+                print "<div class='form-group'>";
+                print "<label for='mailaccept[$i]' class='col-sm-3 control-label'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e : </label>";
+                print "<div class='col-sm-7'><input type='text' name='mailaccept[$i]' value='".$info[0]['mailacceptinggeneralid'][$i]."' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'>";
+                    if (!$conf['domaines']['onlyone']) {
                         print "@" .$_SESSION['domain'];
                     }
-				print "</div>";
-				print "</div>";
+                print "</div>";
+                print "</div>";
                 
 
 
                 for ($i=0;$i<$info[0]["maildrop"]['count'];$i++) {
-	                print "<div class='form-group'>";
-					print "<label for='maildrop[$i]' class='col-sm-3 control-label'>Mails entrants redirig&eacute;s vers : </label>";
-					print "<div class='col-sm-7'><input type='text' name='maildrop[$i]' value='".$info[0]['maildrop'][$i]."' class='form-control' /></div>";
-					print "<div class='col-sm-2 control-label'>";
-						if (!$conf['domaines']['onlyone']) {
-	                        print "@" .$_SESSION['domain'];
-	                    }
-					print "</div>";
-					print "</div>";
+                    print "<div class='form-group'>";
+                    print "<label for='maildrop[$i]' class='col-sm-3 control-label'>Mails entrants redirig&eacute;s vers : </label>";
+                    print "<div class='col-sm-7'><input type='text' name='maildrop[$i]' value='".$info[0]['maildrop'][$i]."' class='form-control' /></div>";
+                    print "<div class='col-sm-2 control-label'>";
+                        if (!$conf['domaines']['onlyone']) {
+                            print "@" .$_SESSION['domain'];
+                        }
+                    print "</div>";
+                    print "</div>";
                 }
 
                 print "<div class='form-group'>";
-				print "<label for='maildrop[$i]' class='col-sm-3 control-label'>Nouvelle redirection vers : </label>";
-				print "<div class='col-sm-7'><input type='text' name='maildrop[$i]' class='form-control' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<label for='maildrop[$i]' class='col-sm-3 control-label'>Nouvelle redirection vers : </label>";
+                print "<div class='col-sm-7'><input type='text' name='maildrop[$i]' class='form-control' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
             }
-			
-			            print "<hr><h5>Modifiez les autorisations du compte si besoin.</h5>";
+            
+                        print "<hr><h5>Modifiez les autorisations du compte si besoin.</h5>";
 
             $isactive= ($info[0]["isactive"][0] == 'TRUE') ? 'checked' : '';
             print "<div class='form-group'>";
-			print "<label for='isactive' class='col-sm-3 control-label'>Activation globale : </label>";
-			print "<div class='col-sm-7'><input type='checkbox' name='isactive' $isactive class='form-control move-left' /></div>";
-			print "<div class='col-sm-2 control-label'></div>";
-			print "</div>";
+            print "<label for='isactive' class='col-sm-3 control-label'>Activation globale : </label>";
+            print "<div class='col-sm-7'><input type='checkbox' name='isactive' $isactive class='form-control move-left' /></div>";
+            print "<div class='col-sm-2 control-label'></div>";
+            print "</div>";
 
             $isadmin= ($info[0]["isadmin"][0] == 'TRUE') ? 'checked' : '';
             print "<div class='form-group'>";
-			print "<label for='isadmin' class='col-sm-3 control-label'>Compte admin : </label>";
-			print "<div class='col-sm-7'><input type='checkbox' name='isadmin' $isadmin class='form-control move-left' /></div>";
-			print "<div class='col-sm-2 control-label'></div>";
-			print "</div>";
+            print "<label for='isadmin' class='col-sm-3 control-label'>Compte admin : </label>";
+            print "<div class='col-sm-7'><input type='checkbox' name='isadmin' $isadmin class='form-control move-left' /></div>";
+            print "<div class='col-sm-2 control-label'></div>";
+            print "</div>";
 
             // only for samba mode
             if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
                 $smbactive= ($info[0]["smbactive"][0] == 'TRUE') ? 'checked' : '';
-	            print "<div class='form-group'>";
-				print "<label for='smbactive' class='col-sm-3 control-label'>Compte Samba actif : </label>";
-				print "<div class='col-sm-7'><input type='checkbox' name='smbactive' $smbactive class='form-control move-left' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='smbactive' class='col-sm-3 control-label'>Compte Samba actif : </label>";
+                print "<div class='col-sm-7'><input type='checkbox' name='smbactive' $smbactive class='form-control move-left' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
 
                 $accountactive= ($info[0]["accountactive"][0] == 'TRUE') ? 'checked' : '';
-	            print "<div class='form-group'>";
-				print "<label for='accountactive' class='col-sm-3 control-label'>Compte mail actif : </label>";
-				print "<div class='col-sm-7'><input type='checkbox' name='accountactive' $accountactive class='form-control move-left' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='accountactive' class='col-sm-3 control-label'>Compte mail actif : </label>";
+                print "<div class='col-sm-7'><input type='checkbox' name='accountactive' $accountactive class='form-control move-left' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
 
                 $webmailactive= ($info[0]["webmailactive"][0] == 'TRUE') ? 'checked' : '';
-	            print "<div class='form-group'>";
-				print "<label for='webmailactive' class='col-sm-3 control-label'>Webmail actif : </label>";
-				print "<div class='col-sm-7'><input type='checkbox' name='webmailactive' $webmailactive class='form-control move-left' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='webmailactive' class='col-sm-3 control-label'>Webmail actif : </label>";
+                print "<div class='col-sm-7'><input type='checkbox' name='webmailactive' $webmailactive class='form-control move-left' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
 
             }
 
@@ -430,25 +430,25 @@ define('EVOADMIN_BASE','./');
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
                 $courieractive= ($info[0]["courieractive"][0] == 'TRUE') ? 'checked' : '';
-	            print "<div class='form-group'>";
-				print "<label for='courieractive' class='col-sm-3 control-label'>Utilisation POP/IMAP : </label>";
-				print "<div class='col-sm-7'><input type='checkbox' name='courieractive' $courieractive class='form-control move-left' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='courieractive' class='col-sm-3 control-label'>Utilisation POP/IMAP : </label>";
+                print "<div class='col-sm-7'><input type='checkbox' name='courieractive' $courieractive class='form-control move-left' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
 
                 $authsmtpactive= ($info[0]["authsmtpactive"][0] == 'TRUE') ? 'checked' : '';
-	            print "<div class='form-group'>";
-				print "<label for='authsmtpactive' class='col-sm-3 control-label'>Authentification SMTP : </label>";
-				print "<div class='col-sm-7'><input type='checkbox' name='authsmtpactive' $authsmtpactive class='form-control move-left' /></div>";
-				print "<div class='col-sm-2 control-label'></div>";
-				print "</div>";
+                print "<div class='form-group'>";
+                print "<label for='authsmtpactive' class='col-sm-3 control-label'>Authentification SMTP : </label>";
+                print "<div class='col-sm-7'><input type='checkbox' name='authsmtpactive' $authsmtpactive class='form-control move-left' /></div>";
+                print "<div class='col-sm-2 control-label'></div>";
+                print "</div>";
 
 #                $amavisBypassSpamChecks= ($info[0]["amavisbypassspamchecks"][0] == 'TRUE') ? 'checked' : '';
-#	            print "<div class='form-group'>";
-#				print "<label for='amavisBypassSpamChecks' class='col-sm-3 control-label'>Désactivation Antispam : </label>";
-#				print "<div class='col-sm-7'><input type='checkbox' name='amavisBypassSpamChecks' $amavisBypassSpamChecks class='form-control move-left' /></div>";
-#				print "<div class='col-sm-2 control-label'></div>";
-#				print "</div>";
+#               print "<div class='form-group'>";
+#               print "<label for='amavisBypassSpamChecks' class='col-sm-3 control-label'>Désactivation Antispam : </label>";
+#               print "<div class='col-sm-7'><input type='checkbox' name='amavisBypassSpamChecks' $amavisBypassSpamChecks class='form-control move-left' /></div>";
+#               print "<div class='col-sm-2 control-label'></div>";
+#               print "</div>";
 
             }
 
@@ -524,7 +524,7 @@ define('EVOADMIN_BASE','./');
          */
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
 
-            //	Verification coherence des mots de passe	
+            //  Verification coherence des mots de passe    
             if ( $_POST['pass1'] != $_POST['pass2'] ) {
                 print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, vous avez tape deux mots de passe differents</div>";
                 exit(1);
@@ -709,11 +709,11 @@ define('EVOADMIN_BASE','./');
                $info["sambaSID"] = $conf['samba']['sid'].'-'.$userRid;
                if(!empty($_POST['displayname'])) {
                    $info["displayName"] = Html::clean($_POST['displayname']);
-	       }
+           }
                $info["smbActive"] = (isset($_POST['smbactive'])) ? "TRUE" : "FALSE";
                $info["sambaDomainName"] =  $conf['samba']['dn'];
 
-	       $tmp = getsambagroups('smb');
+           $tmp = getsambagroups('smb');
                $info["sambaPrimaryGroupSID"] = $conf['samba']['sid'] . $tmp[$smbgroup];
                $info["sambaPwdLastSet"] = strtotime("now");
                $info["sambaLMPassword"] = Ldap::sambalm($_POST['pass1']);
@@ -775,14 +775,14 @@ define('EVOADMIN_BASE','./');
                 <h2>Ajout d'un compte</h2><hr>
 
             <form name="add" action="compte.php?modif=yes" method="post" class="form-horizontal">
-	        <div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
+            <div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
 
 
-			<div class="form-group">
-				<label for="uid" class="col-sm-3 control-label">Login [*] :</label>
-				<div class="col-sm-7"><input type="text" name="uid" class="form-control" /></div>
-				<div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
-			</div>
+            <div class="form-group">
+                <label for="uid" class="col-sm-3 control-label">Login [*] :</label>
+                <div class="col-sm-7"><input type="text" name="uid" class="form-control" /></div>
+                <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
+            </div>
 
 
             <?php
@@ -791,43 +791,43 @@ define('EVOADMIN_BASE','./');
             ?>
 
             <div class="form-group">
-				<label for="sn"     class="col-sm-3 control-label">Nom [*] :</label>
-				<div class="col-sm-7"><input type="text" name="sn" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
-			
+                <label for="sn"     class="col-sm-3 control-label">Nom [*] :</label>
+                <div class="col-sm-7"><input type="text" name="sn" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
+            
             <?php
                 }
             ?>
 
 
-			<div class="form-group">
-				<label for="cn"     class="col-sm-3 control-label">Nom Complet [*] :</label>
-				<div class="col-sm-7"><input type="text" name="cn" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="cn"     class="col-sm-3 control-label">Nom Complet [*] :</label>
+                <div class="col-sm-7"><input type="text" name="cn" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
-			<div class="form-group">
-				<label for="pass1"     class="col-sm-3 control-label">Mot de passe [*] :</label>
-				<div class="col-sm-7"><input type="password" name="pass1" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="pass1"     class="col-sm-3 control-label">Mot de passe [*] :</label>
+                <div class="col-sm-7"><input type="password" name="pass1" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
-			<div class="form-group">
-				<label for="pass2"     class="col-sm-3 control-label">Confirmation du mot de passe [*] :</label>
-				<div class="col-sm-7"><input type="password" name="pass2" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="pass2"     class="col-sm-3 control-label">Confirmation du mot de passe [*] :</label>
+                <div class="col-sm-7"><input type="password" name="pass2" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
             <?php
                 // Compatibilite anciens schemas LDAP
                 if (!$conf['evoadmin']['version'] == 1) {
             ?>
-			<div class="form-group">
-				<label for="mail"     class="col-sm-3 control-label">Mail annonc&eacute; dans l'annuaire :</label>
-				<div class="col-sm-7"><input type="text" name="mail" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="mail"     class="col-sm-3 control-label">Mail annonc&eacute; dans l'annuaire :</label>
+                <div class="col-sm-7"><input type="text" name="mail" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
             <?php
                 }
@@ -838,32 +838,32 @@ define('EVOADMIN_BASE','./');
 
             <hr><h5>Gestion des parametres Samba</h5>
 
-			<div class="form-group">
-				<label for="displayname"     class="col-sm-3 control-label">Nom dans Samba :</label>
-				<div class="col-sm-7"><input type="text" name="displayname" class="form-control" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="displayname"     class="col-sm-3 control-label">Nom dans Samba :</label>
+                <div class="col-sm-7"><input type="text" name="displayname" class="form-control" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
-			<div class="form-group">
-				<label for="smbgroup"     class="col-sm-3 control-label">Groupe Samba :</label>
-				<div class="col-sm-7">
-					<select name="smbgroup">
-						<option value="" disabled selected>Choisir un groupe</option>
-						<?php
-				        	foreach (getsambagroups('smb') as $key=>$value) {
-				            	print "<option value='" . $key . "'> $key </option>\n";
-				            }
-				        ?>
-					</select>
-				</div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="smbgroup"     class="col-sm-3 control-label">Groupe Samba :</label>
+                <div class="col-sm-7">
+                    <select name="smbgroup">
+                        <option value="" disabled selected>Choisir un groupe</option>
+                        <?php
+                            foreach (getsambagroups('smb') as $key=>$value) {
+                                print "<option value='" . $key . "'> $key </option>\n";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
-  			<div class="form-group">
-				<label for="loginshell"     class="col-sm-3 control-label">Shell :</label>
-				<div class="col-sm-7"><input type="text" name="loginshell" class="form-control" value="/bin/bash" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="loginshell"     class="col-sm-3 control-label">Shell :</label>
+                <div class="col-sm-7"><input type="text" name="loginshell" class="form-control" value="/bin/bash" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
             
             <?php
             }
@@ -872,25 +872,25 @@ define('EVOADMIN_BASE','./');
             if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
             ?>
 
-			<hr><h5>En plus du mail utilisant le login, vous pouvez ajouter des alias.</h5>
+            <hr><h5>En plus du mail utilisant le login, vous pouvez ajouter des alias.</h5>
 
-  			<div class="form-group">
-				<label for="alias"     class="col-sm-3 control-label">Alias :</label>
-				<div class="col-sm-7"><input type="text" name="alias[0]" class="form-control" /></div>
-				<div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
-			</div>
+            <div class="form-group">
+                <label for="alias"     class="col-sm-3 control-label">Alias :</label>
+                <div class="col-sm-7"><input type="text" name="alias[0]" class="form-control" /></div>
+                <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
+            </div>
 
-  			<div class="form-group">
-				<label for="alias[1]"     class="col-sm-3 control-label">Alias :</label>
-				<div class="col-sm-7"><input type="text" name="alias[1]" class="form-control" /></div>
-				<div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
-			</div>
-			
-			<div class="form-group">
-				<label for="alias[2]"     class="col-sm-3 control-label">Alias :</label>
-				<div class="col-sm-7"><input type="text" name="alias[2]" class="form-control" /></div>
-				<div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
-			</div>
+            <div class="form-group">
+                <label for="alias[1]"     class="col-sm-3 control-label">Alias :</label>
+                <div class="col-sm-7"><input type="text" name="alias[1]" class="form-control" /></div>
+                <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="alias[2]"     class="col-sm-3 control-label">Alias :</label>
+                <div class="col-sm-7"><input type="text" name="alias[2]" class="form-control" /></div>
+                <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$_SESSION['domain']; } ?></div>
+            </div>
 
             <?php
                 }
@@ -898,17 +898,17 @@ define('EVOADMIN_BASE','./');
 
             <hr><h5>Cochez les cases pour choisir les autorisations du compte.</h5>
 
-			<div class="form-group">
-				<label for="isactive"     class="col-sm-3 control-label">Alias :</label>
-				<div class="col-sm-7"><input type='checkbox' name='isactive' checked class="form-control move-left" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="isactive"     class="col-sm-3 control-label">Alias :</label>
+                <div class="col-sm-7"><input type='checkbox' name='isactive' checked class="form-control move-left" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
-			<div class="form-group">
-				<label for="isadmin"     class="col-sm-3 control-label">Compte admin :</label>
-				<div class="col-sm-7"><input type='checkbox' name='isadmin' checked class="form-control move-left" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="isadmin"     class="col-sm-3 control-label">Compte admin :</label>
+                <div class="col-sm-7"><input type='checkbox' name='isadmin' checked class="form-control move-left" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
 
 
@@ -916,11 +916,11 @@ define('EVOADMIN_BASE','./');
                 if (($conf['admin']['what'] == 2) || ($conf['admin']['what'] == 3)) {
             ?>
 
-			<div class="form-group">
-				<label for="smbactive"     class="col-sm-3 control-label">Compte Samba actif :</label>
-				<div class="col-sm-7"><input type='checkbox' name='smbactive' checked class="form-control move-left" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+            <div class="form-group">
+                <label for="smbactive"     class="col-sm-3 control-label">Compte Samba actif :</label>
+                <div class="col-sm-7"><input type='checkbox' name='smbactive' checked class="form-control move-left" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
 
             <?php 
@@ -930,29 +930,29 @@ define('EVOADMIN_BASE','./');
             ?>
             
             <div class="form-group">
-				<label for="courieractive"     class="col-sm-3 control-label">Utilisation POP/IMAP :</label>
-				<div class="col-sm-7"><input type='checkbox' name='courieractive' checked class="form-control move-left" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+                <label for="courieractive"     class="col-sm-3 control-label">Utilisation POP/IMAP :</label>
+                <div class="col-sm-7"><input type='checkbox' name='courieractive' checked class="form-control move-left" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 
             <div class="form-group">
-				<label for="authsmtpactive"     class="col-sm-3 control-label">Authentification SMTP :</label>
-				<div class="col-sm-7"><input type='checkbox' name='authsmtpactive' <?php if ($conf['evoadmin']['useauthsmtp']) print "checked" ?> class="form-control move-left" /></div>
-				<div     class="col-sm-3 control-label"></div>
-			</div>
+                <label for="authsmtpactive"     class="col-sm-3 control-label">Authentification SMTP :</label>
+                <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' <?php if ($conf['evoadmin']['useauthsmtp']) print "checked" ?> class="form-control move-left" /></div>
+                <div     class="col-sm-3 control-label"></div>
+            </div>
 
 <!--
             <div class="form-group">
-				<label for="amavisBypassSpamChecks"     class="col-sm-3 control-label">Désactivation Antispam :</label>
-				<div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' <?php if ($conf['evoadmin']['amavisBypassSpamChecks']) print "checked" ?> class="form-control move-left" /></div>
-				<div class="col-sm-2 control-label"></div>
-			</div>
+                <label for="amavisBypassSpamChecks"     class="col-sm-3 control-label">Désactivation Antispam :</label>
+                <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' <?php if ($conf['evoadmin']['amavisBypassSpamChecks']) print "checked" ?> class="form-control move-left" /></div>
+                <div class="col-sm-2 control-label"></div>
+            </div>
 -->
 
             <?php
                 }
             ?>
-			<div class="text-center"><button type="submit" class="btn btn-primary" onclick='return submit_add();'>valider</button></div>
+            <div class="text-center"><button type="submit" class="btn btn-primary" onclick='return submit_add();'>valider</button></div>
 
             </form>
 

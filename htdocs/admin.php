@@ -71,7 +71,7 @@ define('EVOADMIN_BASE','./');
     $filter="(objectClass=mailAlias)";
     // compatibilite anciens schemas
     if ($conf['evoadmin']['version'] == 1) {
-	    $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
+        $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
     }
     $sr=ldap_search($ldapconn, $rdn, $filter);
     $info = ldap_get_entries($ldapconn, $sr);
@@ -87,7 +87,7 @@ define('EVOADMIN_BASE','./');
     sort($aliases);
 ?>
        <div class="container">
-	   	<div class="text-center">
+        <div class="text-center">
         <a href="compte.php"><button class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
 
         <?php
@@ -99,16 +99,16 @@ define('EVOADMIN_BASE','./');
         ?>
 
             <a href="alias.php"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
-	   	</div>
+        </div>
             <hr>
             <form class='center' action='<?php print $_SERVER['PHP_SELF'];?>'
                 method='GET' name='listing'>
-				<div class="form-group">
-	                <select class="form-control" name='viewonly' onchange="document.listing.submit()">
-		                <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
-		                <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
-					</select>
-				</div>
+                <div class="form-group">
+                    <select class="form-control" name='viewonly' onchange="document.listing.submit()">
+                        <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
+                        <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
+                    </select>
+                </div>
             </form>
 
         <?php
@@ -118,17 +118,17 @@ define('EVOADMIN_BASE','./');
 
         ?>
 
-<!-- 			<h2>Liste des comptes :</h2><hr> -->
+<!--            <h2>Liste des comptes :</h2><hr> -->
 
             <table class="table table-striped table-condensed">
-	            <thead>
-			        <tr>
-						<th><strong>Nom du compte</strong></th>
-						<th>Quota</th>
-						<th width="50px">Suppr</th>
-					</tr>
-				</thead>
-				<tbody>
+                <thead>
+                    <tr>
+                        <th><strong>Nom du compte</strong></th>
+                        <th>Quota</th>
+                        <th width="50px">Suppr</th>
+                    </tr>
+                </thead>
+                <tbody>
 
              <?php
                 foreach ($comptes as $compte) {
@@ -144,13 +144,13 @@ define('EVOADMIN_BASE','./');
 <!--             <h2>Liste des alias/groupe de diffusion&nbsp;:</h2> -->
     
             <table class="table table-striped table-condensed">
-	            <thead>
-		            <tr>
-		            <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
-		            <th width="50px">Suppr</th>
-		            </tr>
-				</thead>
-				<tbody>
+                <thead>
+                    <tr>
+                    <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
+                    <th width="50px">Suppr</th>
+                    </tr>
+                </thead>
+                <tbody>
 
 
             <?php

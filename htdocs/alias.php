@@ -132,8 +132,8 @@ define('EVOADMIN_BASE','./');
             } else {
                 print "<p class='strong'>Aucune modification n&eacute;cessaire.</p>";
             }
-	    
-	    print "</center>";
+        
+        print "</center>";
 
         } else {
 

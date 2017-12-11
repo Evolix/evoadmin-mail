@@ -28,11 +28,11 @@ define('EVOADMIN_BASE','./');
 
     if ( (!superadmin($login)) || ($conf['domaines']['driver'] != 'ldap') ) {
 
-	print "<div class=\"alert alert-danger\" role=\"alert\">Vous n'avez pas les droits pour cette page</div>";
-	EvoLog::log("Access denied on domaine.php");
+    print "<div class=\"alert alert-danger\" role=\"alert\">Vous n'avez pas les droits pour cette page</div>";
+    EvoLog::log("Access denied on domaine.php");
 
-	include EVOADMIN_BASE . 'inc/fin.php';
-	exit(1);
+    include EVOADMIN_BASE . 'inc/fin.php';
+    exit(1);
     }
 
     // Supprimer un domaine
@@ -44,14 +44,14 @@ define('EVOADMIN_BASE','./');
             print "<div class=\"alert alert-warning\" role=\"alert\">Votre demande a été envoyé au support. <br> Concernant le domaine <b>$domain</b>...</div>";
 
             // Envoit d'une demande de suppression
-    	$entete   = "From: ".$conf['admin']['mail']."\n";
-	    $entete  .= "MIME-Version: 1.0\n";
-	    $entete  .= "Content-type: text/plain; charset=utf-8\n";
-	    $entete  .= "Content-Transfer-Encoding: quoted-printable\n";            
+        $entete   = "From: ".$conf['admin']['mail']."\n";
+        $entete  .= "MIME-Version: 1.0\n";
+        $entete  .= "Content-type: text/plain; charset=utf-8\n";
+        $entete  .= "Content-Transfer-Encoding: quoted-printable\n";            
       
-	    $contenu  = "Bonjour,\n\n";
-	    $contenu .= "Pourriez vous supprimer le domaine : $domain\n";
-	    $contenu .= "Cordialement,\n";
+        $contenu  = "Bonjour,\n\n";
+        $contenu .= "Pourriez vous supprimer le domaine : $domain\n";
+        $contenu .= "Cordialement,\n";
             
             mail($conf['admin']['mail'], 'Suppression d\'un domaine mail',$contenu,$entete);
            
@@ -83,8 +83,8 @@ define('EVOADMIN_BASE','./');
         if ( (isset($_GET['modif'])) && ($_GET['modif'] == 'yes')) {
         
             $domain = Html::clean($_POST['domain']); 
-			
-			print "<div class='container'>";
+            
+            print "<div class='container'>";
             print "<div class=\"alert alert-warning\" role=\"alert\">Ajout en cours...</div>";
           
             if (!$conf['domaines']['ldap']['virtual']) {
@@ -163,7 +163,7 @@ define('EVOADMIN_BASE','./');
                         EvoLog::log("Add $domain failed");
                         print "</pre></div>";
                     }
-				}
+                }
             } else {
 
                 // Ajout d'un domaine virtuel
@@ -195,12 +195,12 @@ define('EVOADMIN_BASE','./');
                     print "<div class=\"alert alert-danger\" role=\"alert\">Erreur, envoyez le message d'erreur suivant &agrave; votre administrateur :<pre>";
                     var_dump($info);
                     EvoLog::log("Add $domain failed");
-					print "</pre></div>";
+                    print "</pre></div>";
 
                 }
 
             }
-			print "</div>";
+            print "</div>";
 
         // Formulaire d'ajout d'un domaine
         } else {
@@ -213,22 +213,22 @@ define('EVOADMIN_BASE','./');
  
             <div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
 
-			<div class="form-group">
-				<label for="domain" class="col-sm-3 control-label">Domaine [*] :</label>
-				<div class="col-sm-9"><input type="text" name="domain" class="form-control" /></div>
-			</div>
+            <div class="form-group">
+                <label for="domain" class="col-sm-3 control-label">Domaine [*] :</label>
+                <div class="col-sm-9"><input type="text" name="domain" class="form-control" /></div>
+            </div>
 
-			<div class="form-group">
-				<label for="isactive" class="col-sm-3 control-label">Activation globale :</label>
-				<div class="col-sm-9"><input type='checkbox' name='isactive' checked  class="form-control move-left"/></div>
-			</div>
+            <div class="form-group">
+                <label for="isactive" class="col-sm-3 control-label">Activation globale :</label>
+                <div class="col-sm-9"><input type='checkbox' name='isactive' checked  class="form-control move-left"/></div>
+            </div>
 
-			<div class="text-center"><button type="submit" class="btn btn-primary">Valider</button></div>
+            <div class="text-center"><button type="submit" class="btn btn-primary">Valider</button></div>
 
             </form>
 
-	       </div>
-	   
+           </div>
+       
         <?php
         }
     }

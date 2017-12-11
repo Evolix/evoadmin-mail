@@ -112,28 +112,28 @@ if (isset($_POST['login']))
  */
 } else {
 ?>
-	<div class="loginpage">
-		<div class="loginbox">
-			<div class="illustration">
-				<img src="img/logo.png" class="img-responsive" alt="Responsive image">
-			</div>
-			<form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>"method="post" name="auth">
-				<div class="form-group has-feedback has-feedback-left">
-				    <input type="text" name="login" class="form-control" placeholder="Utilisateur" autofocus="autofocus"/>
-				    <i class="glyphicon glyphicon-user form-control-feedback"></i>
-				</div>   
-				<div class="form-group has-feedback has-feedback-left">
-				    <input type="password" name="password"  class="form-control" placeholder="Mot de passe" />
-				    <i class="glyphicon glyphicon-lock form-control-feedback"></i>
-				</div>
-				<div class="form-group text-center">
-				    <button type="submit" class="btn btn-primary" onclick="return submit_login();">Connexion</button>
-				</div>
-			</form>
-		</div>
-	</div>
+    <div class="loginpage">
+        <div class="loginbox">
+            <div class="illustration">
+                <img src="img/logo.png" class="img-responsive" alt="Responsive image">
+            </div>
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>"method="post" name="auth">
+                <div class="form-group has-feedback has-feedback-left">
+                    <input type="text" name="login" class="form-control" placeholder="Utilisateur" autofocus="autofocus"/>
+                    <i class="glyphicon glyphicon-user form-control-feedback"></i>
+                </div>   
+                <div class="form-group has-feedback has-feedback-left">
+                    <input type="password" name="password"  class="form-control" placeholder="Mot de passe" />
+                    <i class="glyphicon glyphicon-lock form-control-feedback"></i>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary" onclick="return submit_login();">Connexion</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-	<?php
+    <?php
 }
 
 include EVOADMIN_BASE . 'inc/fin.php';
