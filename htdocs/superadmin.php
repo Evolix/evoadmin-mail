@@ -10,6 +10,9 @@
  * @version 1.0
  */
 
+// Force authentication on this page
+require_once("lib/auth.php");
+
 /*
  * Functions
  */
@@ -50,22 +53,12 @@ function show_domaine_details($domain) {
  */
 define('EVOADMIN_BASE','./');
 
-/**
- * PHP cookies session
- */
-session_name('EVOADMIN_SESS');
-session_start();
-
-if (isset($_SESSION['login'])) {
-
     /**
      * Requires
      */
     require_once EVOADMIN_BASE . 'lib/common.php';
 
     include EVOADMIN_BASE . 'inc/haut.php';
-
-    $login = $_SESSION['login'];
 
     // pas de domaine/variable domaine sur superadmin.php
     unset($_SESSION['domain']); 
@@ -186,12 +179,6 @@ if (isset($_SESSION['login'])) {
        </div>
 
 		<?php
-//if (isset($_SESSION['login']))
-} else {
-
-    header("location: auth.php\n\n");
-    exit(0);
-}
 
 include(EVOADMIN_BASE . 'inc/fin.php');
 

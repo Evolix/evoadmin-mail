@@ -10,18 +10,13 @@
  * @version 1.0
  */
 
+// Force authentication on this page
+require_once("lib/auth.php");
+
 /**
  * Path
  */
 define('EVOADMIN_BASE','./');
-
-//recuperer la session en cours
-session_name('EVOADMIN_SESS');
-session_start();
-
-// TODO : restrictions if non superadmin
-
-if (isset($_SESSION['login'])) {
 
     /**
      * Requires
@@ -29,8 +24,6 @@ if (isset($_SESSION['login'])) {
     require_once EVOADMIN_BASE . 'lib/common.php';
 
     include EVOADMIN_BASE . 'inc/haut.php';
-
-    $login = $_SESSION['login'];
 
     if (isset($_GET['domain'])) {
         // TODO : verifier si le domaine existe !!
@@ -173,11 +166,6 @@ if (isset($_SESSION['login'])) {
     </div>
 
 <?php
-
-} else { //if (isset($_SESSION['login']))
-    header("location: auth.php\n\n");
-    exit(0);
-}
 
 include EVOADMIN_BASE . 'inc/fin.php';
 

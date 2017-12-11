@@ -10,26 +10,18 @@
  * @version 1.0
  */
 
+// Force authentication on this page
+require_once("lib/auth.php");
+
 /**
  * Path
  */
 define('EVOADMIN_BASE','./');
 
-/**
- * PHP cookies session
- */
-session_name('EVOADMIN_SESS');
-session_start();
-
-if (isset($_SESSION['login'])) {
-
     /**
      * Requires
      */
     require_once EVOADMIN_BASE . 'lib/common.php';
-
-    // $login var need for inc/debut.php
-    $login = $_SESSION['login'];
 
     include EVOADMIN_BASE . 'inc/haut.php';
     include EVOADMIN_BASE . 'inc/debut.php';
@@ -240,12 +232,6 @@ if (isset($_SESSION['login'])) {
         <?php
         }
     }
-
-//if (isset($_SESSION['login'])) 
-} else {
-    header("location: auth.php\n\n");
-    exit(0);
-}
 
 include EVOADMIN_BASE . 'inc/fin.php';
 
