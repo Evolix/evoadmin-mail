@@ -16,8 +16,8 @@
         <p class="navbar-text navbar-right">
         <?php
             print "<em>".$server->getLogin()."</em>";
-            if (isset($_SESSION['domain'])) {
-                print " - Domaine : <a href='admin.php'>".$_SESSION['domain']. "</a>";
+            if (!empty($domain)) {
+                print " - Domaine : <a href='admin.php'>".$domain->getName(). "</a>";
             }
         ?>
         </p>
