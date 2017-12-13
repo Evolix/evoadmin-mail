@@ -7,12 +7,15 @@ class LdapServer {
     public function __construct($login) {
         global $conf;
         $this->login = $login;
-        $this->conn = ldap_connect(LDAP_URI) or die ("Impossible de se connecter au serveur LDAP ".LDAP_URI);
-        if (!ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
-            echo 'Impossible de modifier la version du protocole à 3';
+        if (!$this->conn = ldap_connect(LDAP_URI)) {
+            throw new Exception("Impossible de se connecter au serveur LDPA ".LDAP_URI);
         }
-        ldap_bind($this->conn, LDAP_ADMIN_DN, LDAP_ADMIN_PASS) or die ("Authentification LDAP échoué !");
-        
+        if (!ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
+            throw new Exception("Impossible de modifier la version du protocole LDAP à 3");
+        }
+        if (!ldap_bind($this->conn, LDAP_ADMIN_DN, LDAP_ADMIN_PASS)) {
+            throw new Exception("Authentification LDAP échoué !");
+        }
         if (in_array($this->login, $conf['admin']['logins'])) {
             $this->superadmin = true;
         }

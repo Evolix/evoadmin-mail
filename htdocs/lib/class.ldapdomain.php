@@ -11,32 +11,32 @@ class LdapDomain extends LdapServer {
         $this->dn = $server->dn;
 
         $this->domain = $name;
-        $sr = ldap_search($this->conn, "cn=".$this->domain.",".LDAP_BASE, "(ObjectClass=*)");
-        $objects = ldap_get_entries($this->conn, $sr);
+        if ($sr = @ldap_search($this->conn, "cn=".$this->domain.",".LDAP_BASE, "(ObjectClass=*)")) {
+            $objects = ldap_get_entries($this->conn, $sr);
 
-        foreach($objects as $object) {
-            if (!empty($object['objectclass'])) {
-                if (in_array("postfixDomain",$object['objectclass'])) {
-                    $this->active = $object['isactive'][0];
-                }
-                if (in_array("posixAccount",$object['objectclass'])) {
-                    array_push($this->posix_accounts,$object['uid'][0]);
-                }
-                if (in_array("mailAccount",$object['objectclass'])) {
-                    array_push($this->mail_accounts,$object['uid'][0]);
-                }
-                if (in_array("mailAlias",$object['objectclass'])) {
-                    array_push($this->mail_alias,$object['cn'][0]);
-                }
-                if (in_array("sambaSamAccount",$object['objectclass'])) {
-                    array_push($this->smb_accounts,$object['uid'][0]);
+            foreach($objects as $object) {
+                if (!empty($object['objectclass'])) {
+                    if (in_array("postfixDomain",$object['objectclass'])) {
+                        $this->active = $object['isactive'][0];
+                    }
+                    if (in_array("posixAccount",$object['objectclass'])) {
+                        array_push($this->posix_accounts,$object['uid'][0]);
+                    }
+                    if (in_array("mailAccount",$object['objectclass'])) {
+                        array_push($this->mail_accounts,$object['uid'][0]);
+                    }
+                    if (in_array("mailAlias",$object['objectclass'])) {
+                        array_push($this->mail_alias,$object['cn'][0]);
+                    }
+                    if (in_array("sambaSamAccount",$object['objectclass'])) {
+                        array_push($this->smb_accounts,$object['uid'][0]);
+                    }
                 }
             }
+            //$this->quota = getquota($this->domain,'group');
+        } else {
+            throw new Exception("Ce domaine n'existe pas !");
         }
-
-//        $this->quota = getquota($this->domain,'group');
-
-        return $this;
     }
 
     public function getAccounts() {
