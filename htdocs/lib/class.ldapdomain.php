@@ -2,7 +2,7 @@
 
 class LdapDomain extends LdapServer {
     protected $domain,$active=false;
-    private $quota="0M/0M",$mail_accounts=array(),$mail_alias=array(),$posix_accounts=array(),$smb_accounts=array();
+    private $quota="0M/0M",$mail_accounts=array(),$mail_alias=array(),$posix_accounts=array(),$smb_accounts=array(),$accounts=array(),$alias=array();
 
     public function __construct($server, $name) {
         $this->conn = $server->conn;
@@ -11,7 +11,6 @@ class LdapDomain extends LdapServer {
         $this->dn = $server->dn;
 
         $this->domain = $name;
-
         $sr = ldap_search($this->conn, "cn=".$this->domain.",".LDAP_BASE, "(ObjectClass=*)");
         $objects = ldap_get_entries($this->conn, $sr);
 
@@ -38,6 +37,40 @@ class LdapDomain extends LdapServer {
 //        $this->quota = getquota($this->domain,'group');
 
         return $this;
+    }
+
+    public function getAccounts() {
+        global $conf;
+        if (count($this->accounts) == 0) {
+            if (! $conf['domaines']['onlyone']) {
+                $rdn = ($conf['evoadmin']['version'] > 2) ? "cn=" .$this->domain. "," .LDAP_BASE : "domain=" .$this->domain. "," .LDAP_BASE;
+            } else {
+                $rdn = "ou=people," .LDAP_BASE;
+            }
+            $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAccount)");
+            $info = ldap_get_entries($this->conn, $sr);
+            for ($i=0;$i<$info["count"];$i++) {
+                array_push($this->accounts,$info[$i]["uid"][0]);
+            }
+        }
+        return $this->accounts;
+    }
+
+    public function getAlias() {
+        global $conf;
+        if (count($this->alias) == 0) {
+            if (! $conf['domaines']['onlyone']) {
+                $rdn = ($conf['evoadmin']['version'] <= 2) ? "cn=" .$this->domain. "," .LDAP_BASE : "domain=" .$this->domain. "," .LDAP_BASE;
+            } else {
+                $rdn = "ou=people," .LDAP_BASE;
+            }
+            $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAlias)");
+            $info = ldap_get_entries($this->conn, $sr);
+            for ($i=0;$i<$info["count"];$i++) {
+                array_push($this->alias,$info[$i]["cn"][0]);
+            }
+        }
+        return $this->alias;
     }
 
     public function del() {
