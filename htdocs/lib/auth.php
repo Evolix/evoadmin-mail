@@ -10,5 +10,9 @@ if (empty($_SESSION['login'])) {
     if (!$server = new LdapServer($_SESSION['login'])) {
         print "<div class=\"alert alert-danger\" role=\"alert\">Erreur de connexion LDAP !</div>";
         exit(1);
+    } else {
+        if (!empty($_GET['domain'])) {
+            $domain = new LdapDomain($server, Html::clean($_GET['domain']));
+        }
     }
 }
