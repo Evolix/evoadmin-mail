@@ -10,11 +10,11 @@
  * @version 1.0
  */
 
+// Load config and autoload class
+require_once("lib/config.php");
+
 // Force authentication on this page
 require_once("lib/auth.php");
-
-// Autoload class from lib/class.*.php
-require_once("lib/autoload.php");
 
 /**
  * Path
@@ -29,7 +29,7 @@ define('EVOADMIN_BASE','./');
     include EVOADMIN_BASE . 'inc/haut.php';
     include EVOADMIN_BASE . 'inc/debut.php';
 
-    if ( (!superadmin($login)) || ($conf['domaines']['driver'] != 'ldap') ) {
+    if ( (!$server->isSuperAdmin()) || ($conf['domaines']['driver'] != 'ldap') ) {
 
     print "<div class=\"alert alert-danger\" role=\"alert\">Vous n'avez pas les droits pour cette page</div>";
     EvoLog::log("Access denied on domaine.php");

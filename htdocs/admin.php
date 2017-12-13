@@ -10,11 +10,11 @@
  * @version 1.0
  */
 
+// Load config and autoload class
+require_once("lib/config.php");
+
 // Force authentication on this page
 require_once("lib/auth.php");
-
-// Autoload class from lib/class.*.php
-require_once("lib/autoload.php");
 
 /**
  * Path
