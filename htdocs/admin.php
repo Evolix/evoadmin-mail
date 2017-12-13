@@ -1,175 +1,100 @@
 <?php
 
-/**
- * Listing of all account/aliases
- *
- * Copyright (c) 2004-2005 Evolix - Tous droits reserves
- * $Id: admin.php,v 1.13 2009-09-02 17:22:13 gcolpart Exp $
- *
- * @author Gregory Colpart <reg@evolix.fr>
- * @version 1.0
- */
-
 // Load config and autoload class
 require_once("lib/config.php");
 
 // Force authentication on this page
 require_once("lib/auth.php");
 
-/**
- * Path
- */
-define('EVOADMIN_BASE','./');
+require_once("lib/common.php");
 
-    /**
-     * Requires
-     */
-    require_once EVOADMIN_BASE . 'lib/common.php';
+if (empty($_GET['domain'])) {
+    header("location: superadmin.php\n\n");
+    exit(1);
+}
 
-    include EVOADMIN_BASE . 'inc/haut.php';
+include("inc/haut.php");
+include("inc/debut.php");
 
-    if (isset($_GET['domain'])) {
-        // TODO : verifier si le domaine existe !!
-        $_SESSION['domain'] = Html::clean($_GET['domain']);
-    }
+?>
+<div class="container">
+    <div class="text-center">
+    <a href="compte.php?domain=<?php print $domain->getName() ?>"><button class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
 
-    // TODO : verifier que le domaine est actif
-    // et que les droits sont corrects
-    $domain = $_SESSION['domain'];
+    <?php
+        // only for mail mode
+        if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
 
-    // RDN for all LDAP search
-    if (! $conf['domaines']['onlyone'])  {
+        $viewonly1= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "" : "selected='selected'";
+        $viewonly2= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "selected='selected'" : "";
+    ?>
 
-        // compatibilite anciens schemas
-        if ($conf['evoadmin']['version'] <= 2) {
-            $rdn= "domain=" .$domain. "," .LDAP_BASE;
-        } else {
-            $rdn= "cn=" .$domain. "," .LDAP_BASE;
+        <a href="alias.php?domain=<?php print $domain->getName() ?>"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
+    </div>
+        <hr>
+        <form class='center' action='admin.php' method='GET' name='listing'>
+            <div class="form-group">
+                <input type="hidden" name="domain" value="<?php print $domain->getName() ?>"/>
+                <select class="form-control" name='viewonly' onchange="document.listing.submit()">
+                    <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
+                    <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
+                </select>
+            </div>
+        </form>
+
+    <?php
         }
 
-    } else {
-        $rdn= "ou=people," .LDAP_BASE;
-    }
-    $_SESSION['rdn'] = $rdn;
+        if ( (!isset($_GET['viewonly'])) || ($_GET['viewonly']==1) ) {
 
-    include EVOADMIN_BASE . 'inc/debut.php';
+    ?>
 
-    // tableau contenant tous les comptes
-    $comptes = array();
-    // tableau contenant tous les alias
-    $aliases = array();
+            <h2>Liste des comptes :</h2><hr>
 
-    $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
-
-    $filter="(objectClass=mailAccount)";
-    $sr=ldap_search($ldapconn, $rdn, $filter);
-    $info = ldap_get_entries($ldapconn, $sr);
-
-    // We use uid attribute for account
-    for ($i=0;$i<$info["count"];$i++) {
-        array_push($comptes,$info[$i]["uid"][0]);
-    }
-
-    // We use cn attribute for alias
-    $filter="(objectClass=mailAlias)";
-    // compatibilite anciens schemas
-    if ($conf['evoadmin']['version'] == 1) {
-        $filter="(&(objectClass=mailAlias)(onlyAlias=TRUE))";
-    }
-    $sr=ldap_search($ldapconn, $rdn, $filter);
-    $info = ldap_get_entries($ldapconn, $sr);
-
-    for ($i=0;$i<$info["count"];$i++) {
-        array_push($aliases,$info[$i]["cn"][0]);
-    }
-
-    ldap_unbind($ldapconn);
-
-    //tri alphanumeriques des tableaux
-    sort($comptes);
-    sort($aliases);
-?>
-       <div class="container">
-        <div class="text-center">
-        <a href="compte.php"><button class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
-
-        <?php
-            // only for mail mode
-            if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
-
-            $viewonly1= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "" : "selected='selected'";
-            $viewonly2= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "selected='selected'" : "";
-        ?>
-
-            <a href="alias.php"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
-        </div>
-            <hr>
-            <form class='center' action='<?php print $_SERVER['PHP_SELF'];?>'
-                method='GET' name='listing'>
-                <div class="form-group">
-                    <select class="form-control" name='viewonly' onchange="document.listing.submit()">
-                        <option value='1' <?php print $viewonly1; ?>>Liste des comptes</option>
-                        <option value='2' <?php print $viewonly2; ?>>Liste des alias/groupe de diffusion</option>
-                    </select>
-                </div>
-            </form>
-
-        <?php
-            }
-
-            if ( (!isset($_GET['viewonly'])) || ($_GET['viewonly']==1) ) {
-
-        ?>
-
-<!--            <h2>Liste des comptes :</h2><hr> -->
-
-            <table class="table table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th><strong>Nom du compte</strong></th>
-                        <th>Quota</th>
-                        <th width="50px">Suppr</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-             <?php
-                foreach ($comptes as $compte) {
-                    print '<tr><td style="text-align:left;"><a href="compte.php?view='.$compte. '">' .$compte. '</a></td>';
-                    print '<td>' .getquota($compte,'user'). '</td>';
-                    print '<td><a href="compte.php?del=' .$compte. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
-                }
-                print "</tbody></table>";
-           } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
-    
-        ?>
-
-<!--             <h2>Liste des alias/groupe de diffusion&nbsp;:</h2> -->
-    
-            <table class="table table-striped table-condensed">
-                <thead>
-                    <tr>
-                    <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th><strong>Nom du compte</strong></th>
+                    <th>Quota</th>
                     <th width="50px">Suppr</th>
-                    </tr>
-                </thead>
-                <tbody>
+                </tr>
+            </thead>
+            <tbody>
 
-
-            <?php
-
-                foreach ($aliases as $alias) {
-                    print '<tr><td style="text-align:left;"><a href="alias.php?view='.$alias. '">' .$alias. '</a></td>';
-                    print '<td><a href="alias.php?del=' .$alias. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
-                }
+         <?php
+            $comptes = $domain->getAccounts();
+            foreach ($comptes as $compte) {
+                print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&view='.$compte. '">' .$compte. '</a></td>';
+                print '<td>' .getquota($compte,'user'). '</td>';
+                print '<td><a href="compte.php?domain='.$domain->getName().'&del=' .$compte. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
             }
-        ?>
+            print "</tbody></table>";
+       } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
 
-    </table>
-    </div>
+    ?>
 
-<?php
+             <h2>Liste des alias/groupe de diffusion&nbsp;:</h2>
 
-include EVOADMIN_BASE . 'inc/fin.php';
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
+                <th width="50px">Suppr</th>
+                </tr>
+            </thead>
+            <tbody>
 
-?>
+
+        <?php
+            $aliases = $domain->getAlias();
+            foreach ($aliases as $alias) {
+                print '<tr><td style="text-align:left;"><a href="alias.php?domain='.$domain->getName().'&view='.$alias. '">' .$alias. '</a></td>';
+                print '<td><a href="alias.php?domain='.$domain->getName().'&del=' .$alias. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+            }
+        }
+    ?>
+
+</table>
+</div>
+
+<?php include("inc/fin.php"); ?>
