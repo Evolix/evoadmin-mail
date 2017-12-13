@@ -7,9 +7,7 @@ if (empty($_SESSION['login'])) {
     header("location: auth.php\n\n");
     exit(0);
 } else {
-    if ($server = new LdapServer($_SESSION['login'])) {
-        $domains = $server->getDomains();
-    } else {
+    if (!$server = new LdapServer($_SESSION['login'])) {
         print "<div class=\"alert alert-danger\" role=\"alert\">Erreur de connexion LDAP !</div>";
         exit(1);
     }
