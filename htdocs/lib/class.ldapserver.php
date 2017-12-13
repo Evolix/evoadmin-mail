@@ -67,7 +67,7 @@ class LdapServer {
         return $this->domains;
     }
 
-    public function addDomain($name,$active=false) {
+    public function addDomain($name,$active='FALSE') {
         global $conf;
         $info["cn"]=$name;
         $info["objectclass"][0] = ($conf['evoadmin']['version'] == 1) ? 'ldapDomain' : 'postfixDomain';
@@ -76,10 +76,9 @@ class LdapServer {
         $info["isActive"] = $active;
         $info["gidNumber"]= getfreegid();
 
-        if (ldap_add($this->conn, "cn=".$name.",".LDAP_BASE, $info)) {
-            return true;
-        } else {
-            return false;
+        if (!@ldap_add($this->conn, "cn=".$name.",".LDAP_BASE, $info)) {
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
     }
 
