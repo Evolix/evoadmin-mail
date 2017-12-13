@@ -1,128 +1,19 @@
 <?php
 
-/**
- * Listing of all domains
- *
- * Copyright (c) 2004-2006 Evolix - Tous droits reserves
- * $Id: superadmin.php,v 1.12 2009-09-02 17:22:13 gcolpart Exp $
- *
- * @author Gregory Colpart <reg@evolix.fr>
- * @version 1.0
- */
+// Load config and autoload class
+require_once("lib/config.php");
 
 // Force authentication on this page
 require_once("lib/auth.php");
 
-// Autoload class from lib/class.*.php
-require_once("lib/autoload.php");
+include('inc/haut.php');
+include('inc/debut.php');
 
-/**
- * Path
- */
-define('EVOADMIN_BASE','./');
+?>
 
-    /**
-     * Requires
-     */
-    require_once EVOADMIN_BASE . 'lib/common.php';
-
-    include EVOADMIN_BASE . 'inc/haut.php';
-
-    // pas de domaine/variable domaine sur superadmin.php
-    unset($_SESSION['domain']); 
-
-    global $conf;
-
-    // array with all domains with rights on
-    $domaines = array();
-
-    // If you are superadmin, you view all domains
-    if (superadmin($login)) {
-
-        // driver 'ldap'
-        if ( $conf['domaines']['driver'] == 'ldap' ) {
-
-            //TODO: foreach LDAP serveurs
-            if ($conf['evoadmin']['cluster']) {
-                $ldapconns = array();
-                foreach ($ldap_servers as $server) {
-                    array_push($ldapconns, Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS));
-                }
-            }
-            else {
-                $ldapconn = Ldap::lda_connect(LDAP_ADMIN_DN,LDAP_ADMIN_PASS);
-            }
-
-            if ($ldapconn) {
-
-                // compatibilite anciens schemas
-                if ($conf['evoadmin']['version'] == 1) {
-                    $filter="(objectClass=ldapDomain)";
-                } else {
-                    $filter="(objectClass=postfixDomain)";
-                }
-                $sr=ldap_search($ldapconn, LDAP_BASE, $filter);
-                $info = ldap_get_entries($ldapconn, $sr);
-
-                for ($i=0;$i<$info["count"];$i++) {
-                    // compatibilite anciens schemas
-                    if ($conf['evoadmin']['version'] == 1) {
-                        array_push($domaines,$info[$i]["domain"][0]);
-                    } else {
-                        array_push($domaines,$info[$i]["cn"][0]);
-                    }
-                }
-
-                ldap_unbind($ldapconn);
-
-            } else {
-                print "<div class=\"alert alert-danger\" role=\"alert\">Erreur de connexion : $ldapconn</div>";
-                EvoLog::log("LDAP connection failed");
-            }
-
-        // driver 'file'
-        } elseif ( $conf['domaines']['driver'] == 'file' ) {
-
-            $domaines = $conf['domaines']['file']['all'];
-        }
-    // If you are not superadmin...
-    } elseif ( $conf['domaines']['driver'] == 'file' ) {
-        // you view all if using driver 'file'
-        $domaines = $conf['domaines']['file']['all'];
-    } elseif ( $conf['domaines']['driver'] == 'ldap' ) {
-        // you view only your domain if using driver 'ldap'
-        // we select domain in your DN
-        // thanks to http://www.physiol.ox.ac.uk/~trp/regexp.html
-        if ($conf['evoadmin']['version'] <= 2) {
-            $mydomain = preg_replace("/uid=" .$login. ",domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
-                . LDAP_BASE ."/","$1",$_SESSION['dn']);
-        }
-        else {
-            $mydomain = preg_replace("/uid=" .$login. ",cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),"
-                . LDAP_BASE ."/","$1",$_SESSION['dn']);
-        }
-
-        array_push($domaines,$mydomain);
-    }
-
-    // alphanumerique sort before displaying domains
-    sort($domaines);
-
-    include EVOADMIN_BASE . 'inc/debut.php';
-
-        // with driver 'ldap', we can add a domain
-        // TODO : retrict to superadmin guys
-        // if ( $conf['domaines']['driver'] == 'ldap' ) {
-        //    print '<p><a href="domaine.php">
-        //        Ajouter un domaine...</a></p>';
-        // }
-
-    ?>
-        
-       <div class="container">
-        <h2>Liste des domaines administrables :</h2><hr>
-
-        <table class="table table-striped table-condensed">
+<div class="container">
+    <h2>Liste des domaines administrables :</h2><hr>
+    <table class="table table-striped table-condensed">
         <thead>
             <tr>
                 <th>Nom du domaine</th>
@@ -135,38 +26,22 @@ define('EVOADMIN_BASE','./');
         </thead>
         <tbody>
         <?php
-
         // lignes avec les details sur les domaines
-        foreach ($domaines as $domain) {
-            print '<tr><td style="text-align:left;"><a href="admin.php?domain='
-                .$domain. '">' .$domain. '</a></td>';
-        
-            // TODO : synchronization OpenLDAP<-Active Directory
-            // print '<td>N/A</td>';
-            print '<td><b>' .(getnumber($domain,'compte')+getnumber($domain,'alias')). '</b></td>';
-            print '<td><b>' .getnumber($domain,'mail'). '</b></td>';
-            //print '<td><b>' .getnumber($domain,'smb'). '</b></td>';
-            print '<td><b>' .getnumber($domain,'alias'). '</b></td>';
-            print '<td>' .getquota($domain,'group'). '</td>';
-        
+        $domains = $server->getDomains();
+        foreach ($domains as $domain) {
+            print '<tr><td style="text-align:left;"><a href="admin.php?domain='.$domain->getName(). '">' .$domain->getName(). '</a></td>';
+            print '<td><b>' .$domain->getNbAccounts(). '</b></td>';
+            print '<td><b>' .$domain->getNbMailAccounts(). '</b></td>';
+            //print '<td><b>' .$domain->getNbSmbAccounts(). '</b></td>';
+            print '<td><b>' .$domain->getNbMailAlias(). '</b></td>';
+            print '<td>' .$domain->getQuota(). '</td>';
             print '<td>';
-        
-            // suppression possible que si utilisation de LDAP
-            if ( $conf['domaines']['driver'] == 'ldap' ) {
-                print '<a href="domaine.php?del=' .$domain. '"><span class="glyphicon glyphicon-trash"></span></a>';
-            } else {
-                print "Impossible";
-            }
+            print '<a href="domaine.php?del=' .$domain->getName(). '"><span class="glyphicon glyphicon-trash"></span></a>';
             print '</td></tr>';
         }
         ?>
+        </tbody>
+    </table>
+</div>
 
-       </tbody>
-       </table>
-       </div>
-
-        <?php
-
-include(EVOADMIN_BASE . 'inc/fin.php');
-
-?>
+<?php include('inc/fin.php'); ?>
