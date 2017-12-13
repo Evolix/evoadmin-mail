@@ -9,13 +9,13 @@
             <li><a href="superadmin.php">Accueil</a></li>
             <li><a href="help.php">Aide</a></li>
             <?php
-                if (superadmin($login)) { echo '<li><a href="domaine.php">Ajout Domaine</a></li>'; }
+                if ($server->isSuperAdmin()) { echo '<li><a href="domaine.php">Ajout Domaine</a></li>'; }
             ?>
-            <li><a href="<?php print $conf['url']['webroot']; ?>">Déconnexion</a></li>
+            <li><a href="auth.php">Déconnexion</a></li>
         </up>
         <p class="navbar-text navbar-right">
         <?php
-            print "<em>$login</em>";
+            print "<em>".$server->getLogin()."</em>";
             if (isset($_SESSION['domain'])) {
                 print " - Domaine : <a href='admin.php'>".$_SESSION['domain']. "</a>";
             }
