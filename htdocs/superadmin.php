@@ -9,10 +9,29 @@ require_once("lib/auth.php");
 include('inc/haut.php');
 include('inc/debut.php');
 
+
+if (!empty($_POST['domain'])) {
+    $domain = Html::clean($_POST['domain']);
+
+    print '<div class="container"><form name="del "method="post" action="superadmin.php">';
+    print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer le domaine '.$domain.' ?</div>';
+    print '<div class="alert alert-warning" role="alert"><button type="submit" name="delete" value="'.$domain.'">Confirmer</button> / <a href="superadmin.php">Annuler</a></div>';
+    print '</form></div>';
+}
+
+if (!empty($_POST['delete'])) {
+    $domain = Html::clean($_POST['delete']);
+    print '<div class="container">';
+    print '<div class="alert alert-warning" role="alert">Suppression du domaine '.$domain.' ...</div>';
+    print '<div class="alert alert-danger" role="alert">Cette fonction n\'est pas encore implémentée !</div>';
+    print '</div>';
+}
+
 ?>
 
 <div class="container">
     <h2>Liste des domaines administrables :</h2><hr>
+    <form name="del" method="post" action="superadmin.php">
     <table class="table table-striped table-condensed">
         <thead>
             <tr>
@@ -35,13 +54,12 @@ include('inc/debut.php');
             //print '<td><b>' .$domain->getNbSmbAccounts(). '</b></td>';
             print '<td><b>' .$domain->getNbMailAlias(). '</b></td>';
             print '<td>' .$domain->getQuota(). '</td>';
-            print '<td>';
-            print '<a href="domaine.php?del=' .$domain->getName(). '"><span class="glyphicon glyphicon-trash"></span></a>';
-            print '</td></tr>';
+            print '<td><button type="submit" name="domain" value="'.$domain->getName().'"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
         }
         ?>
         </tbody>
     </table>
+    </form>
 </div>
 
 <?php include('inc/fin.php'); ?>
