@@ -23,7 +23,12 @@ if (!empty($_POST['delete'])) {
     $domain = Html::clean($_POST['delete']);
     print '<div class="container">';
     print '<div class="alert alert-warning" role="alert">Suppression du domaine '.$domain.' ...</div>';
-    print '<div class="alert alert-danger" role="alert">Cette fonction n\'est pas encore implémentée !</div>';
+    try {
+        $server->delDomain(Html::clean($_POST['delete']));
+        print '<div class="alert alert-success" role="alert">Suppression effectu&eacute;.</div>';
+    } catch (Exception $e_ad) {
+        print '<div class="alert alert-danger" role="alert">'.$e_ad->getMessage().'</div>';
+    }
     print '</div>';
 }
 

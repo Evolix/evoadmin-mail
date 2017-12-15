@@ -73,16 +73,6 @@ class LdapDomain extends LdapServer {
         return $this->alias;
     }
 
-    public function del() {
-        $del = ldap_delete($this->conn, "cn=".$this->domain.",".LDAP_BASE);
-        if ($del) {
-#            EvoLog::log("Del domain ".$this->domain);
-        } else {
-#            EvoLog::log("Delete $this->domain failed");
-        }
-        return $del;
-    }
-
     public function addAccount($name,$active=false,$admin=false,$accountactive=false,$courieractive=false,$webmailactive=false,$authsmtpactive=false,$amavisBypassSpamChecks=false) {
         global $conf;
         $mail = $name.'@'.$this->name;

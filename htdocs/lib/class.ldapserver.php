@@ -82,6 +82,40 @@ class LdapServer {
         }
     }
 
+    public function delDomain($name) {
+        if ($sr = @ldap_search($this->conn, "cn=".$name.",".LDAP_BASE, "(ObjectClass=*)")) {
+            $objects = ldap_get_entries($this->conn, $sr);
+            // Delete aliases
+            foreach($objects as $object) {
+                if (!empty($object['objectclass']) && !in_array("postfixDomain", $object['objectclass']) && in_array("mailAlias", $object['objectclass'])) {
+                    $dn = "cn=".$object['cn'][0]. ",cn=".$name.",".LDAP_BASE;
+                    if (!ldap_delete($this->conn, $dn)) {
+                        $error = ldap_error($this->conn);
+                        throw new Exception("Erreur dans la suppression de l'alias $dn : $error");
+                    }
+                }
+            }
+            // Delete accounts
+            foreach($objects as $object) {
+                if (!empty($object['objectclass']) && !in_array("postfixDomain", $object['objectclass']) && !in_array("mailAlias", $object['objectclass'])) {
+                    $dn = "uid=".$object['cn'][0]. ",cn=".$name.",".LDAP_BASE;
+                    if (!ldap_delete($this->conn, $dn)) {
+                        $error = ldap_error($this->conn);
+                        throw new Exception("Erreur dans la suppression du compte $dn : $error");
+                    }
+                }
+            }
+            // Delete domain
+            $dn = "cn=".$name.",".LDAP_BASE;
+            if (!ldap_delete($this->conn, $dn)) {
+                $error = ldap_error($this->conn);
+                throw new Exception("Erreur dans la suppression du domaine $dn : $error");
+            }
+        } else {
+            throw new Exception("Ce domaine n'existe pas !");
+        }
+    }
+
     public function isSuperAdmin() {
         return $this->superadmin;
     }
