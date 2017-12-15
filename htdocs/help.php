@@ -1,31 +1,13 @@
 <?php
 
-/**
- * French HTML help file  
- *
- * Copyright (c) 2004-2006 Evolix - Tous droits reserves
- * $Id: help.php,v 1.4 2009-09-06 01:12:07 gcolpart Exp $
- *
- * @author Gregory Colpart <reg@evolix.fr>
- * @version 1.0
- */
-
 // Load config and autoload class
 require_once("lib/config.php");
 
 // Force authentication on this page
 require_once("lib/auth.php");
 
-/**
- * Path
- */
-define('EVOADMIN_BASE','./');
-
-    $rep = './';
-    require_once($rep. 'lib/common.php');
-
-    include($rep. 'inc/haut.php');
-    include($rep. 'inc/debut.php');
+include('inc/haut.php');
+include('inc/debut.php');
 
 ?>
 
@@ -76,10 +58,4 @@ define('EVOADMIN_BASE','./');
     
 </div>
 
-
-                    
-<?php
-
-include EVOADMIN_BASE . 'inc/fin.php';
-
-?>
+<?php include('inc/fin.php'); ?>
