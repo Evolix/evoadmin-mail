@@ -22,6 +22,24 @@ class LdapAccount extends LdapDomain {
         }
     }
 
+    public function update($name=NULL,$password=NULL,$active=NULL,$admin=NULL,$accountactive=NULL,$courieractive=NULL,$webmailactive=NULL,$authsmtpactive=NULL,$amavisBypassSpamChecks=NULL) {
+        $info["cn"] = (!empty($name)) ? $name : $this->name;
+        if (!empty($password)) {
+            $info["userPassword"] = $password;
+        }
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
+        $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
+        $info["accountActive"] = ($accountactive) ? 'TRUE' : 'FALSE';
+        $info["courierActive"] = ($courieractive) ? 'TRUE' : 'FALSE';
+        $info["webmailActive"] = ($webmailactive) ? 'TRUE' : 'FALSE';
+        $info["authsmtpActive"] = ($authsmtpactive) ? 'TRUE' : 'FALSE';
+        #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
+        if (!ldap_mod_replace($this->conn,  "uid=".$this->uid.",cn=".$this->domain.",".LDAP_BASE, $info)) {
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur pendant la modification du compte : $error");
+        }
+    }
+
     public function isActive() {
         return $this->active;
     }
