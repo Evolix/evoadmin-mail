@@ -41,6 +41,7 @@ if (!empty($_POST['delete'])) {
         <thead>
             <tr>
                 <th>Nom du domaine</th>
+                <th width="80px">Actif</th>
                 <th>Nombre de comptes</th>
                 <th>dont comptes mail</th>
                 <th>Nombre d'alias mail</th>
@@ -54,12 +55,18 @@ if (!empty($_POST['delete'])) {
         $domains = $server->getDomains();
         foreach ($domains as $domain) {
             print '<tr><td style="text-align:left;"><a href="admin.php?domain='.$domain->getName(). '">' .$domain->getName(). '</a></td>';
+            if ($domain->isActive()) {
+                print '<td>Oui</td>';
+            } else {
+                print '<td>Non</td>';
+            }
             print '<td><b>' .$domain->getNbAccounts(). '</b></td>';
             print '<td><b>' .$domain->getNbMailAccounts(). '</b></td>';
             //print '<td><b>' .$domain->getNbSmbAccounts(). '</b></td>';
             print '<td><b>' .$domain->getNbMailAlias(). '</b></td>';
             print '<td>' .$domain->getQuota(). '</td>';
-            print '<td><button type="submit" name="domain" value="'.$domain->getName().'"><span class="glyphicon glyphicon-trash"></span></button></td></tr>';
+            print '<td><button type="submit" name="domain" value="'.$domain->getName().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
+            print '</tr>';
         }
         ?>
         </tbody>

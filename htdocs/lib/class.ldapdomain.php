@@ -17,7 +17,7 @@ class LdapDomain extends LdapServer {
             foreach($objects as $object) {
                 if (!empty($object['objectclass'])) {
                     if (in_array("postfixDomain",$object['objectclass'])) {
-                        $this->active = $object['isactive'][0];
+                        $this->active = ($object['isactive'][0] == "TRUE") ? true : false;
                     }
                     if (in_array("posixAccount",$object['objectclass'])) {
                         array_push($this->posix_accounts,$object['uid'][0]);
@@ -110,6 +110,10 @@ class LdapDomain extends LdapServer {
 
     public function getName() {
         return $this->domain;
+    }
+
+    public function isActive() {
+        return $this->active;
     }
 
     public function getNbAccounts() {
