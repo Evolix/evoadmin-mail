@@ -10,15 +10,13 @@ if (empty($_SESSION['login'])) {
     try {
         $server = new LdapServer($_SESSION['login']);
         if (!empty($_GET['domain'])) {
-            try {
-                $domain = new LdapDomain($server, Html::clean($_GET['domain']));
-            } catch (Exception $e_d) {
-                print '<div class="alert alert-danger" role="alert">'.$e_d->getMessage();
-                exit(1);
+            $domain = new LdapDomain($server, Html::clean($_GET['domain']));
+            if (!empty($_GET['account'])) {
+                $account = new LdapAccount($domain, Html::clean($_GET['account']));
             }
         }
-    } catch (Exception $e_s) {
-        print '<div class="alert alert-danger" role="alert">'.$e_s->getMessage().'</div>';
+    } catch (Exception $e) {
+        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
         exit(1);
     }
 }
