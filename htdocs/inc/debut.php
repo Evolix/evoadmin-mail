@@ -17,7 +17,7 @@
         <?php
             print "<em>".$server->getLogin()."</em>";
             if (!empty($domain)) {
-                print " - Domaine : <a href='admin.php'>".$domain->getName(). "</a>";
+                print ' - Domaine : <a href="admin.php?domain='.$domain->getName().'">'.$domain->getName().'</a>';
             }
         ?>
         </p>
