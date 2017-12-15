@@ -16,6 +16,29 @@ if (empty($_GET['domain'])) {
 include("inc/haut.php");
 include("inc/debut.php");
 
+if (!empty($_POST['account'])) {
+    $account = Html::clean($_POST['account']);
+
+    print '<div class="container"><form name="del "method="post" action="admin.php?domain='.$domain->getName().'">';
+    print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer le compte '.$account.' ?</div>';
+    print '<div class="alert alert-warning" role="alert"><button type="submit" name="delete" value="'.$account.'">Confirmer</button> / <a href="admin.php?domain='.$domain->getName().'">Annuler</a></div>';
+    print '</form></div>';
+}
+
+if (!empty($_POST['delete'])) {
+    $account = Html::clean($_POST['delete']);
+    print '<div class="container">';
+    print '<div class="alert alert-warning" role="alert">Suppression du compte '.$account.' ...</div>';
+    try {
+        $domain->delAccount($account);
+        print '<div class="alert alert-success" role="alert">Suppression effectu&eacute;.</div>';
+    } catch (Exception $e) {
+        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
+    }
+    print '</div>';
+}
+
+
 ?>
 <div class="container">
     <div class="text-center">
@@ -41,7 +64,7 @@ include("inc/debut.php");
                 </select>
             </div>
         </form>
-
+        <form name="del" method="post" action="admin.php?domain=<?php print $domain->getName(); ?>">
     <?php
         }
 
@@ -66,7 +89,8 @@ include("inc/debut.php");
             foreach ($accounts as $account) {
                 print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&account='.$account->getUid().'">' .$account->getName().' &lt;'.$account->getUid().'&gt;</a></td>';
                 print '<td>' .getquota($account->getUid(),'user'). '</td>';
-                print '<td><a href="compte.php?domain='.$domain->getName().'&del=' .$account->getUid(). '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                print '<td><button type="submit" name="account" value="'.$account->getUid().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
+                print '</tr>';
             }
             print "</tbody></table>";
        } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
@@ -95,6 +119,7 @@ include("inc/debut.php");
     ?>
 
 </table>
+</form>
 </div>
 
 <?php include("inc/fin.php"); ?>

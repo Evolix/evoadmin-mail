@@ -76,38 +76,55 @@ class LdapDomain extends LdapServer {
         return $this->alias;
     }
 
-    public function addAccount($name,$active=false,$admin=false,$accountactive=false,$courieractive=false,$webmailactive=false,$authsmtpactive=false,$amavisBypassSpamChecks=false) {
+    public function addAccount($uid,$name,$password,$active=false,$admin=false,$accountactive=false,$courieractive=false,$webmailactive=false,$authsmtpactive=false,$amavisBypassSpamChecks=false) {
         global $conf;
-        $mail = $name.'@'.$this->name;
+        if (badname($uid)) {
+            throw new Exception("Erreur, <u>$name</u> est un nom invalide.");
+        }
+        if (Auth::badpassword($password)) {
+            throw new Exception("Erreur, mot de passe invalide.");
+        }
+        $mail = $uid.'@'.$this->getName();
+        $password = "{SSHA}".Ldap::ssha($password);
         $info["uid"] = $mail;
         $info["cn"] = $name;
-        $info["homeDirectory"] = "/home/vmail/" .$this->name. "/" .$name. "/";
+        $info["homeDirectory"] = "/home/vmail/" .$this->getName(). "/" .$uid. "/";
         $info["uidNumber"]= $conf['unix']['uid'];
         $info["gidNumber"]= getgid($this->name);
-        $info["isActive"] = $active;
-        $info["isAdmin"] = $admin;
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
+        $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
         $info["objectclass"][0] = "posixAccount";
         $info["objectclass"][1] = "organizationalRole";
         $info["objectclass"][2] = "mailAccount";
         #$info["objectclass"][3] = "amavisAccount";
         $info["maildrop"] = $mail;
         $info["mailacceptinggeneralid"] = $mail;
-        $info["accountActive"] = $accountactive;
-        $info["courierActive"] = $courieractive;
-        $info["webmailActive"] = $webmailactive;
-        $info["authsmtpActive"] = $authsmtpactive;
-        #$info["amavisBypassSpamChecks"] = $amavisBypassSpamChecks;
-        $info["userPassword"] = "{SSHA}" .Ldap::ssha($_POST['pass1']);
+        $info["accountActive"] = ($accountactive) ? 'TRUE' : 'FALSE';
+        $info["courierActive"] = ($courieractive) ? 'TRUE' : 'FALSE';
+        $info["webmailActive"] = ($webmailactive) ? 'TRUE' : 'FALSE';
+        $info["authsmtpActive"] = ($authsmtpactive) ? 'TRUE' : 'FALSE';
+        #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
+        $info["userPassword"] = $password;
 
-        if (ldap_add($this->conn, "uid=".$mail.",cn=".$this->domain.",".LDAP_BASE, $info)) {
+        if (@ldap_add($this->conn, "uid=".$mail.",cn=".$this->domain.",".LDAP_BASE, $info)) {
             mail($name, 'Premier message',"Mail d'initialisation du compte.");
-            mailnotify($info,$_GET['domain'],$_POST['pass1']);
-#            EvoLog::log("Add user ".$name);
-            return TRUE;
+            mailnotify($info,$this->getname(),$password);
         } else {
-#            EvoLog::log("Add $name failed");
-            var_dump($info);
-            return FALSE;
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur dans l'ajout du compte : $error");
+        }
+    }
+
+    public function delAccount($uid) {
+        $dn = "uid=".$uid.",cn=".$this->domain.",".LDAP_BASE;
+        if ($sr = @ldap_search($this->conn, $dn, "(ObjectClass=mailAccount)")) {
+            // Delete account
+            if (!ldap_delete($this->conn, $dn)) {
+                $error = ldap_error($this->conn);
+                throw new Exception("Erreur dans la suppression du compte $uid : $error");
+            }
+        } else {
+            throw new Exception("Ce compte n'existe pas !");
         }
     }
 
