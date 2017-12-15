@@ -32,7 +32,7 @@ if (!empty($_POST['cn'])) {
         if (!empty($_GET['account'])) {
             print "<div class=\"alert alert-info\" role=\"alert\">Modification en cours...</div>";
             $account->update($cn,$password,$actif,$admin,$actif,$courier,$authsmtp);
-            print "<div class=\"alert alert-succes\" role=\"alert\">Modification effectu&eacute;.</div>";
+            header('Location: compte.php?domain='.$domain->getName().'&account='.$account->getUid());
         } else {
             print "<div class=\"alert alert-info\" role=\"alert\">Ajout en cours...</div>";
             $domain->addAccount($uid,$cn,$password,$actif,$admin,$actif,$courier,$authsmtp);
@@ -220,7 +220,7 @@ if (isset($_GET['account'])) {
 
 <div class="form-group">
     <label for="isadmin"     class="col-sm-3 control-label">Compte admin :</label>
-    <div class="col-sm-7"><input type='checkbox' name='isadmin' checked class="form-control move-left" /></div>
+    <div class="col-sm-7"><input type='checkbox' name='isadmin' class="form-control move-left" /></div>
     <div class="col-sm-2 control-label"></div>
 </div>
 
