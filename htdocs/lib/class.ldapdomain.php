@@ -90,7 +90,7 @@ class LdapDomain extends LdapServer {
         $info["cn"] = $name;
         $info["homeDirectory"] = "/home/vmail/" .$this->getName(). "/" .$uid. "/";
         $info["uidNumber"]= $conf['unix']['uid'];
-        $info["gidNumber"]= getgid($this->name);
+        $info["gidNumber"]= getgid($this->getName());
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
         $info["objectclass"][0] = "posixAccount";
