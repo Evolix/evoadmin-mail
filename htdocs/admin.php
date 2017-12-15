@@ -78,6 +78,7 @@ if (!empty($_POST['delete'])) {
             <thead>
                 <tr>
                     <th><strong>Nom du compte</strong></th>
+                    <th width="80px">Actif</th>
                     <th>Quota</th>
                     <th width="50px">Suppr</th>
                 </tr>
@@ -88,6 +89,11 @@ if (!empty($_POST['delete'])) {
             $accounts = $domain->getAccounts();
             foreach ($accounts as $account) {
                 print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&account='.$account->getUid().'">' .$account->getName().' &lt;'.$account->getUid().'&gt;</a></td>';
+                if ($account->isActive()) {
+                    print '<td>Oui</td>';
+                } else {
+                    print '<td>Non</td>';
+                }
                 print '<td>' .getquota($account->getUid(),'user'). '</td>';
                 print '<td><button type="submit" name="account" value="'.$account->getUid().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
                 print '</tr>';
