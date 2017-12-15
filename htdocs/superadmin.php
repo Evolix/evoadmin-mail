@@ -41,7 +41,7 @@ if (!empty($_POST['delete'])) {
         <thead>
             <tr>
                 <th>Nom du domaine</th>
-                <th width="80px">Actif</th>
+                <th width="100px">Actif</th>
                 <th>Nombre de comptes</th>
                 <th>dont comptes mail</th>
                 <th>Nombre d'alias mail</th>
@@ -56,9 +56,9 @@ if (!empty($_POST['delete'])) {
         foreach ($domains as $domain) {
             print '<tr><td style="text-align:left;"><a href="admin.php?domain='.$domain->getName(). '">' .$domain->getName(). '</a></td>';
             if ($domain->isActive()) {
-                print '<td>Oui</td>';
+                print '<td><span class="glyphicon glyphicon-ok"></span></td>';
             } else {
-                print '<td>Non</td>';
+                print '<td><span class="glyphicon glyphicon-remove"></span></td>';
             }
             print '<td><b>' .$domain->getNbAccounts(). '</b></td>';
             print '<td><b>' .$domain->getNbMailAccounts(). '</b></td>';
