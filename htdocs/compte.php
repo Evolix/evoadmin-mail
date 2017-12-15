@@ -37,7 +37,7 @@ if (!empty($_POST['cn'])) {
             print "<div class=\"alert alert-info\" role=\"alert\">Ajout en cours...</div>";
             $domain->addAccount($uid,$cn,$password,$actif,$admin,$actif,$courier,$authsmtp);
             print "<div class=\"alert alert-succes\" role=\"alert\">Ajout effectu&eacute;.</div>";
-            print '<a href="compte.php?domain='.$domain->getName().'&account='.$uid.'"><button class="btn btn-primary">Voir le compte cr&eacute;&eacute;</button></a>';
+            print '<a href="compte.php?domain='.$domain->getName().'&account='.$uid.'@'.$domain->getName().'"><button class="btn btn-primary">Voir le compte cr&eacute;&eacute;</button></a>';
         }
     } catch (Exception $e) {
         print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
