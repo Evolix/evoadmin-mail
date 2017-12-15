@@ -78,7 +78,10 @@ if (!empty($_POST['delete'])) {
             <thead>
                 <tr>
                     <th><strong>Nom du compte</strong></th>
-                    <th width="80px">Actif</th>
+                    <th width="100px">Actif</th>
+                    <th width="100px">Admin</th>
+                    <th width="100px">POP / IMAP</th>
+                    <th width="100px">Auth SMTP</th>
                     <th>Quota</th>
                     <th width="50px">Suppr</th>
                 </tr>
@@ -90,9 +93,24 @@ if (!empty($_POST['delete'])) {
             foreach ($accounts as $account) {
                 print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&account='.$account->getUid().'">' .$account->getName().' &lt;'.$account->getUid().'&gt;</a></td>';
                 if ($account->isActive()) {
-                    print '<td>Oui</td>';
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
                 } else {
-                    print '<td>Non</td>';
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                }
+                if ($account->isAdmin()) {
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                } else {
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                }
+                if ($account->isCourier()) {
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                } else {
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                }
+                if ($account->isAuthSmtp()) {
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                } else {
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
                 }
                 print '<td>' .getquota($account->getUid(),'user'). '</td>';
                 print '<td><button type="submit" name="account" value="'.$account->getUid().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
