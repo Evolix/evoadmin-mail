@@ -67,13 +67,13 @@ class LdapServer {
         return $this->domains;
     }
 
-    public function addDomain($name,$active='FALSE') {
+    public function addDomain($name,$active=false) {
         global $conf;
         $info["cn"]=$name;
         $info["objectclass"][0] = ($conf['evoadmin']['version'] == 1) ? 'ldapDomain' : 'postfixDomain';
         $info["objectclass"][1] = "posixGroup";
         $info["postfixTransport"] = "virtual:";
-        $info["isActive"] = $active;
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["gidNumber"]= getfreegid();
 
         if (!@ldap_add($this->conn, "cn=".$name.",".LDAP_BASE, $info)) {

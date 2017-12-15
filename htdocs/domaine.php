@@ -24,9 +24,10 @@ if (!empty($_POST['domain'])) {
     
     print "<div class='container'>";
     print "<div class=\"alert alert-warning\" role=\"alert\">Ajout en cours du domaine ".$domain." ...</div>";
-    
+
     try {
-        $server->addDomain(Html::clean($_POST['domain'], Html::clean($_POST['is_active'])));
+        $active = (!empty($_POST['isactive'])) ? true : false;
+        $server->addDomain(Html::clean($_POST['domain']), $active);
         domain_add($domain);
         print '<div class="alert alert-success" role="alert">Ajout effectu&eacute;.</div>';
         #EvoLog::log("Add domain ".$domain);
