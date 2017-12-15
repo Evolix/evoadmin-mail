@@ -48,9 +48,12 @@ class LdapDomain extends LdapServer {
                 $rdn = "ou=people," .LDAP_BASE;
             }
             $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAccount)");
-            $info = ldap_get_entries($this->conn, $sr);
-            for ($i=0;$i<$info["count"];$i++) {
-                array_push($this->accounts,$info[$i]["uid"][0]);
+            $objects = ldap_get_entries($this->conn, $sr);
+            foreach($objects as $object) {
+                if(!empty($object["uid"][0])) {
+                    $account = new LdapAccount($this, $object["uid"][0]);
+                    array_push($this->accounts, $account);
+                }
             }
         }
         return $this->accounts;

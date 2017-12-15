@@ -62,11 +62,11 @@ include("inc/debut.php");
             <tbody>
 
          <?php
-            $comptes = $domain->getAccounts();
-            foreach ($comptes as $compte) {
-                print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&view='.$compte. '">' .$compte. '</a></td>';
-                print '<td>' .getquota($compte,'user'). '</td>';
-                print '<td><a href="compte.php?domain='.$domain->getName().'&del=' .$compte. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+            $accounts = $domain->getAccounts();
+            foreach ($accounts as $account) {
+                print '<tr><td style="text-align:left;"><a href="compte.php?domain='.$domain->getName().'&account='.$account->getUid().'">' .$account->getName().' &lt;'.$account->getUid().'&gt;</a></td>';
+                print '<td>' .getquota($account->getUid(),'user'). '</td>';
+                print '<td><a href="compte.php?domain='.$domain->getName().'&del=' .$account->getUid(). '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
             }
             print "</tbody></table>";
        } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
