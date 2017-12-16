@@ -59,9 +59,9 @@ class LdapServer {
                 }
                 sort($this->domains);
             } else {
-                $filter = ($conf['evoadmin']['version'] <= 2) ? ',domain=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),' : ',cn=((?:(?:[0-9a-zA-Z_\-]+)\.){1,}(?:[0-9a-zA-Z_\-]+)),';
-                $mydomain = preg_replace("/uid=".$login.$filter.LDAP_BASE."/",'$1',$this->dn);
-                array_push($this->domains,$mydomain);
+                $auid = explode('@', $this->login);
+                $domain = new LdapDomain($this, $auid[1]);
+                array_push($this->domains, $domain);
             }
         }
         return $this->domains;
