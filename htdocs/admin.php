@@ -38,11 +38,28 @@ if (!empty($_POST['delete'])) {
     print '</div>';
 }
 
+if (!empty($_POST['isactive'])) {
+    $active = ($_POST['isactive'] == "TRUE") ? true : false;
+    try {
+        $domain->update($active);
+        header('Location: admin.php?domain='.$domain->getName());
+    } catch (Exception $e) {
+        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
+    }
+}
 
 ?>
 <div class="container">
     <div class="text-center">
-    <a href="compte.php?domain=<?php print $domain->getName() ?>"><button class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
+    <?php
+    print '<form name="update" method="post" action="admin.php?domain='.$domain->getName().'">';
+    if (!$domain->isactive()) {
+        print '<button type="submit" name="isactive" value="TRUE" class="btn btn-primary">Activer le domaine</button>&nbsp;&nbsp;&nbsp;';
+    } else {
+        print '<button type="submit" name="isactive" value="FALSE" class="btn btn-primary">Désactiver le domaine</button>&nbsp;&nbsp;&nbsp;';
+    }
+    ?>
+    <a href="compte.php?domain=<?php print $domain->getName() ?>"><button type="button" class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
 
     <?php
         // only for mail mode
@@ -52,7 +69,8 @@ if (!empty($_POST['delete'])) {
         $viewonly2= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "selected='selected'" : "";
     ?>
 
-        <a href="alias.php?domain=<?php print $domain->getName() ?>"><button class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
+        <a href="alias.php?domain=<?php print $domain->getName() ?>"><button type="button" class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
+    </form>
     </div>
         <hr>
         <form class='center' action='admin.php' method='GET' name='listing'>

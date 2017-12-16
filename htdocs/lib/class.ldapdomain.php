@@ -128,6 +128,14 @@ class LdapDomain extends LdapServer {
         }
     }
 
+    public function update($active=false) {
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
+        if (!ldap_mod_replace($this->conn,  "cn=".$this->getName().",".LDAP_BASE, $info)) {
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur pendant la modification du domaine : $error");
+        }
+    }
+
     public function getName() {
         return $this->domain;
     }
