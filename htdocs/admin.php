@@ -38,7 +38,7 @@ if (!empty($_POST['delete'])) {
     print '</div>';
 }
 
-if (!empty($_POST['isactive'])) {
+if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
     $active = ($_POST['isactive'] == "TRUE") ? true : false;
     try {
         $domain->update($active);
@@ -53,10 +53,12 @@ if (!empty($_POST['isactive'])) {
     <div class="text-center">
     <?php
     print '<form name="update" method="post" action="admin.php?domain='.$domain->getName().'">';
-    if (!$domain->isactive()) {
-        print '<button type="submit" name="isactive" value="TRUE" class="btn btn-primary">Activer le domaine</button>&nbsp;&nbsp;&nbsp;';
-    } else {
-        print '<button type="submit" name="isactive" value="FALSE" class="btn btn-primary">Désactiver le domaine</button>&nbsp;&nbsp;&nbsp;';
+    if ($server->isSuperAdmin()) {
+        if (!$domain->isactive()) {
+            print '<button type="submit" name="isactive" value="TRUE" class="btn btn-primary">Activer le domaine</button>&nbsp;&nbsp;&nbsp;';
+        } else {
+            print '<button type="submit" name="isactive" value="FALSE" class="btn btn-primary">Désactiver le domaine</button>&nbsp;&nbsp;&nbsp;';
+        }
     }
     ?>
     <a href="compte.php?domain=<?php print $domain->getName() ?>"><button type="button" class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
