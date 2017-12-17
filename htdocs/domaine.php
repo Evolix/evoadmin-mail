@@ -6,8 +6,6 @@ require_once("lib/config.php");
 // Force authentication on this page
 require_once("lib/auth.php");
 
-require_once("lib/common.php");
-
 include("inc/haut.php");
 include("inc/debut.php");
 

@@ -14,7 +14,6 @@ Evolix trademark and logo are not freely reusable and are protected by copyright
 
 Vendor files in htdocs/vendor have their own license :
 
-* [Evolibs](http://evolix.com/) : GPLv2+
 * [Bootstrap](https://getbootstrap.com/) : MIT
 * [Jquery](https://jquery.org/) : MIT
 * [DataTables](https://www.datatables.net/) : MIT

@@ -71,7 +71,7 @@ class LdapDomain extends LdapServer {
 
     public function addAccount($uid,$name,$password,$active=false,$admin=false,$accountactive=false,$courieractive=false,$webmailactive=false,$authsmtpactive=false,$amavisBypassSpamChecks=false) {
         global $conf;
-        if (badname($uid)) {
+        if (!preg_match('/^([a-z0-9][a-z0-9\-\.\_]{0,28}[a-z0-9])$/', $uid)) {
             throw new Exception("Erreur, <u>$name</u> est un nom invalide.");
         }
         $mail = $uid.'@'.$this->getName();

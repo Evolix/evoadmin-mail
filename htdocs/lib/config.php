@@ -4,12 +4,8 @@ const CONFIG_FILE = './config/conf.php';
 const CONNECT_FILE = './config/connect.php';
 
 spl_autoload_register(function ($class) {
-    if (file_exists("vendor/evolibs/$class.php")) {
-        include_once("vendor/evolibs/$class.php");
-    } else {
-        $class = strtolower($class);
-        include_once("lib/class.$class.php");
-    }
+    $class = strtolower($class);
+    include_once("lib/class.$class.php");
 });
 
 if (file_exists(CONFIG_FILE)) {
