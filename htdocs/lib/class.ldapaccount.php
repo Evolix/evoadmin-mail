@@ -2,20 +2,17 @@
 
 class LdapAccount extends LdapDomain {
     static $objectClass = array('mailAccount', 'posixAccount', 'organizationalRole');
-
-    static public function getClassFilter() {
-        return '(ObjectClass='.self::$objectClass[0].')';
-    }
+    static $dn='uid';
 
     protected $domain,$uid,$name,$active=false,$admin=false,$courier=false,$authsmtp=false;
     private $aliases=array(),$redirections=array();
 
     public function __construct(LdapDomain $domain, $uid) {
-        $this->conn = $domain->conn;
-        $this->domain = $domain->getName();
+        $this->domain = $domain;
+        $this->conn = $this->domain->server->getConn();
 
         $this->uid = $uid;
-        if ($sr = @ldap_search($this->conn, "uid=".$uid.",cn=".$this->domain.",".LDAP_BASE, self::getClassFilter())) {
+        if ($sr = @ldap_search($this->conn, self::getBaseDN($this->domain, $uid), self::getClassFilter())) {
             $objects = ldap_get_entries($this->conn, $sr);
             $object = $objects[0];
             $this->name = $object['cn'][0];
@@ -23,7 +20,7 @@ class LdapAccount extends LdapDomain {
             $this->admin = ($object['isadmin'][0] == 'TRUE') ? true : false;
             $this->courier = ($object['courieractive'][0] == 'TRUE') ? true : false;
             $this->authsmtp = ($object['authsmtpactive'][0] == 'TRUE') ? true : false;
-            //$this->quota = getquota($this->domain,'user');
+            //$this->quota = getquota($this->domain->getName(),'user');
             $this->aliases = array_filter($object['mailacceptinggeneralid'], "is_string");
             $this->redirections = array_filter($object['maildrop'], "is_string");
         } else {
@@ -43,7 +40,7 @@ class LdapAccount extends LdapDomain {
         $info["webmailActive"] = ($webmailactive) ? 'TRUE' : 'FALSE';
         $info["authsmtpActive"] = ($authsmtpactive) ? 'TRUE' : 'FALSE';
         #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
-        if (!ldap_mod_replace($this->conn,  "uid=".$this->uid.",cn=".$this->domain.",".LDAP_BASE, $info)) {
+        if (!ldap_mod_replace($this->conn,  self::getBaseDN(), $info)) {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur pendant la modification du compte : $error");
         }
@@ -66,7 +63,7 @@ class LdapAccount extends LdapDomain {
     }
 
     public function getAliases() {
-        return preg_replace('/@'.$this->domain.'/', '', $this->aliases);
+        return preg_replace('/@'.$this->domain->getName().'/', '', $this->aliases);
     }
 
     public function getRedirections() {

@@ -2,20 +2,17 @@
 
 class LdapAlias extends LdapDomain {
     static $objectClass = array('mailAlias');
-
-    static public function getClassFilter() {
-        return '(ObjectClass='.self::$objectClass[0].')';
-    }
+    static $dn='cn';
 
     protected $domain,$name,$active=false;
     private $aliases=array(),$redirections=array();
 
     public function __construct(LdapDomain $domain, $name) {
-        $this->conn = $domain->conn;
-        $this->domain = $domain->getName();
+        $this->domain = $domain;
+        $this->conn = $this->conn = $this->domain->server->getConn();
 
         $this->name = $name;
-        if ($sr = @ldap_search($this->conn, "cn=".$name.",cn=".$this->domain.",".LDAP_BASE, self::getClassFilter())) {
+        if ($sr = @ldap_search($this->conn, self::getBaseDN($this->domain, $name), self::getClassFilter())) {
             $objects = ldap_get_entries($this->conn, $sr);
             $object = $objects[0];
             $this->active = ($object['isactive'][0] == 'TRUE') ? true : false;
@@ -37,7 +34,7 @@ class LdapAlias extends LdapDomain {
             return filter_var($value, FILTER_VALIDATE_EMAIL);
         });
 
-        if (!@ldap_mod_replace($this->conn, "cn=".$this->getName().",cn=".$this->domain.",".LDAP_BASE, $info)) {
+        if (!@ldap_mod_replace($this->conn, self::getBaseDN($this), $info)) {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur pendant la modification de l'alias : $error");
         }
@@ -48,7 +45,7 @@ class LdapAlias extends LdapDomain {
     }
  
     public function getAliases() {
-        return preg_replace('/@'.$this->domain.'/', '', $this->aliases);
+        return preg_replace('/@'.$this->domain->getName().'/', '', $this->aliases);
     }
 
     public function getRedirections() {

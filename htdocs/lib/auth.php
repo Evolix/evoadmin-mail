@@ -8,7 +8,7 @@ if (empty($_SESSION['login'])) {
     exit(0);
 } else {
     try {
-        $server = new LdapServer($_SESSION['login']);
+        $server = new LdapServer($_SESSION['login'], LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI);
         if (!empty($_GET['domain'])) {
             $domain = new LdapDomain($server, Html::clean($_GET['domain']));
             if (!empty($_GET['account'])) {

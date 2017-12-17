@@ -16,7 +16,7 @@ if (isset($_SESSION['login'])) {
 }
 
 if (!empty($_POST['login'])) {
-    if ($server = new LdapServer(Html::clean($_POST['login']))) {
+    if ($server = new LdapServer(Html::clean($_POST['login']),  LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI)) {
         if ($server->login(Html::clean($_POST['password']))) {
             $_SESSION['login'] = $server->getLogin();
             $_SESSION['dn'] = $server->getDn();
