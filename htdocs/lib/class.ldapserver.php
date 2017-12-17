@@ -108,6 +108,7 @@ class LdapServer {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
+        //domainnotify($name);
     }
 
     public function delDomain($name) {

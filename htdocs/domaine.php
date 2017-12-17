@@ -27,14 +27,10 @@ if (!empty($_POST['domain'])) {
 
     try {
         $active = (!empty($_POST['isactive'])) ? true : false;
-        $server->addDomain($domain), $active);
-        domain_add($domain);
+        $server->addDomain($domain, $active);
         print '<div class="alert alert-success" role="alert">Ajout effectu&eacute;.</div>';
-        #EvoLog::log("Add domain ".$domain);
-        domainnotify($domain); 
     } catch (Exception $e_ad) {
         print '<div class="alert alert-danger" role="alert">'.$e_ad->getMessage().'</div>';
-        #EvoLog::log("Add $domain failed");
     }
     
     print "</div>";

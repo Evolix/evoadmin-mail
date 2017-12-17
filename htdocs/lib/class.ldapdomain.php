@@ -92,13 +92,12 @@ class LdapDomain extends LdapServer {
         #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
         $info["userPassword"] = LdapServer::hashPassword($password);
 
-        if (@ldap_add($this->conn, LdapAccount::getBaseDN($this, $mail), $info)) {
-            mail($name, 'Premier message',"Mail d'initialisation du compte.");
-            mailnotify($info,$this->getname(),$password);
-        } else {
+        if (!@ldap_add($this->conn, LdapAccount::getBaseDN($this, $mail), $info)) {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur dans l'ajout du compte : $error");
         }
+        mail($mail, 'Premier message',"Mail d'initialisation du compte.");
+        //mailnotify($info,$this->getname(),$password);
     }
 
     public function addAlias($name,$active=false,$mailaccept=array(),$maildrop=array()) {
