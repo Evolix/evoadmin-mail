@@ -54,21 +54,8 @@ class LdapServer {
     public function login($password) {
         $sr=ldap_search($this->conn, self::getBaseDN($this), "(&(uid=".$this->login.")(isAdmin=TRUE))");
         $info = ldap_get_entries($this->conn, $sr);
-        if ($info['count']) {
-            if (@ldap_bind($this->conn, $info[0]['dn'], $password)) {
-                unset($password);
-                $this->base = $info[0]['dn'];
-#                EvoLog::log("Login success for " . $this->login);
-                return true;
-            } else {
-                $this->__destruct();
-#                EvoLog::log("Password failed : " . $this->login);
-                return false;
-            }
-        } else {
-            $this->__destruct();
-#            EvoLog::log("Login failed : " . $this->login);
-            return false;
+        if (!$info['count'] || !@ldap_bind($this->conn, $info[0]['dn'], $password)) {
+            throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
         }
     }
 

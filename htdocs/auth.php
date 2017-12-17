@@ -16,17 +16,14 @@ if (isset($_SESSION['login'])) {
 }
 
 if (!empty($_POST['login'])) {
-    if ($server = new LdapServer(Html::clean($_POST['login']),  LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI)) {
-        if ($server->login(Html::clean($_POST['password']))) {
-            $_SESSION['login'] = $server->getLogin();
-            $_SESSION['dn'] = $server->getDn();
-            header("location: superadmin.php\n\n");
-            exit(0);
-        } else {
-            print "<div class='alert alert-danger' role='alert'>&Eacute;chec de l\'authentification, utilisateur ou mot de passe incorrect.<br />Si vous avez oubli&eacute; votre mot de passe, contactez <a href='mailto:" .$conf['admin']['mail']. "'>" .$conf['admin']['mail']. "</a></div>";
-        }
-    } else {
-        print "<div class=\"alert alert-danger\" role=\"alert\">Erreur de connexion LDAP !</div>";
+    try {
+        $server = new LdapServer(Html::clean($_POST['login']),  LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI);
+        $server->login(Html::clean($_POST['password']));
+        $_SESSION['login'] = $server->getLogin();
+        header("location: superadmin.php\n\n");
+        exit(0);
+    } catch (Exception $e) {
+        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
     }
 }
 ?>
