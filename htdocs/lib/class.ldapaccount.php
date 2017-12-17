@@ -2,6 +2,7 @@
 
 class LdapAccount extends LdapDomain {
     protected $domain,$uid,$name,$active=false,$admin=false,$courier=false,$authsmtp=false;
+    private $aliases=array(),$redirections=array();
 
     public function __construct($domain, $uid) {
         $this->conn = $domain->conn;
@@ -17,6 +18,8 @@ class LdapAccount extends LdapDomain {
             $this->courier = ($object['courieractive'][0] == 'TRUE') ? true : false;
             $this->authsmtp = ($object['authsmtpactive'][0] == 'TRUE') ? true : false;
             //$this->quota = getquota($this->domain,'user');
+            $this->aliases = array_filter($object['mailacceptinggeneralid'], "is_string");
+            $this->redirections = array_filter($object['maildrop'], "is_string");
         } else {
             throw new Exception("Ce compte n'existe pas !");
         }
@@ -57,11 +60,11 @@ class LdapAccount extends LdapDomain {
     }
 
     public function getAliases() {
-        return array();
+        return preg_replace('/@'.$this->domain.'/', '', $this->aliases);
     }
 
     public function getRedirections() {
-        return array();
+        return $this->redirections;
     }
 
     public function isCourier() {

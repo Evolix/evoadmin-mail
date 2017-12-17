@@ -102,9 +102,6 @@ if (isset($_GET['account'])) {
         print "<label for='maildrop[]' class='col-sm-3 control-label'>Mails entrants redirig&eacute;s vers : </label>";
         print "<div class='col-sm-7'><input type='text' name='maildrop[]' value='".$red."' class='form-control' /></div>";
         print "<div class='col-sm-2 control-label'>";
-            if (!$conf['domaines']['onlyone']) {
-                print "@" .$domain->getName();
-            }
         print "</div>";
         print "</div>";
     }
