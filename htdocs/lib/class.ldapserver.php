@@ -11,9 +11,22 @@ class LdapServer {
         $class = get_called_class();
         if ($class == "LdapDomain") {
             if (empty($name)) {
-                return static::$dn.'='.$object->getName().','.LdapServer::getBaseDN($object->server);
+                if ($object->server->isSuperadmin()) {
+                    return static::$dn.'='.$object->getName().','.LdapServer::getBaseDN($object->server);
+                } else {
+                    $mydomain = preg_replace('/.*@/', '', $object->server->login);
+                    if ($object->getName() == $mydomain) {
+                        return $object->server->base;
+                    } else {
+                        throw new Exception("Vous n'etes pas autoriser a acceder a cette page");
+                    }
+                }
             } else {
-                return static::$dn.'='.$name.','.LdapServer::getBaseDN($object);
+                if ($object->isSuperadmin()) {
+                    return static::$dn.'='.$name.','.LdapServer::getBaseDN($object);
+                } else {
+                    throw new Exception("Vous n'etes pas autoriser a acceder a cette page");
+                }
             }
         } elseif ($class == "LdapAccount") {
             if (empty($name)) {
@@ -35,7 +48,6 @@ class LdapServer {
     public function __construct($login, $base, $adminDN, $adminPass, $uri='ldap://127.0.0.1') {
         global $conf;
         $this->login = $login;
-        $this->base = $base;
         if (!$this->conn = ldap_connect($uri)) {
             throw new Exception("Impossible de se connecter au serveur LDAP $uri");
         }
@@ -47,8 +59,11 @@ class LdapServer {
         }
         if (in_array($this->login, $conf['admin']['logins'])) {
             $this->superadmin = true;
+            $this->base = $base;
+        } else {
+            $mydomain = preg_replace('/.*@/', '', $login);
+            $this->base = LdapDomain::$dn.'='.$mydomain.','.$base;
         }
-        return $this;
     }
 
     public function login($password) {
@@ -61,21 +76,15 @@ class LdapServer {
 
     public function getDomains() {
         if (count($this->domains) == 0) {
-            if ($this->superadmin) {
-                $sr = ldap_search($this->conn, self::getBaseDN($this), LdapDomain::getClassFilter());
-                $objects = ldap_get_entries($this->conn, $sr);
-                foreach($objects as $object) {
-                    if(!empty($object[LdapDomain::$dn][0])) {
-                        $domain = new LdapDomain($this, $object[LdapDomain::$dn][0]);
-                        array_push($this->domains, $domain);
-                    }
+            $sr = ldap_search($this->conn, self::getBaseDN($this), LdapDomain::getClassFilter());
+            $objects = ldap_get_entries($this->conn, $sr);
+            foreach($objects as $object) {
+                if(!empty($object[LdapDomain::$dn][0])) {
+                    $domain = new LdapDomain($this, $object[LdapDomain::$dn][0]);
+                    array_push($this->domains, $domain);
                 }
-                sort($this->domains);
-            } else {
-                $auid = explode('@', $this->login);
-                $domain = new LdapDomain($this, $auid[1]);
-                array_push($this->domains, $domain);
             }
+            sort($this->domains);
         }
         return $this->domains;
     }
