@@ -12,7 +12,7 @@ include('inc/haut.php');
 include('inc/debut.php');
 
 if (!empty($_POST['cn'])) {
-    $cn = (!empty($_GET['alias'])) ? $alias->getName() : Html::clean(Html::purgeaccents(utf8_decode($_POST['cn']))); 
+    $cn = (!empty($_GET['alias'])) ? $alias->getName() : htmlentities(strip_tags($_POST['cn']),ENT_NOQUOTES); 
     $actif = (!empty($_POST['isactive'])) ? true : false;
     $mailaccept = array_filter($_POST['mailaccept'], function($value) {
         if (!empty($value)) {

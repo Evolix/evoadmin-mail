@@ -11,7 +11,7 @@ include('inc/debut.php');
 
 
 if (!empty($_POST['domain'])) {
-    $domain = Html::clean($_POST['domain']);
+    $domain = htmlentities(strip_tags($_POST['domain']),ENT_NOQUOTES);
 
     print '<div class="container"><form name="del "method="post" action="superadmin.php">';
     print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer le domaine '.$domain.' ?</div>';
@@ -20,11 +20,11 @@ if (!empty($_POST['domain'])) {
 }
 
 if (!empty($_POST['delete'])) {
-    $domain = Html::clean($_POST['delete']);
+    $domain = htmlentities(strip_tags($_POST['delete']),ENT_NOQUOTES);
     print '<div class="container">';
     print '<div class="alert alert-warning" role="alert">Suppression du domaine '.$domain.' ...</div>';
     try {
-        $server->delDomain(Html::clean($_POST['delete']));
+        $server->delDomain($domain);
         print '<div class="alert alert-success" role="alert">Suppression effectu&eacute;.</div>';
     } catch (Exception $e_ad) {
         print '<div class="alert alert-danger" role="alert">'.$e_ad->getMessage().'</div>';

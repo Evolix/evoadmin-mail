@@ -20,8 +20,8 @@ if (!empty($_POST['cn'])) {
 
     print "<div class='container'>";
 
-    $uid = (!empty($_GET['account'])) ? $account->getUid() : Html::clean($_POST['uid']);
-    $cn = Html::justclean(Html::purgeaccents(utf8_decode($_POST['cn'])));
+    $uid = (!empty($_GET['account'])) ? $account->getUid() : htmlentities(strip_tags($_POST['uid']),ENT_NOQUOTES);
+    $cn = htmlentities(strip_tags($_POST['cn']),ENT_NOQUOTES);
     $password = (!empty($_POST['pass1'])) ? $_POST['pass1'] : NULL; 
     $actif = (!empty($_POST['isactive'])) ? true : false;
     $admin = (!empty($_POST['isadmin'])) ? true : false;

@@ -17,7 +17,7 @@ include("inc/haut.php");
 include("inc/debut.php");
 
 if (!empty($_POST['account'])) {
-    $account = Html::clean($_POST['account']);
+    $account = htmlentities(strip_tags($_POST['account']),ENT_NOQUOTES);
 
     print '<div class="container"><form name="del "method="post" action="admin.php?domain='.$domain->getName().'">';
     print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer le compte '.$account.' ?</div>';
@@ -26,7 +26,7 @@ if (!empty($_POST['account'])) {
 }
 
 if (!empty($_POST['alias'])) {
-    $alias = Html::clean($_POST['alias']);
+    $alias = htmlentities(strip_tags($_POST['alias']),ENT_NOQUOTES);
 
     print '<div class="container"><form name="del "method="post" action="admin.php?domain='.$domain->getName().'&viewonly=2">';
     print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer l\'alias '.$alias.' ?</div>';
@@ -35,7 +35,7 @@ if (!empty($_POST['alias'])) {
 }
 
 if (!empty($_POST['delete'])) {
-    $account = Html::clean($_POST['delete']);
+    $account = htmlentities(strip_tags($_POST['delete']),ENT_NOQUOTES);
     print '<div class="container">';
     print '<div class="alert alert-warning" role="alert">Suppression du compte '.$account.' ...</div>';
     try {
@@ -48,7 +48,7 @@ if (!empty($_POST['delete'])) {
 }
 
 if (!empty($_POST['delalias'])) {
-    $alias = Html::clean($_POST['delalias']);
+    $alias = htmlentities(strip_tags($_POST['delalias']),ENT_NOQUOTES);
     print '<div class="container">';
     print '<div class="alert alert-warning" role="alert">Suppression de l\'alias '.$alias.' ...</div>';
     try {

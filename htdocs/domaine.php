@@ -20,14 +20,14 @@ if (!$server->isSuperAdmin()) {
 
 // Ajouter un domaine
 if (!empty($_POST['domain'])) {
-    $domain = Html::clean($_POST['domain']); 
+    $domain = htmlentities(strip_tags($_POST['domain']),ENT_NOQUOTES);
     
     print "<div class='container'>";
     print "<div class=\"alert alert-warning\" role=\"alert\">Ajout en cours du domaine ".$domain." ...</div>";
 
     try {
         $active = (!empty($_POST['isactive'])) ? true : false;
-        $server->addDomain(Html::clean($_POST['domain']), $active);
+        $server->addDomain($domain), $active);
         domain_add($domain);
         print '<div class="alert alert-success" role="alert">Ajout effectu&eacute;.</div>';
         #EvoLog::log("Add domain ".$domain);

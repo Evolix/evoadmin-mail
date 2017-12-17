@@ -17,8 +17,10 @@ if (isset($_SESSION['login'])) {
 
 if (!empty($_POST['login'])) {
     try {
-        $server = new LdapServer(Html::clean($_POST['login']),  LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI);
-        $server->login(Html::clean($_POST['password']));
+        $login = htmlentities(strip_tags($_POST['login']),ENT_NOQUOTES);
+        $password = htmlentities(strip_tags($_POST['password']),ENT_NOQUOTES);
+        $server = new LdapServer($login, LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI);
+        $server->login($password);
         $_SESSION['login'] = $server->getLogin();
         header("location: superadmin.php\n\n");
         exit(0);
