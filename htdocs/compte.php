@@ -213,7 +213,7 @@ if (isset($_GET['account'])) {
 <hr><h5>Cochez les cases pour choisir les autorisations du compte.</h5>
 
 <div class="form-group">
-    <label for="isactive"     class="col-sm-3 control-label">Alias :</label>
+    <label for="isactive"     class="col-sm-3 control-label">Actif :</label>
     <div class="col-sm-7"><input type='checkbox' name='isactive' checked class="form-control move-left" /></div>
     <div class="col-sm-2 control-label"></div>
 </div>
