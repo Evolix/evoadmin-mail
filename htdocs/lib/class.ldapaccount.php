@@ -31,7 +31,7 @@ class LdapAccount extends LdapDomain {
     public function update($name=NULL,$password=NULL,$active=NULL,$admin=NULL,$accountactive=NULL,$courieractive=NULL,$webmailactive=NULL,$authsmtpactive=NULL,$amavisBypassSpamChecks=NULL) {
         $info["cn"] = (!empty($name)) ? $name : $this->name;
         if (!empty($password)) {
-            $info["userPassword"] = $password;
+            $info["userPassword"] = LdapServer::hashPassword($password);
         }
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';

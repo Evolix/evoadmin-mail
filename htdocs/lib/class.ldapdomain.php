@@ -73,11 +73,7 @@ class LdapDomain extends LdapServer {
         if (badname($uid)) {
             throw new Exception("Erreur, <u>$name</u> est un nom invalide.");
         }
-        if (Auth::badpassword($password)) {
-            throw new Exception("Erreur, mot de passe invalide.");
-        }
         $mail = $uid.'@'.$this->getName();
-        $password = "{SSHA}".Ldap::ssha($password);
         $info[LdapAccount::$dn] = $mail;
         $info["cn"] = $name;
         $info["homeDirectory"] = "/home/vmail/" .$this->getName(). "/" .$uid. "/";
@@ -93,7 +89,7 @@ class LdapDomain extends LdapServer {
         $info["webmailActive"] = ($webmailactive) ? 'TRUE' : 'FALSE';
         $info["authsmtpActive"] = ($authsmtpactive) ? 'TRUE' : 'FALSE';
         #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
-        $info["userPassword"] = $password;
+        $info["userPassword"] = LdapServer::hashPassword($password);
 
         if (@ldap_add($this->conn, LdapAccount::getBaseDN($this, $mail), $info)) {
             mail($name, 'Premier message',"Mail d'initialisation du compte.");

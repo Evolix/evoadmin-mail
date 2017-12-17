@@ -45,6 +45,15 @@ class LdapServer {
         }
     }
 
+    static protected function hashPassword($pass) {
+        if (strlen($pass) > 42 || strlen($pass) < 5 || !preg_match('/^([[:graph:]]*)$/',$pass)) {
+            throw new Exception("Mot de passe invalide, voir page d'aide");
+        }
+        mt_srand((double)microtime()*1000000);
+        $salt = mhash_keygen_s2k(MHASH_SHA1, $pass, substr(pack('h*', md5(mt_rand())), 0, 8), 4);
+        return '{SSHA}'.base64_encode(mhash(MHASH_SHA1, $pass.$salt).$salt);
+    }
+
     public function __construct($login, $base, $adminDN, $adminPass, $uri='ldap://127.0.0.1') {
         global $conf;
         $this->login = $login;
