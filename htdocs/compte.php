@@ -232,11 +232,13 @@ if (isset($_GET['account'])) {
 </div>
 
 
+<!--
 <div class="form-group">
     <label for="amavisBypassSpamChecks"     class="col-sm-3 control-label">Désactivation Antispam :</label>
-    <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' <?php if ($conf['evoadmin']['amavisBypassSpamChecks']) print "checked" ?> class="form-control move-left" /></div>
+    <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' <?php //if ($conf['evoadmin']['amavisBypassSpamChecks']) print "checked" ?> class="form-control move-left" /></div>
     <div class="col-sm-2 control-label"></div>
 </div>
+-->
 
 
 <div class="text-center"><button type="submit" class="btn btn-primary" onclick='return submit_add();'>valider</button></div>
