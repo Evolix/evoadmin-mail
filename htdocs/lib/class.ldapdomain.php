@@ -145,6 +145,19 @@ class LdapDomain extends LdapServer {
             throw new Exception("Ce compte n'existe pas !");
         }
     }
+    
+    public function delAlias($name) {
+        $dn = "cn=".$name.",cn=".$this->domain.",".LDAP_BASE;
+        if ($sr = @ldap_search($this->conn, $dn, "(ObjectClass=mailAlias)")) {
+            // Delete alias
+            if (!ldap_delete($this->conn, $dn)) {
+                $error = ldap_error($this->conn);
+                throw new Exception("Erreur dans la suppression de l'alias $name : $error");
+            }
+        } else {
+            throw new Exception("Cet alias n'existe pas !");
+        }
+    }
 
     public function update($active=false) {
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';

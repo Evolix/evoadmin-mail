@@ -25,12 +25,34 @@ if (!empty($_POST['account'])) {
     print '</form></div>';
 }
 
+if (!empty($_POST['alias'])) {
+    $alias = Html::clean($_POST['alias']);
+
+    print '<div class="container"><form name="del "method="post" action="admin.php?domain='.$domain->getName().'&viewonly=2">';
+    print '<div class="alert alert-warning" role="alert">Voulez vous vraiment supprimer l\'alias '.$alias.' ?</div>';
+    print '<div class="alert alert-warning" role="alert"><button type="submit" name="delalias" value="'.$alias.'">Confirmer</button> / <a href="admin.php?domain='.$domain->getName().'&viewonly=2">Annuler</a></div>';
+    print '</form></div>';
+}
+
 if (!empty($_POST['delete'])) {
     $account = Html::clean($_POST['delete']);
     print '<div class="container">';
     print '<div class="alert alert-warning" role="alert">Suppression du compte '.$account.' ...</div>';
     try {
         $domain->delAccount($account);
+        print '<div class="alert alert-success" role="alert">Suppression effectu&eacute;.</div>';
+    } catch (Exception $e) {
+        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
+    }
+    print '</div>';
+}
+
+if (!empty($_POST['delalias'])) {
+    $alias = Html::clean($_POST['delalias']);
+    print '<div class="container">';
+    print '<div class="alert alert-warning" role="alert">Suppression de l\'alias '.$alias.' ...</div>';
+    try {
+        $domain->delAlias($alias);
         print '<div class="alert alert-success" role="alert">Suppression effectu&eacute;.</div>';
     } catch (Exception $e) {
         print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
