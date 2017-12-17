@@ -154,7 +154,7 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
                 } else {
                     print '<td><span class="glyphicon glyphicon-remove"></span></td>';
                 }
-                print '<td>' .getquota($account->getUid(),'user'). '</td>';
+                print '<td>'.$account->getQuota().'</td>';
                 print '<td><button type="submit" name="account" value="'.$account->getUid().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
                 print '</tr>';
             }

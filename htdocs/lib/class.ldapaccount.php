@@ -4,7 +4,7 @@ class LdapAccount extends LdapDomain {
     static $objectClass = array('mailAccount', 'posixAccount', 'organizationalRole');
     static $dn='uid';
 
-    protected $domain,$uid,$name,$active=false,$admin=false,$courier=false,$authsmtp=false;
+    protected $domain,$uid,$name,$active=false,$admin=false,$courier=false,$authsmtp=false,$quota="0M/0M";
     private $aliases=array(),$redirections=array();
 
     public function __construct(LdapDomain $domain, $uid) {
@@ -76,6 +76,10 @@ class LdapAccount extends LdapDomain {
 
     public function isAuthSmtp() {
         return $this->authsmtp;
+    }
+
+    public function getQuota() {
+        return $this->quota;
     }
 
     public function __destruct() {
