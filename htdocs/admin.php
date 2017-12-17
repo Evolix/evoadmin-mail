@@ -84,7 +84,6 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
                 </select>
             </div>
         </form>
-        <form name="del" method="post" action="admin.php?domain=<?php print $domain->getName(); ?>">
     <?php
         }
 
@@ -92,8 +91,9 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
 
     ?>
 
-            <h2>Liste des comptes :</h2><hr>
+        <h2>Liste des comptes :</h2><hr>
 
+        <form name="del" method="post" action="admin.php?domain=<?php print $domain->getName(); ?>">
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
@@ -136,17 +136,19 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
                 print '<td><button type="submit" name="account" value="'.$account->getUid().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
                 print '</tr>';
             }
-            print "</tbody></table>";
+            print "</tbody></table></form>";
        } elseif ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) {
 
     ?>
 
-             <h2>Liste des alias/groupe de diffusion&nbsp;:</h2>
+        <h2>Liste des alias/groupe de diffusion&nbsp;:</h2>
 
+        <form name="del" method="post" action="admin.php?domain=<?php print $domain->getName(); ?>&viewonly=2">
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
                 <th><strong>Nom de l'alias/groupe de diffusion</strong></th>
+                <th width="100px">Actif</th>
                 <th width="50px">Suppr</th>
                 </tr>
             </thead>
@@ -156,14 +158,19 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
         <?php
             $aliases = $domain->getAlias();
             foreach ($aliases as $alias) {
-                print '<tr><td style="text-align:left;"><a href="alias.php?domain='.$domain->getName().'&view='.$alias. '">' .$alias. '</a></td>';
-                print '<td><a href="alias.php?domain='.$domain->getName().'&del=' .$alias. '"><span class="glyphicon glyphicon-trash"></span></a></td></tr>';
+                print '<tr><td style="text-align:left;"><a href="alias.php?domain='.$domain->getName().'&alias='.$alias->getName(). '">' .$alias->getname(). '</a></td>';
+                if ($alias->isActive()) {
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                } else {
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                }
+                print '<td><button type="submit" name="alias" value="'.$alias->getName().'"><span class="glyphicon glyphicon-trash"></span></button></td>';
+                print '</tr>';
             }
+            print "</tbody></table></form>";
         }
     ?>
 
-</table>
-</form>
 </div>
 
 <?php include("inc/fin.php"); ?>

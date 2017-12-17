@@ -63,14 +63,17 @@ class LdapDomain extends LdapServer {
         global $conf;
         if (count($this->alias) == 0) {
             if (! $conf['domaines']['onlyone']) {
-                $rdn = ($conf['evoadmin']['version'] <= 2) ? "cn=" .$this->domain. "," .LDAP_BASE : "domain=" .$this->domain. "," .LDAP_BASE;
+                $rdn = ($conf['evoadmin']['version'] > 2) ? "cn=" .$this->domain. "," .LDAP_BASE : "domain=" .$this->domain. "," .LDAP_BASE;
             } else {
                 $rdn = "ou=people," .LDAP_BASE;
             }
             $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAlias)");
-            $info = ldap_get_entries($this->conn, $sr);
-            for ($i=0;$i<$info["count"];$i++) {
-                array_push($this->alias,$info[$i]["cn"][0]);
+            $objects = ldap_get_entries($this->conn, $sr);
+            foreach($objects as $object) {
+                if(!empty($object["cn"][0])) {
+                    $alias = new LdapAlias($this, $object["cn"][0]);
+                    array_push($this->alias, $alias);
+                }
             }
         }
         return $this->alias;
@@ -112,6 +115,21 @@ class LdapDomain extends LdapServer {
         } else {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur dans l'ajout du compte : $error");
+        }
+    }
+
+    public function addAlias($name,$active=false,$mailaccept=array(),$maildrop=array()) {
+        $info["cn"] = $name;
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
+        $info["objectclass"][0] = "mailAlias";
+        $info["mailacceptinggeneralid"] = $mailaccept;
+        $info["maildrop"] = array_filter($maildrop, function($value) {
+            return filter_var($value, FILTER_VALIDATE_EMAIL);
+        });
+
+        if (!@ldap_add($this->conn, "cn=".$name.",cn=".$this->domain.",".LDAP_BASE, $info)) {
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur dans l'ajout de l'alias : $error");
         }
     }
 

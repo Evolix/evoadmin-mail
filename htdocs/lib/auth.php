@@ -14,6 +14,9 @@ if (empty($_SESSION['login'])) {
             if (!empty($_GET['account'])) {
                 $account = new LdapAccount($domain, Html::clean($_GET['account']));
             }
+            if (!empty($_GET['alias'])) {
+                $alias = new LdapAlias($domain, Html::clean($_GET['alias']));
+            }
         }
     } catch (Exception $e) {
         print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
