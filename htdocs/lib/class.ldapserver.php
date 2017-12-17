@@ -102,7 +102,7 @@ class LdapServer {
         $info[LdapDomain::$dn]=$name;
         $info["objectclass"] = LdapDomain::$objectClass;
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
-        $info["gidNumber"]= getfreegid();
+        $info["gidNumber"] = $this->getFree('gidnumber');
 
         if (!@ldap_add($this->conn, LdapDomain::getBaseDN($this, $name), $info)) {
             $error = ldap_error($this->conn);
@@ -129,6 +129,17 @@ class LdapServer {
         } else {
             throw new Exception("Ce domaine n'existe pas !");
         }
+    }
+
+    protected function getFree($type) {
+        $sr = ldap_search($this->conn, self::getBaseDN($this), '('.$type.'=*)');
+        $info = ldap_get_entries($this->conn, $sr);
+        $id = 1;
+        foreach ($info as $entry) {
+            $id = ($entry[$type][0] >= $id) ? (int) $entry[$type][0] : $id;
+        }
+        $id++; 
+        return $id;
     }
 
     public function isSuperAdmin() {

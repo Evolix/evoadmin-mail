@@ -5,7 +5,7 @@ class LdapDomain extends LdapServer {
     static $dn='cn';
 
     protected $domain,$active=false,$server;
-    private $quota="0M/0M",$mail_accounts=array(),$mail_alias=array(),$posix_accounts=array(),$smb_accounts=array(),$accounts=array(),$alias=array();
+    private $gid,$quota="0M/0M",$mail_accounts=array(),$mail_alias=array(),$posix_accounts=array(),$smb_accounts=array(),$accounts=array(),$alias=array();
 
     public function __construct(LdapServer $server, $name) {
         $this->server = $server;
@@ -19,6 +19,7 @@ class LdapDomain extends LdapServer {
                 if (!empty($object['objectclass'])) {
                     if (in_array(self::$objectClass[0], $object['objectclass'])) {
                         $this->active = ($object['isactive'][0] == "TRUE") ? true : false;
+                        $this->gid = $object['gidnumber'][0];
                     }
                     if (in_array("posixAccount",$object['objectclass'])) {
                         array_push($this->posix_accounts,$object['uid'][0]);
@@ -77,8 +78,8 @@ class LdapDomain extends LdapServer {
         $info[LdapAccount::$dn] = $mail;
         $info["cn"] = $name;
         $info["homeDirectory"] = "/home/vmail/" .$this->getName(). "/" .$uid. "/";
-        $info["uidNumber"]= $conf['unix']['uid'];
-        $info["gidNumber"]= getgid($this->getName());
+        $info["uidNumber"] = $conf['unix']['uid'];
+        $info["gidNumber"] = $this->getGid();
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
         $info["objectclass"] = LdapAccount::$objectClass;
@@ -151,6 +152,10 @@ class LdapDomain extends LdapServer {
 
     public function getName() {
         return $this->domain;
+    }
+
+    public function getGid() {
+        return $this->gid;
     }
 
     public function isActive() {
