@@ -48,8 +48,7 @@ class LdapServer {
         global $conf;
         if (count($this->domains) == 0) {
             if ($this->superadmin) {
-                $filter = ($conf['evoadmin']['version'] == 1) ? '(objectClass=ldapDomain)' : '(objectClass=postfixDomain)';
-                $sr = ldap_search($this->conn, LDAP_BASE, $filter);
+                $sr = ldap_search($this->conn, LDAP_BASE, LdapDomain::getClassFilter());
                 $objects = ldap_get_entries($this->conn, $sr);
                 foreach($objects as $object) {
                     if(!empty($object["cn"][0])) {
@@ -70,9 +69,7 @@ class LdapServer {
     public function addDomain($name,$active=false) {
         global $conf;
         $info["cn"]=$name;
-        $info["objectclass"][0] = ($conf['evoadmin']['version'] == 1) ? 'ldapDomain' : 'postfixDomain';
-        $info["objectclass"][1] = "posixGroup";
-        $info["postfixTransport"] = "virtual:";
+        $info["objectclass"] = LdapDomain::$objectClass;
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["gidNumber"]= getfreegid();
 
@@ -87,7 +84,7 @@ class LdapServer {
             $objects = ldap_get_entries($this->conn, $sr);
             // Delete aliases
             foreach($objects as $object) {
-                if (!empty($object['objectclass']) && !in_array("postfixDomain", $object['objectclass']) && in_array("mailAlias", $object['objectclass'])) {
+                if (!empty($object['objectclass']) && !in_array(LdapDomain::$objectClass[0], $object['objectclass']) && in_array(LdapAlias::$objectClass[0], $object['objectclass'])) {
                     $dn = "cn=".$object['cn'][0]. ",cn=".$name.",".LDAP_BASE;
                     if (!ldap_delete($this->conn, $dn)) {
                         $error = ldap_error($this->conn);
@@ -97,7 +94,7 @@ class LdapServer {
             }
             // Delete accounts
             foreach($objects as $object) {
-                if (!empty($object['objectclass']) && !in_array("postfixDomain", $object['objectclass']) && !in_array("mailAlias", $object['objectclass'])) {
+                if (!empty($object['objectclass']) && !in_array(LdapDomain::$objectClass[0], $object['objectclass']) && !in_array(LdapAlias::$objectClass[0], $object['objectclass'])) {
                     $dn = "uid=".$object['cn'][0]. ",cn=".$name.",".LDAP_BASE;
                     if (!ldap_delete($this->conn, $dn)) {
                         $error = ldap_error($this->conn);

@@ -1,10 +1,16 @@
 <?php
 
 class LdapDomain extends LdapServer {
+    static $objectClass = array('postfixDomain', 'posixGroup');
+
+    static public function getClassFilter() {
+        return '(ObjectClass='.self::$objectClass[0].')';
+    }
+
     protected $domain,$active=false;
     private $quota="0M/0M",$mail_accounts=array(),$mail_alias=array(),$posix_accounts=array(),$smb_accounts=array(),$accounts=array(),$alias=array();
 
-    public function __construct($server, $name) {
+    public function __construct(LdapServer $server, $name) {
         $this->conn = $server->conn;
         $this->login = $server->login;
         $this->superadmin = $server->superadmin;
@@ -16,16 +22,16 @@ class LdapDomain extends LdapServer {
 
             foreach($objects as $object) {
                 if (!empty($object['objectclass'])) {
-                    if (in_array("postfixDomain",$object['objectclass'])) {
+                    if (in_array(self::$objectClass[0], $object['objectclass'])) {
                         $this->active = ($object['isactive'][0] == "TRUE") ? true : false;
                     }
                     if (in_array("posixAccount",$object['objectclass'])) {
                         array_push($this->posix_accounts,$object['uid'][0]);
                     }
-                    if (in_array("mailAccount",$object['objectclass'])) {
+                    if (in_array(LdapAccount::$objectClass[0], $object['objectclass'])) {
                         array_push($this->mail_accounts,$object['uid'][0]);
                     }
-                    if (in_array("mailAlias",$object['objectclass'])) {
+                    if (in_array(LdapAlias::$objectClass[0], $object['objectclass'])) {
                         array_push($this->mail_alias,$object['cn'][0]);
                     }
                     if (in_array("sambaSamAccount",$object['objectclass'])) {
@@ -47,7 +53,7 @@ class LdapDomain extends LdapServer {
             } else {
                 $rdn = "ou=people," .LDAP_BASE;
             }
-            $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAccount)");
+            $sr = ldap_search($this->conn, $rdn, LdapAccount::getClassfilter());
             $objects = ldap_get_entries($this->conn, $sr);
             foreach($objects as $object) {
                 if(!empty($object["uid"][0])) {
@@ -67,7 +73,7 @@ class LdapDomain extends LdapServer {
             } else {
                 $rdn = "ou=people," .LDAP_BASE;
             }
-            $sr = ldap_search($this->conn, $rdn, "(objectClass=mailAlias)");
+            $sr = ldap_search($this->conn, $rdn, LdapAlias::getClassFilter());
             $objects = ldap_get_entries($this->conn, $sr);
             foreach($objects as $object) {
                 if(!empty($object["cn"][0])) {
@@ -96,10 +102,7 @@ class LdapDomain extends LdapServer {
         $info["gidNumber"]= getgid($this->getName());
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
-        $info["objectclass"][0] = "posixAccount";
-        $info["objectclass"][1] = "organizationalRole";
-        $info["objectclass"][2] = "mailAccount";
-        #$info["objectclass"][3] = "amavisAccount";
+        $info["objectclass"] = LdapAccount::$objectClass;
         $info["maildrop"] = $mail;
         $info["mailacceptinggeneralid"] = $mail;
         $info["accountActive"] = ($accountactive) ? 'TRUE' : 'FALSE';
@@ -121,7 +124,7 @@ class LdapDomain extends LdapServer {
     public function addAlias($name,$active=false,$mailaccept=array(),$maildrop=array()) {
         $info["cn"] = $name;
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
-        $info["objectclass"][0] = "mailAlias";
+        $info["objectclass"] = LdapAlias::$objectClass;
         $info["mailacceptinggeneralid"] = $mailaccept;
         $info["maildrop"] = array_filter($maildrop, function($value) {
             return filter_var($value, FILTER_VALIDATE_EMAIL);
@@ -135,7 +138,7 @@ class LdapDomain extends LdapServer {
 
     public function delAccount($uid) {
         $dn = "uid=".$uid.",cn=".$this->domain.",".LDAP_BASE;
-        if ($sr = @ldap_search($this->conn, $dn, "(ObjectClass=mailAccount)")) {
+        if ($sr = @ldap_search($this->conn, $dn, LdapAccount::getClassFilter())) {
             // Delete account
             if (!ldap_delete($this->conn, $dn)) {
                 $error = ldap_error($this->conn);
@@ -148,7 +151,7 @@ class LdapDomain extends LdapServer {
     
     public function delAlias($name) {
         $dn = "cn=".$name.",cn=".$this->domain.",".LDAP_BASE;
-        if ($sr = @ldap_search($this->conn, $dn, "(ObjectClass=mailAlias)")) {
+        if ($sr = @ldap_search($this->conn, $dn, LdapAlias::getClassFilter())) {
             // Delete alias
             if (!ldap_delete($this->conn, $dn)) {
                 $error = ldap_error($this->conn);

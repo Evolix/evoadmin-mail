@@ -1,15 +1,21 @@
 <?php
 
 class LdapAlias extends LdapDomain {
+    static $objectClass = array('mailAlias');
+
+    static public function getClassFilter() {
+        return '(ObjectClass='.self::$objectClass[0].')';
+    }
+
     protected $domain,$name,$active=false;
     private $aliases=array(),$redirections=array();
 
-    public function __construct($domain, $name) {
+    public function __construct(LdapDomain $domain, $name) {
         $this->conn = $domain->conn;
         $this->domain = $domain->getName();
 
         $this->name = $name;
-        if ($sr = @ldap_search($this->conn, "cn=".$name.",cn=".$this->domain.",".LDAP_BASE, "(ObjectClass=mailAlias)")) {
+        if ($sr = @ldap_search($this->conn, "cn=".$name.",cn=".$this->domain.",".LDAP_BASE, self::getClassFilter())) {
             $objects = ldap_get_entries($this->conn, $sr);
             $object = $objects[0];
             $this->active = ($object['isactive'][0] == 'TRUE') ? true : false;
