@@ -12,7 +12,7 @@ include('inc/haut.php');
 include('inc/debut.php');
 
 if (!empty($_POST['cn'])) {
-    $cn = Html::clean(Html::purgeaccents(utf8_decode($_POST['cn']))); 
+    $cn = (!empty($_GET['alias'])) ? $alias->getName() : Html::clean(Html::purgeaccents(utf8_decode($_POST['cn']))); 
     $actif = (!empty($_POST['isactive'])) ? true : false;
     $mailaccept = array_filter($_POST['mailaccept'], function($value) {
         if (!empty($value)) {
@@ -54,7 +54,9 @@ if (isset($_GET['alias'])) {
     print "<center>";
     print '<h4>Modification de l\'alias '.$alias->getName().'</h4>';
 
-    print '<form name="add" action="alias.php?domain='.$domain->getName().'&alias='.$alias->getName().'&modif=yes" method="post">';
+    print '<form name="add" action="alias.php?domain='.$domain->getName().'&alias='.$alias->getName().'" method="post">';
+
+    print '<input type="hidden" name="cn" value="'.$alias->getName().'"/>';
 
     print "<table>";
 

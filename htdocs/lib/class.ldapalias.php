@@ -23,6 +23,19 @@ class LdapAlias extends LdapDomain {
     public function isActive() {
         return $this->active;
     }
+
+    public function update($active=false,$mailaccept=array(),$maildrop=array()) {
+        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
+        $info["mailacceptinggeneralid"] = $mailaccept;
+        $info["maildrop"] = array_filter($maildrop, function($value) {
+            return filter_var($value, FILTER_VALIDATE_EMAIL);
+        });
+
+        if (!@ldap_mod_replace($this->conn, "cn=".$this->getName().",cn=".$this->domain.",".LDAP_BASE, $info)) {
+            $error = ldap_error($this->conn);
+            throw new Exception("Erreur pendant la modification de l'alias : $error");
+        }
+    }
    
     public function getName() {
         return $this->name;   
