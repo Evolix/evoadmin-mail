@@ -12,7 +12,7 @@
                 if ($server->isSuperAdmin()) { echo '<li><a href="domaine.php">Ajout Domaine</a></li>'; }
             ?>
             <li><a href="auth.php">Déconnexion</a></li>
-        </up>
+        </ul>
         <p class="navbar-text navbar-right">
         <?php
             print "<em>".$server->getLogin()."</em>";
