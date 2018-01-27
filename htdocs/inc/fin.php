@@ -13,7 +13,7 @@
         $('.table').DataTable({
             "language": {
                 "emptyTable":     "Pas de données disponibles",
-                "info":           "Entrées _START_ à _END_ sur _TOTAL_ entries",
+                "info":           "Entrées _START_ à _END_ sur _TOTAL_ entrées",
                 "infoEmpty":      "Entrées 0 à 0 sur 0",
                 "infoFiltered":   "(filtré sur un total de _MAX_ entrées)",
                 "infoPostFix":    "",
