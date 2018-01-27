@@ -1,4 +1,2 @@
 *.swp
-htdocs/config/conf.php
-htdocs/config/connect.php
-htdocs/lib/hook.php
+config/config.ini

@@ -68,9 +68,7 @@ if (isset($_GET['alias'])) {
     foreach($alias->getAliases() as $mailaccept) {
         print "<tr><td align='right'>Mail accept&eacute; en entr&eacute;e :</td>
             <td align='left'><input type='text' name='mailaccept[]' size='30' value='".$mailaccept."' />";
-            if (!$conf['domaines']['onlyone']) {
                 print "@" .$domain->getName();
-            }
 
             print "</td></tr>";
     }
@@ -78,25 +76,19 @@ if (isset($_GET['alias'])) {
     print "<tr><td align='right'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e :</td>
         <td align='left'><input type='text' name='mailaccept[]'
         size='30'/>";
-    if (!$conf['domaines']['onlyone']) {
         print "@" .$domain->getName();
-    }
     print "</td></tr>";
 
     print "<tr><td align='right'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e :</td>
         <td align='left'><input type='text' name='mailaccept[]'
         size='30'/>";
-    if (!$conf['domaines']['onlyone']) {
         print "@" .$domain->getName();
-    }
     print "</td></tr>";
 
     print "<tr><td align='right'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e :</td>
         <td align='left'><input type='text' name='mailaccept[]'
         size='30'/>";
-    if (!$conf['domaines']['onlyone']) {
         print "@" .$domain->getName();
-    }
     print "</td></tr>";
 
     foreach($alias->getRedirections() as $red) {
@@ -152,45 +144,35 @@ if (isset($_GET['alias'])) {
 <tr><td align="right">Alias :</td>
 <td align="left"><input type='text' name='mailaccept[]'/>
 <?php
-    if (!$conf['domaines']['onlyone']) {
        print "@" .$domain->getName();
-    }
 ?>
 </td></tr>
 
 <tr><td align="right">Alias :</td>
 <td align="left"><input type='text' name='mailaccept[]'/>
 <?php
-    if (!$conf['domaines']['onlyone']) {
        print "@" .$domain->getName();
-    }
 ?>
 </td></tr>
 
 <tr><td align="right">Alias :</td>
 <td align="left"><input type='text' name='mailaccept[]'/>
 <?php
-    if (!$conf['domaines']['onlyone']) {
        print "@" .$domain->getName();
-    }
 ?>
 </td></tr>
 
 <tr><td align="right">Alias :</td>
 <td align="left"><input type='text' name='mailaccept[]'/>
 <?php
-    if (!$conf['domaines']['onlyone']) {
        print "@" .$domain->getName();
-    }
 ?>
 </td></tr>
 
 <tr><td align="right">Alias :</td>
 <td align="left"><input type='text' name='mailaccept[]'/>
 <?php
-    if (!$conf['domaines']['onlyone']) {
        print "@" .$domain->getName();
-    }
 ?>
 </td></tr>
 

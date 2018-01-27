@@ -4,7 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta name="robots" content="noindex,nofollow"/>
         <meta name="referrer" content="same-origin"/>
-        <title><?php print $conf['html']['title']; ?></title>
+        <title><?php print $config['global']['name']; ?></title>
         <link rel="stylesheet" href="css/main.css" type="text/css"/>
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous"/>

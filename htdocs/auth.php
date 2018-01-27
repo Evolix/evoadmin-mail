@@ -19,7 +19,7 @@ if (!empty($_POST['login'])) {
     try {
         $login = htmlentities(strip_tags($_POST['login']),ENT_NOQUOTES);
         $password = htmlentities(strip_tags($_POST['password']),ENT_NOQUOTES);
-        $server = new LdapServer($login, LDAP_BASE, LDAP_ADMIN_DN, LDAP_ADMIN_PASS, LDAP_URI);
+        $server = new LdapServer($login, $config['ldap']);
         $server->login($password);
         $_SESSION['login'] = $server->getLogin();
         header("location: superadmin.php\n\n");

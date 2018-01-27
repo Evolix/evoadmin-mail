@@ -76,9 +76,7 @@ if (isset($_GET['account'])) {
         print "<label for='mailaccept[]' class='col-sm-3 control-label'>Mail accept&eacute; en entr&eacute;e : </label>";
         print "<div class='col-sm-7'><input type='text' name='mailaccept[]' value='".$aliase."' class='form-control' /></div>";
         print "<div class='col-sm-2 control-label'>";
-            if (!$conf['domaines']['onlyone']) {
                 print "@" .$domain->getName();
-            }
         print "</div>";
         print "</div>";
 
@@ -88,9 +86,7 @@ if (isset($_GET['account'])) {
     print "<label for='mailaccept[]' class='col-sm-3 control-label'>Cr&eacute;ation d'un nouveau mail accept&eacute; en entr&eacute;e : </label>";
     print "<div class='col-sm-7'><input type='text' name='mailaccept[]' value='' class='form-control' /></div>";
     print "<div class='col-sm-2 control-label'>";
-        if (!$conf['domaines']['onlyone']) {
             print "@" .$domain->getName();
-        }
     print "</div>";
     print "</div>";
     
@@ -165,7 +161,7 @@ if (isset($_GET['account'])) {
 <div class="form-group">
     <label for="uid" class="col-sm-3 control-label">Login [*] :</label>
     <div class="col-sm-7"><input type="text" name="uid" class="form-control" /></div>
-    <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$domain->getName(); } ?></div>
+    <div class="col-sm-2 control-label"><?php print "@" .$domain->getName(); ?></div>
 </div>
 
 <div class="form-group">
@@ -190,19 +186,19 @@ if (isset($_GET['account'])) {
 <div class="form-group">
     <label for="alias"     class="col-sm-3 control-label">Alias :</label>
     <div class="col-sm-7"><input type="text" name="alias[0]" class="form-control" /></div>
-    <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$domain->getName(); } ?></div>
+    <div class="col-sm-2 control-label"><?php print "@" .$domain->getName(); ?></div>
 </div>
 
 <div class="form-group">
     <label for="alias[1]"     class="col-sm-3 control-label">Alias :</label>
     <div class="col-sm-7"><input type="text" name="alias[1]" class="form-control" /></div>
-    <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$domain->getName(); } ?></div>
+    <div class="col-sm-2 control-label"><?php print "@" .$domain->getName(); ?></div>
 </div>
 
 <div class="form-group">
     <label for="alias[2]"     class="col-sm-3 control-label">Alias :</label>
     <div class="col-sm-7"><input type="text" name="alias[2]" class="form-control" /></div>
-    <div class="col-sm-2 control-label"><?php if (!$conf['domaines']['onlyone']) { print "@" .$domain->getName(); } ?></div>
+    <div class="col-sm-2 control-label"><?php print "@" .$domain->getName(); ?></div>
 </div>
 
 <hr><h5>Cochez les cases pour choisir les autorisations du compte.</h5>
@@ -227,7 +223,7 @@ if (isset($_GET['account'])) {
 
 <div class="form-group">
     <label for="authsmtpactive"     class="col-sm-3 control-label">Authentification SMTP :</label>
-    <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' <?php if ($conf['evoadmin']['useauthsmtp']) print "checked" ?> class="form-control move-left" /></div>
+    <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' class="form-control move-left" /></div>
     <div     class="col-sm-3 control-label"></div>
 </div>
 
@@ -235,7 +231,7 @@ if (isset($_GET['account'])) {
 <!--
 <div class="form-group">
     <label for="amavisBypassSpamChecks"     class="col-sm-3 control-label">Désactivation Antispam :</label>
-    <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' <?php //if ($conf['evoadmin']['amavisBypassSpamChecks']) print "checked" ?> class="form-control move-left" /></div>
+    <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' class="form-control move-left" /></div>
     <div class="col-sm-2 control-label"></div>
 </div>
 -->

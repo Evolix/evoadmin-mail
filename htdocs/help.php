@@ -30,7 +30,7 @@ include('inc/debut.php');
 
     <hr><h2>FAQ</h2>
 
-    Cette Foire-Aux-Questions (FAQ) devrait r&eacute;pondre &agrave; vos questions. Au fil du temps, de nouvelles questions/r&eacute;ponses seront ajout&eacute;es. Posez vos questions &agrave; <a href="mailto:<?php print $conf['admin']['mail'];?>"><?php print $conf['admin']['mail'];?></a>.
+    Cette Foire-Aux-Questions (FAQ) devrait r&eacute;pondre &agrave; vos questions. Au fil du temps, de nouvelles questions/r&eacute;ponses seront ajout&eacute;es. Posez vos questions &agrave; <a href="mailto:<?php print $config['global']['mail'];?>"><?php print $config['global']['mail'];?></a>.
 
     <p>Qu'est-ce qu'une syntaxe valide pour un compte mail ?</p>
 

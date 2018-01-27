@@ -84,9 +84,6 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
     <a href="compte.php?domain=<?php print $domain->getName() ?>"><button type="button" class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
 
     <?php
-        // only for mail mode
-        if (($conf['admin']['what'] == 1) || ($conf['admin']['what'] == 3)) {
-
         $viewonly1= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "" : "selected='selected'";
         $viewonly2= ( (isset($_GET['viewonly'])) && ($_GET['viewonly']==2) ) ? "selected='selected'" : "";
     ?>
@@ -105,7 +102,6 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
             </div>
         </form>
     <?php
-        }
 
         if ( (!isset($_GET['viewonly'])) || ($_GET['viewonly']==1) ) {
 
