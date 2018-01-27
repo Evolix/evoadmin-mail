@@ -6,3 +6,5 @@ spl_autoload_register(function ($class) {
 });
 
 $config = parse_ini_file('../config/config.ini', true);
+
+Logger::configure($config['log']);
