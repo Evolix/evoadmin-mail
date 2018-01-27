@@ -113,10 +113,10 @@ class LdapServer {
 
         if (!@ldap_add($this->conn, LdapDomain::getBaseDN($this, $name), $info)) {
             $error = ldap_error($this->conn);
-            Logger::error('error when adding domain '.$name.' by '.$this->login);
+            Logger::error('error when adding domain '.$name, $this->login);
             throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
-        Logger::info('domain '.$name.' added by '.$this->login);
+        Logger::info('domain '.$name.' added', $this->login);
         //domainnotify($name);
     }
 
@@ -134,12 +134,12 @@ class LdapServer {
             $dn = LdapDomain::getBaseDN($this, $name);
             if (!ldap_delete($this->conn, $dn)) {
                 $error = ldap_error($this->conn);
-                Logger::error('error when delete domain '.$name.' by '.$this->login);
+                Logger::error('error when delete domain '.$name, $this->login);
                 throw new Exception("Erreur dans la suppression du domaine $dn : $error");
             }
-            Logger::info('domain '.$name.' deleted by '.$this->login);
+            Logger::info('domain '.$name.' deleted ', $this->login);
         } else {
-            Logger::error($this->login.' try to delete an unknow domain named '.$name);
+            Logger::error('trying to delete an unknow domain '.$name, $this->login);
             throw new Exception("Ce domaine n'existe pas !");
         }
     }
