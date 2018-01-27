@@ -78,9 +78,16 @@ class LdapServer {
     public function login($password) {
         $sr=ldap_search($this->conn, self::getBaseDN($this), "(&(uid=".$this->login.")(isAdmin=TRUE))");
         $info = ldap_get_entries($this->conn, $sr);
-        if (!$info['count'] || !@ldap_bind($this->conn, $info[0]['dn'], $password)) {
+        if (!$info['count']) {
+            Logger::error('invalid login '.$this->login);
             throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
         }
+
+        if (!@ldap_bind($this->conn, $info[0]['dn'], $password)) {
+            Logger::error('invalid password for user '.$this->login);
+            throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
+        }
+        Logger::info($this->login.' successfully logged in');
     }
 
     public function getDomains() {
@@ -106,8 +113,10 @@ class LdapServer {
 
         if (!@ldap_add($this->conn, LdapDomain::getBaseDN($this, $name), $info)) {
             $error = ldap_error($this->conn);
+            Logger::error('error when adding domain '.$name.' by '.$this->login);
             throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
+        Logger::info('domain '.$name.' added by '.$this->login);
         //domainnotify($name);
     }
 
@@ -125,9 +134,12 @@ class LdapServer {
             $dn = LdapDomain::getBaseDN($this, $name);
             if (!ldap_delete($this->conn, $dn)) {
                 $error = ldap_error($this->conn);
+                Logger::error('error when delete domain '.$name.' by '.$this->login);
                 throw new Exception("Erreur dans la suppression du domaine $dn : $error");
             }
+            Logger::info('domain '.$name.' deleted by '.$this->login);
         } else {
+            Logger::error($this->login.' try to delete an unknow domain named '.$name);
             throw new Exception("Ce domaine n'existe pas !");
         }
     }
