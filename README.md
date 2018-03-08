@@ -42,6 +42,6 @@ vagrant rsync-auto
 
 ## License
 
-Evoadmin-mail are in GPLv2+, see [LICENSE](LICENSE).
+This project is an [Evolix](https://evolix.com) project and is licensed under GPLv2+, see the [LICENSE](LICENSE) file for details.
 
 Evolix trademark and logo are not freely reusable and are protected by copyright.
