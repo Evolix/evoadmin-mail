@@ -95,8 +95,7 @@ class LdapDomain extends LdapServer {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur dans l'ajout du compte : $error");
         }
-        mail($mail, 'Premier message',"Mail d'initialisation du compte.");
-        //mailnotify($info,$this->getname(),$password);
+        MailNotify::addAccount($this->domain, $mail, $name, $password);
     }
 
     public function addAlias($name,$active=false,$mailaccept=array(),$maildrop=array()) {

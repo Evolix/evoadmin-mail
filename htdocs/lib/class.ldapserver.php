@@ -117,7 +117,7 @@ class LdapServer {
             throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
         Logger::info('domain '.$name.' added', $this->login);
-        //domainnotify($name);
+        MailNotify::addDomain($name);
     }
 
     public function delDomain($name) {
