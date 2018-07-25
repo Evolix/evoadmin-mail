@@ -79,15 +79,15 @@ class LdapServer {
         $sr=ldap_search($this->conn, self::getBaseDN($this), "(&(uid=".$this->login.")(isAdmin=TRUE))");
         $info = ldap_get_entries($this->conn, $sr);
         if (!$info['count']) {
-            Logger::error('invalid login '.$this->login);
+            Logger::error('Invalid login for '.$this->login);
             throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
         }
 
         if (!@ldap_bind($this->conn, $info[0]['dn'], $password)) {
-            Logger::error('invalid password for user '.$this->login);
+            Logger::error('Invalid password for '.$this->login);
             throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
         }
-        Logger::info($this->login.' successfully logged in');
+        Logger::info('Accepted login for '.$this->login.'');
     }
 
     public function getDomains() {
@@ -113,10 +113,10 @@ class LdapServer {
 
         if (!@ldap_add($this->conn, LdapDomain::getBaseDN($this, $name), $info)) {
             $error = ldap_error($this->conn);
-            Logger::error('error when adding domain '.$name, $this->login);
+            Logger::error('Error when adding domain '.$name, $this->login);
             throw new Exception("Erreur dans l'ajout du domaine : $error");
         }
-        Logger::info('domain '.$name.' added', $this->login);
+        Logger::info('Domain '.$name.' added', $this->login);
         MailNotify::addDomain($name);
     }
 
@@ -134,12 +134,12 @@ class LdapServer {
             $dn = LdapDomain::getBaseDN($this, $name);
             if (!ldap_delete($this->conn, $dn)) {
                 $error = ldap_error($this->conn);
-                Logger::error('error when delete domain '.$name, $this->login);
+                Logger::error('Error when delete domain '.$name, $this->login);
                 throw new Exception("Erreur dans la suppression du domaine $dn : $error");
             }
-            Logger::info('domain '.$name.' deleted ', $this->login);
+            Logger::info('Domain '.$name.' deleted ', $this->login);
         } else {
-            Logger::error('trying to delete an unknow domain '.$name, $this->login);
+            Logger::error('Trying to delete an unknow domain '.$name, $this->login);
             throw new Exception("Ce domaine n'existe pas !");
         }
     }

@@ -19,6 +19,7 @@ require_once("/home/evoadmin-mail/www/htdocs/config/connect.php");
 [global]
 name = "<?php echo $conf['html']['title']; ?>";
 mail = "<?php echo $conf['admin']['mail']; ?>"
+log_level = error
 
 [ldap]
 host = "127.0.0.1"
@@ -31,8 +32,3 @@ foreach ($conf['admin']['logins'] as $admin) {
         echo "superadmin[] = \"$admin\"";
 }
 ?>
-
-
-[log]
-file = "../../log/evoadmin-mail.log"
-level = error
