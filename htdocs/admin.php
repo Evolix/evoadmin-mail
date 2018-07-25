@@ -117,6 +117,7 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
                     <th width="100px">Actif</th>
                     <th width="100px">Admin</th>
                     <th width="100px">POP / IMAP</th>
+                    <th width="100px">Webmail</th>
                     <th width="100px">Auth SMTP</th>
                     <th>Quota</th>
                     <th width="50px">Suppr</th>
@@ -139,6 +140,11 @@ if (!empty($_POST['isactive']) && $server->isSuperAdmin()) {
                     print '<td><span class="glyphicon glyphicon-remove"></span></td>';
                 }
                 if ($account->isCourier()) {
+                    print '<td><span class="glyphicon glyphicon-ok"></span></td>';
+                } else {
+                    print '<td><span class="glyphicon glyphicon-remove"></span></td>';
+                }
+                if ($account->isWebmail()) {
                     print '<td><span class="glyphicon glyphicon-ok"></span></td>';
                 } else {
                     print '<td><span class="glyphicon glyphicon-remove"></span></td>';

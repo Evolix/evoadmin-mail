@@ -19,6 +19,7 @@ class LdapAccount extends LdapDomain {
             $this->active = ($object['isactive'][0] == 'TRUE') ? true : false;
             $this->admin = ($object['isadmin'][0] == 'TRUE') ? true : false;
             $this->courier = ($object['courieractive'][0] == 'TRUE') ? true : false;
+            $this->webmail = ($object['webmailactive'][0] == 'TRUE') ? true : false;
             $this->authsmtp = ($object['authsmtpactive'][0] == 'TRUE') ? true : false;
             //$this->quota = getquota($this->domain->getName(),'user');
             $this->aliases = array_filter($object['mailacceptinggeneralid'], "is_string");
@@ -72,6 +73,10 @@ class LdapAccount extends LdapDomain {
 
     public function isCourier() {
         return $this->courier;
+    }
+
+    public function isWebmail() {
+        return $this->webmail;
     }
 
     public function isAuthSmtp() {

@@ -24,16 +24,17 @@ if (!empty($_POST['cn'])) {
     $actif = (!empty($_POST['isactive'])) ? true : false;
     $admin = (!empty($_POST['isadmin'])) ? true : false;
     $courier = (!empty($_POST['courieractive'])) ? true : false;
+    $webmail = (!empty($_POST['webmailactive'])) ? true : false;
     $authsmtp = (!empty($_POST['authsmtpactive'])) ? true : false;
 
     try {
         if (!empty($_GET['account'])) {
             print "<div class=\"alert alert-info\" role=\"alert\">Modification en cours...</div>";
-            $account->update($cn,$password,$actif,$admin,$actif,$courier,$authsmtp);
+            $account->update($cn,$password,$actif,$admin,$actif,$courier,$webmail,$authsmtp);
             header('Location: compte.php?domain='.$domain->getName().'&account='.$account->getUid());
         } else {
             print "<div class=\"alert alert-info\" role=\"alert\">Ajout en cours...</div>";
-            $domain->addAccount($uid,$cn,$password,$actif,$admin,$actif,$courier,$authsmtp);
+            $domain->addAccount($uid,$cn,$password,$actif,$admin,$actif,$courier,$webmail,$authsmtp);
             print "<div class=\"alert alert-succes\" role=\"alert\">Ajout effectu&eacute;.</div>";
             print '<a href="compte.php?domain='.$domain->getName().'&account='.$uid.'@'.$domain->getName().'"><button class="btn btn-primary">Voir le compte cr&eacute;&eacute;</button></a>';
         }
@@ -126,6 +127,13 @@ if (isset($_GET['account'])) {
     print "<div class='form-group'>";
     print "<label for='courieractive' class='col-sm-3 control-label'>Utilisation POP/IMAP : </label>";
     print "<div class='col-sm-7'><input type='checkbox' name='courieractive' $courieractive class='form-control move-left' /></div>";
+    print "<div class='col-sm-2 control-label'></div>";
+    print "</div>";
+
+    $webmailactive = ($account->isWebmail()) ? 'checked="checked"' : '';
+    print "<div class='form-group'>";
+    print "<label for='webmailactive' class='col-sm-3 control-label'>Webmail : </label>";
+    print "<div class='col-sm-7'><input type='checkbox' name='webmailactive' $webmailactive class='form-control move-left' /></div>";
     print "<div class='col-sm-2 control-label'></div>";
     print "</div>";
 
@@ -222,8 +230,14 @@ if (isset($_GET['account'])) {
 </div>
 
 <div class="form-group">
+    <label for="webmailactive"     class="col-sm-3 control-label">Webmail :</label>
+    <div class="col-sm-7"><input type='checkbox' name='webmailactive' checked class="form-control move-left" /></div>
+    <div     class="col-sm-3 control-label"></div>
+</div>
+
+<div class="form-group">
     <label for="authsmtpactive"     class="col-sm-3 control-label">Authentification SMTP :</label>
-    <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' class="form-control move-left" /></div>
+    <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' checked class="form-control move-left" /></div>
     <div     class="col-sm-3 control-label"></div>
 </div>
 
