@@ -14,26 +14,20 @@ Vagrant.configure('2') do |config|
   config.vm.network "forwarded_port", guest: 443, host: 8443, auto_correct: true
 
   $deps = <<SCRIPT
-DEBIAN_FRONTEND=noninteractive apt-get -yq install ansible git
-ansible-galaxy install -r /vagrant/test/ansible/requirements.yml
-echo "[defaults]" > '/vagrant/test/ansible/ansible.cfg'
-echo "roles_path = /etc/ansible/roles/evolix" >> '/vagrant/test/ansible/ansible.cfg'
-> /etc/hosts
+sed -e '/Rewrite/ s/^#*/#/' -i /etc/apache2/sites-available/evoadminmail.conf
+service apache2 reload
+[ -d /home/evoadmin-mail/www/htdocs/config ] && php /vagrant/scripts/config-migrate.php > /vagrant/config/config.ini
+chmod 644 /vagrant/config/config.ini
+chown vagrant:vagrant /vagrant/config/config.ini
+rm -rf /home/evoadmin-mail/www/
+ln -s /vagrant/ /home/evoadmin-mail/www
 SCRIPT
 
   config.vm.define :packmail do |node|
     node.vm.hostname = "evoadmin-mail"
-    node.vm.box = "debian/stretch64"
+    node.vm.box = "vlaborie/packmail"
 
     node.vm.provision "deps", type: "shell", :inline => $deps
-    node.vm.provision "ansible", type: "ansible_local" do |ansible|
-      ansible.provisioning_path = "/vagrant/test/ansible"
-      ansible.playbook = "evoadmin-mail.yml"
-      ansible.install_mode = ":default"
-      ansible.raw_arguments = [
-        "--become"
-      ]
-    end
 
   end
 

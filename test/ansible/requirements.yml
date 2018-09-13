@@ -1,5 +1,0 @@
----
-- name: evolix
-  src: https://forge.evolix.org/ansible-roles.git
-  scm: git
-  version: evoadmin-mail
