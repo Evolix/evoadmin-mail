@@ -2,7 +2,7 @@
     <div id="top" class="container">
         <div class="navbar-brand logo">
             <a href="https://evolix.com/" target="_blank">
-                <img src="assets/<?php print VERSION; ?>/logo.png" alt="Evolix" class="img-responsive"/>
+                <img src="img/logo.png" alt="Evolix" class="img-responsive"/>
             </a>
         </div>
         <ul class="nav navbar-nav">

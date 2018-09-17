@@ -1,7 +1,5 @@
 <?php
 
-define("VERSION", "2.0.0");
-
 spl_autoload_register(function ($class) {
     $class = strtolower($class);
     if (file_exists("lib/class.$class.php")) {
