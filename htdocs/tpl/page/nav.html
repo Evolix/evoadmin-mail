@@ -8,27 +8,16 @@
         <ul class="nav navbar-nav">
             <li><a href="superadmin.php">Accueil</a></li>
             <li><a href="help.php">Aide</a></li>
-            <?php
-                if ($server->isSuperAdmin()) { echo '<li><a href="domaine.php">Ajout Domaine</a></li>'; }
-            ?>
+            {% if isSuperAdmin %} 
+                <li><a href="domaine.php">Ajout Domaine</a></li>
+            {% endif %}
             <li><a href="auth.php">Déconnexion</a></li>
         </ul>
         <p class="navbar-text navbar-right">
-        <?php
-            print "<em>".$server->getLogin()."</em>";
-            if (!empty($domain)) {
-                print ' - Domaine : <a href="admin.php?domain='.$domain->getName().'">'.$domain->getName().'</a>';
-            }
-        ?>
+            <em>{{ login }}</em>
+            {% if domain is not null %}
+                - Domaine : <a href="admin.php?domain={{ domain }}">{{ domain }}</a>
+            {% endif %}
         </p>
     </div>
 </nav>
-
-
-
-
-
-
-
-
-

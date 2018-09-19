@@ -1,0 +1,59 @@
+{% extends 'domain.html' %}
+
+{% block list %}
+
+        <h2>Liste des comptes :</h2><hr>
+
+        <form name="del" method="post" action="admin.php?domain={{ domain }}">
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th><strong>Nom du compte</strong></th>
+                    <th width="100px">Actif</th>
+                    <th width="100px">Admin</th>
+                    <th width="100px">POP / IMAP</th>
+                    <th width="100px">Webmail</th>
+                    <th width="100px">Auth SMTP</th>
+                    <th>Quota</th>
+                    <th width="50px">Suppr</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for account in accounts %}
+                <tr>
+                    <td style="text-align:left;"><a href="compte.php?domain={{ domain }}&account={{ account.uid }}">{{ account.name }} <{{account.uid }}></a></td>
+                {% if account.active %}
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
+                {% if account.admin %}
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
+                {% if account.courrier %}
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
+                {% if account.webmail %}
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
+                {% if account.authsmtp %}
+                    <td><span class="glyphicon glyphicon-ok"></span></td>
+                {% else %}
+                    <td><span class="glyphicon glyphicon-remove"></span></td>
+                {% endif %}
+                <td>{{ account.quota }}</td>
+                <td>
+                    <button type="submit" name="account" value="{{ account.uid }}"><span class="glyphicon glyphicon-trash"></span></button>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody></table></form>
+
+{% endblock %}

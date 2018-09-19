@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'nav.html' %}
+
+<div class="container">
+{% include 'notif.html' %}
+    
+<h2>{% if name is null %}Ajout d'un alias{% else %}Modification de l'alias {{ name }}{% endif %}</h2>
+
+<form name="add" action="alias.php?domain={{ domain }}{% if name is not null %}&alias={{ name }}{% endif %}" method="post" class="form-horizontal">
+
+    <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
+    
+    {% if name is null %}
+    <div class="form-group">
+        <label for="cn" class="col-sm-3 control-label">Nom (unique) de l'alias [*] :</label>
+        <div class="col-sm-7"><input type="text" name="cn" class="form-control" /></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    {% endif %}
+    
+    {% for alias in aliases %}
+    <div class="form-group">
+        <label for="mailaccept[]" class="col-sm-3 control-label">Alias :</label>
+        <div class="col-sm-7"><input type="text" name="mailaccept[]" class="form-control" value="{{ alias }}"/></div>
+        <div class="col-sm-2 control-label">@{{ domain }}</div>
+    </div>
+    {% endfor %}
+    
+    <div class="form-group">
+        <label for="mailaccept[]" class="col-sm-3 control-label">Alias :</label>
+        <div class="col-sm-7"><input type="text" name="mailaccept[]" class="form-control" /></div>
+        <div class="col-sm-2 control-label">@{{ domain }}</div>
+    </div>
+    
+    {% for maildrop in maildrops %}
+    <div class="form-group">
+        <label for="maildrop[]" class="col-sm-3 control-label">Redirection :</label>
+        <div class="col-sm-7"><input type="text" name="maildrop[]" class="form-control" value="{{ maildrop }}"/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    {% endfor %}
+    
+    <div class="form-group">
+        <label for="maildrop[]" class="col-sm-3 control-label">Redirection :</label>
+        <div class="col-sm-7"><input type="text" name="maildrop[]" class="form-control" /></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <hr><h5>Activer/désactiver l'alias</h5>
+    
+    <div class="form-group"> 
+        <label for="isactive" class="col-sm-3 control-label">Actif :</label> 
+        <div class="col-sm-7"><input type='checkbox' name='isactive' class="form-control move-left" {% if active %}checked="checked"{%endif%}/></div> 
+        <div class="col-sm-2 control-label"></div> 
+    </div> 
+    
+    <hr><div class="text-center"><button type="submit" class="btn btn-primary" onclick='return submit_add();'>valider</button></div>
+</form>
+
+</div>
+{% endblock %}

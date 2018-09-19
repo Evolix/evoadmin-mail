@@ -7,10 +7,10 @@ session_name('EVOADMIN_SESS');
 session_start();
 
 ob_start();
-include('inc/haut.php');
 
-if (isset($_SESSION['login'])) {
-    print "<div class='login-info bg-info'>D&eacute;connecté</div>";
+$logout = isset($_SESSION['login']) ? true : false;
+
+if ($logout) {
     session_unset('EVOADMIN_SESS');
     session_destroy();
 }
@@ -25,35 +25,14 @@ if (!empty($_POST['login'])) {
         header("location: superadmin.php\n\n");
         exit(0);
     } catch (Exception $e) {
-        print '<div class="alert alert-danger" role="alert">'.$e->getMessage().'</div>';
+        $alerts[] = array('type' => 2, 'message' => $e->getMessage());
     }
 }
-?>
 
-<div class="loginpage">
-    <div class="loginbox">
-        <div class="illustration">
-            <img src="assets/logo.png" class="img-responsive" alt="Responsive image">
-        </div>
-        <form method="POST" action="auth.php" method="post" name="auth">
-            <div class="form-group has-feedback has-feedback-left">
-                <input type="text" name="login" class="form-control" placeholder="Utilisateur" autofocus="autofocus"/>
-                <i class="glyphicon glyphicon-user form-control-feedback"></i>
-            </div>   
-            <div class="form-group has-feedback has-feedback-left">
-                <input type="password" name="password"  class="form-control" placeholder="Mot de passe" />
-                <i class="glyphicon glyphicon-lock form-control-feedback"></i>
-            </div>
-            <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary" onclick="return submit_login();">Connexion</button>
-            </div>
-        </form>
-    </div>
-</div>
+print $twig->render('login.html', array(
+    'page_name' => $config['global']['name'].' - Login'
+    ,'alerts' => $alerts
+    ,'logout' => $logout
+));
 
-<?php 
-
-include('inc/fin.php'); 
 ob_end_flush();
-
-?>

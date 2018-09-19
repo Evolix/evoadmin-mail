@@ -1,0 +1,14 @@
+{% for alert in alerts %}
+{% if alert.type == 3 %}
+<div class="alert alert-info" role="alert">{{ alert.message | raw }}</div>
+{% endif %}
+{% if alert.type == 0 %}
+<div class="alert alert-success" role="alert">{{ alert.message | raw }}</div>
+{% endif %}
+{% if alert.type == 1 %}
+<div class="alert alert-warning" role="alert">{{ alert.message | raw }}</div>
+{% endif %}
+{% if alert.type == 2 %}
+<div class="alert alert-danger" role="alert">{{ alert.message | raw }}</div>
+{% endif %}
+{% endfor %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'nav.html' %}
+
+<div class="container">
+{% include 'notif.html' %}
+    <h2>Ajout d'un domaine</h2>
+    <form name="add" action="domaine.php" method="post" class="form-horizontal">
+        <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
+        <div class="form-group">
+            <label for="domain" class="col-sm-3 control-label">Domaine [*] :</label>
+            <div class="col-sm-9"><input type="text" name="domain" class="form-control" /></div>
+        </div>
+        <div class="form-group">
+            <label for="isactive" class="col-sm-3 control-label">Activation globale :</label>
+            <div class="col-sm-9"><input type='checkbox' name='isactive' checked  class="form-control move-left"/></div>
+        </div>
+        <hr><div class="text-center"><button type="submit" class="btn btn-primary">Valider</button></div>
+    </form>
+</div>
+{% endblock %}

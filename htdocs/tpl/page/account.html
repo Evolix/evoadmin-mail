@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% include 'nav.html' %}
+
+<div class="container">
+{% include 'notif.html' %}
+    
+<h2>{% if uid is null %}Ajout d'un compte{% else %}Modification du compte {{ uid }}{% endif %}</h2>
+
+<form name="add" action="compte.php?domain={{ domain }}{% if uid is not null %}&account={{ uid  }}{% endif %}" method="post" class="form-horizontal">
+
+    <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
+    
+    {% if uid is null %}
+    <div class="form-group">
+        <label for="uid" class="col-sm-3 control-label">Login [*] :</label>
+        <div class="col-sm-7"><input type="text" name="uid" class="form-control"/></div>
+        <div class="col-sm-2 control-label">@{{ domain }}</div>
+    </div>
+    {% endif %}
+    
+    <div class="form-group">
+        <label for="cn"     class="col-sm-3 control-label">Nom Complet [*] :</label>
+        <div class="col-sm-7"><input type="text" name="cn" class="form-control" value="{{ name }}"/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="pass1"     class="col-sm-3 control-label">Mot de passe [*] :</label>
+        <div class="col-sm-7"><input type="password" name="pass1" class="form-control" /></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="pass2"     class="col-sm-3 control-label">Confirmation du mot de passe [*] :</label>
+        <div class="col-sm-7"><input type="password" name="pass2" class="form-control" /></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <hr><h5>En plus du mail utilisant le login, vous pouvez ajouter des alias.</h5>
+    
+    {% for alias in aliases %}
+    <div class='form-group'>
+        <label for="mailaccept[]" class="col-sm-3 control-label">Alias :</label>
+        <div class="col-sm-7"><input type="text" name="mailaccept[]" class="form-control" value="{{ alias }}"/></div>
+        <div class="col-sm-2 control-label">@{{ domain }}</div>
+        </div>
+    {% endfor %}
+    
+    <div class="form-group">
+        <label for="mailaccept[]" class="col-sm-3 control-label">Alias :</label>
+        <div class="col-sm-7"><input type="text" name="mailaccept[]" class="form-control"/></div>
+        <div class="col-sm-2 control-label">@{{ domain }}</div>
+    </div>
+    
+    {% for maildrop in maildrops %}
+    <div class='form-group'>
+        <label for='maildrop[]' class='col-sm-3 control-label'>Mails entrants redirig&eacute;s vers : </label>
+        <div class='col-sm-7'><input type='text' name='maildrop[]' value='{{ maildrop }}' class='form-control' /></div>
+        <div class='col-sm-2 control-label'></div>
+    </div>
+    {% endfor %}
+    
+    <div class='form-group'>
+        <label for='maildrop[]' class='col-sm-3 control-label'>Nouvelle redirection vers : </label>
+        <div class='col-sm-7'><input type='text' name='maildrop[]' class='form-control' /></div>
+        <div class='col-sm-2 control-label'></div>
+    </div>
+    
+    <hr><h5>Cochez les cases pour choisir les autorisations du compte.</h5>
+    
+    <div class="form-group">
+        <label for="isactive" class="col-sm-3 control-label">Actif :</label>
+        <div class="col-sm-7"><input type='checkbox' name='isactive' class="form-control move-left" {% if active %}checked="checked"{%endif%}/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="isadmin" class="col-sm-3 control-label">Compte admin :</label>
+        <div class="col-sm-7"><input type='checkbox' name='isadmin' class="form-control move-left" {% if admin %}checked="checked"{%endif%}/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="courieractive" class="col-sm-3 control-label">Utilisation POP/IMAP :</label>
+        <div class="col-sm-7"><input type='checkbox' name='courieractive' class="form-control move-left" {% if courier %}checked="checked"{%endif%}/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="webmailactive" class="col-sm-3 control-label">Webmail :</label>
+        <div class="col-sm-7"><input type='checkbox' name='webmailactive' class="form-control move-left" {% if webmail %}checked="checked"{%endif%}/></div>
+        <div     class="col-sm-3 control-label"></div>
+    </div>
+    
+    <div class="form-group">
+        <label for="authsmtpactive" class="col-sm-3 control-label">Authentification SMTP :</label>
+        <div class="col-sm-7"><input type='checkbox' name='authsmtpactive' class="form-control move-left" {% if authsmtp %}checked="checked"{%endif%}/></div>
+        <div     class="col-sm-3 control-label"></div>
+    </div>
+    
+    <!--
+    <div class="form-group">
+        <label for="amavisBypassSpamChecks"     class="col-sm-3 control-label">Désactivation Antispam :</label>
+        <div class="col-sm-7"><input type='checkbox' name='amavisBypassSpamChecks' class="form-control move-left" {% if amavis %}checked="checked"{%endif%}/></div>
+        <div class="col-sm-2 control-label"></div>
+    </div>
+    -->
+    
+    <hr><div class="text-center"><button type="submit" class="btn btn-primary" onclick='return submit_add();'>valider</button></div>
+    
+</form>
+
+</div>
+{% endblock %}

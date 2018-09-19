@@ -13,3 +13,10 @@ $config = parse_ini_file('../config/config.ini', true);
 
 Logger::configure($config['global']['log_level']);
 MailNotify::configure($config['global']);
+
+$loader = new Twig_Loader_Filesystem('tpl/page');
+$twig = new Twig_Environment($loader, array(
+    'cache' => false
+));
+
+$alerts = array();

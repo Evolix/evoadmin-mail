@@ -4,7 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta name="robots" content="noindex,nofollow"/>
         <meta name="referrer" content="same-origin"/>
-        <title><?php print $config['global']['name']; ?></title>
+        <title>{{ page_name }}</title>
         <link rel="stylesheet" href="assets/main.css" type="text/css"/>
         <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous"/>
@@ -15,4 +15,45 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/js/dataTables.bootstrap.min.js" integrity="sha256-X/58s5WblGMAw9SpDtqnV8dLRNCawsyGwNqnZD0Je/s=" crossorigin="anonymous"></script>
     </head>
 <body>
+
     <div class="page-wrap">
+        {% block body %}{% endblock %}
+    </div>
+
+<footer class="site-footer">
+    <div class="container">
+        <p>
+        <span>Evolix</span>
+        <br /><strong>Hébergement et Infogérance Open Source</strong>
+    </div>
+</footer>
+
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable({
+            "language": {
+                "emptyTable":     "Pas de données disponibles",
+                "info":           "Entrées _START_ à _END_ sur _TOTAL_ entrées",
+                "infoEmpty":      "Entrées 0 à 0 sur 0",
+                "infoFiltered":   "(filtré sur un total de _MAX_ entrées)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Montrer _MENU_ entrées",
+                "loadingRecords": "Chargement...",
+                "processing":     "Travail en cours...",
+                "search":         "Recherche : ",
+                "zeroRecords":    "Pas de resultat",
+                "paginate": {
+                    "first":      "Première",
+                    "last":       "Dernière",
+                    "next":       "Suivante",
+                    "previous":   "Précédente"
+                }
+            },
+            "lengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "toutes les"] ]
+        });
+    } );
+</script>
+
+</body>
+</html>
