@@ -6,11 +6,12 @@
 <div class="container">
 {% include 'notif.html' %}
     <h2>Ajout d'un domaine</h2>
-    <form name="add" action="domaine.php" method="post" class="form-horizontal">
+    <form action="/?domain=_add" method="post" class="form-horizontal">
+        <input type="hidden" name="add" value="domain"/>
         <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
         <div class="form-group">
             <label for="domain" class="col-sm-3 control-label">Domaine [*] :</label>
-            <div class="col-sm-9"><input type="text" name="domain" class="form-control" /></div>
+            <div class="col-sm-9"><input type="text" name="cn" class="form-control" /></div>
         </div>
         <div class="form-group">
             <label for="isactive" class="col-sm-3 control-label">Activation globale :</label>

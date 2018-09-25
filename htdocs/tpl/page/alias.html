@@ -8,16 +8,21 @@
     
 <h2>{% if name is null %}Ajout d'un alias{% else %}Modification de l'alias {{ name }}{% endif %}</h2>
 
-<form name="add" action="alias.php?domain={{ domain }}{% if name is not null %}&alias={{ name }}{% endif %}" method="post" class="form-horizontal">
+<form action="/?domain={{ domain }}&alias={% if uid is not null %}{{ uid  }}{% else %}_all{% endif %}" method="post" class="form-horizontal">
+    <input type="hidden" name="domain" value="{{ domain }}"/>
 
     <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
     
     {% if name is null %}
+    <input type="hidden" name="add" value="alias"/>
     <div class="form-group">
         <label for="cn" class="col-sm-3 control-label">Nom (unique) de l'alias [*] :</label>
         <div class="col-sm-7"><input type="text" name="cn" class="form-control" /></div>
         <div class="col-sm-2 control-label"></div>
     </div>
+    {% else %}
+    <input type="hidden" name="update" value="alias"/>
+    <input type="hidden" name="alias" value="{{ name }}"/>
     {% endif %}
     
     {% for alias in aliases %}

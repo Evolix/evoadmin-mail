@@ -7,7 +7,9 @@
 {% include 'notif.html' %}
 
     <div class="text-center">
-    <form name="update" method="post" action="admin.php?domain={{ domain }}">
+    <form method="post" action="/?domain={{ domain }}">
+    <input type="hidden" name="update" value="domain"/>
+    <input type="hidden" name="domain" value="{{ domain }}"/>
     {% if isSuperAdmin %}
         {% if active %}
             <button type="submit" name="isactive" value="FALSE" class="btn btn-primary">Désactiver le domaine</button>&nbsp;&nbsp;&nbsp;
@@ -15,21 +17,12 @@
             <button type="submit" name="isactive" value="TRUE" class="btn btn-primary">Activer le domaine</button>&nbsp;&nbsp;&nbsp;
         {% endif %}
     {% endif %}
-    <a href="compte.php?domain={{ domain }}"><button type="button" class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
-
-        <a href="alias.php?domain={{ domain }}"><button type="button" class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>
+    <a href="?domain={{ domain }}&account=_all"><button type="button" class="btn btn-primary">Liste des comptes</button></a>&nbsp;&nbsp;&nbsp;
+    <a href="/?domain={{ domain }}&account=_add"><button type="button" class="btn btn-primary">Ajouter un nouveau compte</button></a>&nbsp;&nbsp;&nbsp;
+    <a href="?domain={{ domain }}&alias=_all"><button type="button" class="btn btn-primary">Liste des alias/groupe de diffusion</button></a>&nbsp;&nbsp;&nbsp;
+    <a href="/?domain={{ domain }}&alias=_add"><button type="button" class="btn btn-primary">Ajouter un nouvel alias/groupe de diffusion</button></a>&nbsp;&nbsp;&nbsp;
     </form>
     </div>
-        <hr>
-        <form class='center' action='admin.php' method='GET' name='listing'>
-            <div class="form-group">
-                <input type="hidden" name="domain" value="{{ domain }}"/>
-                <select class="form-control" name='viewonly' onchange="document.listing.submit()">
-                    <option value='1' {% if view == 'account' %}selected="selected"{% endif %}>Liste des comptes</option>
-                    <option value='2' {% if view == 'alias' %}selected="selected"{% endif %}>Liste des alias/groupe de diffusion</option>
-                </select>
-            </div>
-        </form>
 
      {% block list %}{% endblock %}
 

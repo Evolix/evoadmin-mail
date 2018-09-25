@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Twig/autoload.php';
+
 class MailNotify {
     private static $twig, $adminmail;
 

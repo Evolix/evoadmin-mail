@@ -8,16 +8,21 @@
     
 <h2>{% if uid is null %}Ajout d'un compte{% else %}Modification du compte {{ uid }}{% endif %}</h2>
 
-<form name="add" action="compte.php?domain={{ domain }}{% if uid is not null %}&account={{ uid  }}{% endif %}" method="post" class="form-horizontal">
+<form action="/?domain={{ domain }}&account={% if uid is not null %}{{ uid  }}{% else %}_all{% endif %}" method="post" class="form-horizontal">
+    <input type="hidden" name="domain" value="{{ domain }}"/>
 
     <hr><div class="alert alert-info" role="alert">Remplissez lez champs, ceux contenant [*] sont obligatoires.</div>
     
     {% if uid is null %}
+    <input type="hidden" name="add" value="account"/>
     <div class="form-group">
         <label for="uid" class="col-sm-3 control-label">Login [*] :</label>
         <div class="col-sm-7"><input type="text" name="uid" class="form-control"/></div>
         <div class="col-sm-2 control-label">@{{ domain }}</div>
     </div>
+    {% else %}
+    <input type="hidden" name="update" value="account"/>
+    <input type="hidden" name="account" value="{{ uid }}"/>
     {% endif %}
     
     <div class="form-group">
@@ -28,13 +33,13 @@
     
     <div class="form-group">
         <label for="pass1"     class="col-sm-3 control-label">Mot de passe [*] :</label>
-        <div class="col-sm-7"><input type="password" name="pass1" class="form-control" /></div>
+        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" /></div>
         <div class="col-sm-2 control-label"></div>
     </div>
     
     <div class="form-group">
         <label for="pass2"     class="col-sm-3 control-label">Confirmation du mot de passe [*] :</label>
-        <div class="col-sm-7"><input type="password" name="pass2" class="form-control" /></div>
+        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" /></div>
         <div class="col-sm-2 control-label"></div>
     </div>
     

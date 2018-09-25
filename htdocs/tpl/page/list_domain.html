@@ -7,7 +7,8 @@
 {% include 'notif.html' %}
 
     <h2>Liste des domaines administrables :</h2><hr>
-    <form name="del" method="post" action="superadmin.php">
+    <form method="post" action="/?domain=_all">
+    <input type="hidden" name="delete" value="domain"/>
     <table class="table table-striped table-condensed">
         <thead>
             <tr>
@@ -23,7 +24,7 @@
         <tbody>
         <?php
         {% for domain in domains %}
-            <tr><td style="text-align:left;"><a href="admin.php?domain={{ domain.name }}">{{ domain.name }}</a></td>
+            <tr><td style="text-align:left;"><a href="/?domain={{ domain.name }}">{{ domain.name }}</a></td>
             {% if domain.active %}
                 <td><span class="glyphicon glyphicon-ok"></span></td>
             {% else %}
@@ -33,7 +34,7 @@
             <td><b>{{ domain.NbMailAccounts }}</b></td>
             <td><b>{{ domain.NbMailAlias }}</b></td>
             <td>{{ domain.getQuota }}</td>
-            <td><button type="submit" name="domain" value="{{ domain.name }}"><span class="glyphicon glyphicon-trash"></span></button></td>
+            <td><button type="submit" name="cn" value="{{ domain.name }}"><span class="glyphicon glyphicon-trash"></span></button></td>
             </tr>
         {% endfor %}
         </tbody>

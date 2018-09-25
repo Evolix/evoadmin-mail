@@ -3,11 +3,18 @@
 session_name('EVOADMIN_SESS');
 session_start();
 
-if (isset($_SESSION['login'])) {
-    header("Location: superadmin.php\n\n");
-    exit(0);
-} else {
-    header("Location: auth.php\n\n");
-    exit(0);
-}
+spl_autoload_register(function ($class) {
+    if (file_exists("lib/$class.php")) {
+        require_once("lib/$class.php");
+    }
+    $class = strtolower($class);
+    if (file_exists("lib/class.$class.php")) {
+        require_once("lib/class.$class.php");
+    } 
+});
+
+DefaultController::init();
+FormController::init();
+PageController::init();
+
 ?>

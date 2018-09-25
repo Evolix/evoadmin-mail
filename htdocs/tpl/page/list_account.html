@@ -4,7 +4,8 @@
 
         <h2>Liste des comptes :</h2><hr>
 
-        <form name="del" method="post" action="admin.php?domain={{ domain }}">
+        <form method="post" action="/?domain={{ domain }}&account=_all">
+        <input type="hidden" name="delete" value="account"/>
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
@@ -22,7 +23,7 @@
 
             {% for account in accounts %}
                 <tr>
-                    <td style="text-align:left;"><a href="compte.php?domain={{ domain }}&account={{ account.uid }}">{{ account.name }} <{{account.uid }}></a></td>
+                    <td style="text-align:left;"><a href="/?domain={{ domain }}&account={{ account.uid }}">{{ account.name }} <{{account.uid }}></a></td>
                 {% if account.active %}
                     <td><span class="glyphicon glyphicon-ok"></span></td>
                 {% else %}
@@ -50,7 +51,7 @@
                 {% endif %}
                 <td>{{ account.quota }}</td>
                 <td>
-                    <button type="submit" name="account" value="{{ account.uid }}"><span class="glyphicon glyphicon-trash"></span></button>
+                    <button type="submit" name="uid" value="{{ account.uid }}"><span class="glyphicon glyphicon-trash"></span></button>
                 </td>
                 </tr>
             {% endfor %}

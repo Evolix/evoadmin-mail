@@ -4,7 +4,8 @@
 
         <h2>Liste des alias/groupe de diffusion :</h2><hr>
 
-        <form name="del" method="post" action="admin.php?domain={{ domain }}&viewonly=2">
+        <form method="post" action="?domain={{ domain }}&alias=_all">
+        <input type="hidden" name="delete" value="alias"/>
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
@@ -16,13 +17,13 @@
             <tbody>
 
             {% for alias in aliases %}
-                <tr><td style="text-align:left;"><a href="alias.php?domain={{ domain }}&alias={{ alias.name }}">{{ alias.name }}</a></td>
+                <tr><td style="text-align:left;"><a href="/?domain={{ domain }}&alias={{ alias.name }}">{{ alias.name }}</a></td>
                 {% if alias.active %}
                     <td><span class="glyphicon glyphicon-ok"></span></td>
                 {% else %}
                     <td><span class="glyphicon glyphicon-remove"></span></td>
                 {% endif %}
-                <td><button type="submit" name="alias" value="{{ alias.name }}"><span class="glyphicon glyphicon-trash"></span></button></td>
+                <td><button type="submit" name="cn" value="{{ alias.name }}"><span class="glyphicon glyphicon-trash"></span></button></td>
                 </tr>
             {% endfor %}
             </tbody></table></form>
