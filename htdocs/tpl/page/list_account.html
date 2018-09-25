@@ -4,8 +4,9 @@
 
         <h2>Liste des comptes :</h2><hr>
 
-        <form method="post" action="/?domain={{ domain }}&account=_all">
+        <form method="post" action="/?domain={{ domain }}&account=_all" onsubmit="return confirm('Voulez vous vraiment supprimer ce compte ?');">
         <input type="hidden" name="delete" value="account"/>
+        <input type="hidden" name="domain" value="{{ domain }}"/>
         <table class="table table-striped table-condensed">
             <thead>
                 <tr>
