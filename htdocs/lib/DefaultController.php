@@ -8,6 +8,9 @@ class DefaultController {
         Logger::configure(self::$config['global']['log_level']);
         MailNotify::configure(self::$config['global']);
 
+        session_name('EVOADMIN_SESS');
+        session_start();
+
         // Get content from LDAP
         if (!empty($_SESSION['login'])) {   
             self::$logged = true;
