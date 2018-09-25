@@ -17,7 +17,7 @@
     <input type="hidden" name="add" value="account"/>
     <div class="form-group">
         <label for="uid" class="col-sm-3 control-label">Login [*] :</label>
-        <div class="col-sm-7"><input type="text" name="uid" class="form-control"/></div>
+        <div class="col-sm-7"><input type="text" name="uid" class="form-control" placeholder="jdoe" required="required"/></div>
         <div class="col-sm-2 control-label">@{{ domain }}</div>
     </div>
     {% else %}
@@ -27,19 +27,19 @@
     
     <div class="form-group">
         <label for="cn"     class="col-sm-3 control-label">Nom Complet [*] :</label>
-        <div class="col-sm-7"><input type="text" name="cn" class="form-control" value="{{ name }}"/></div>
+        <div class="col-sm-7"><input type="text" name="cn" class="form-control" value="{{ name }}" placeholder="John Doe" required="required"/></div>
         <div class="col-sm-2 control-label"></div>
     </div>
     
     <div class="form-group">
         <label for="pass1"     class="col-sm-3 control-label">Mot de passe [*] :</label>
-        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" /></div>
+        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" required="required"/></div>
         <div class="col-sm-2 control-label"></div>
     </div>
     
     <div class="form-group">
         <label for="pass2"     class="col-sm-3 control-label">Confirmation du mot de passe [*] :</label>
-        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" /></div>
+        <div class="col-sm-7"><input type="password" name="password[]" class="form-control" required="required"/></div>
         <div class="col-sm-2 control-label"></div>
     </div>
     
