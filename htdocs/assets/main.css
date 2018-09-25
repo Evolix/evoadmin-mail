@@ -95,6 +95,9 @@ body{
 .btn-primary{ background-color: #09757d; }
 .btn-primary:hover { background-color: #08646b; }
 
+input[type="checkbox"] {
+    height: 15px;
+}
 
 .has-feedback-left input.form-control {
     padding-left: 34px; /* @input-height-base; */
