@@ -24,7 +24,7 @@
 
             {% for account in accounts %}
                 <tr>
-                    <td style="text-align:left;"><a href="/?domain={{ domain }}&account={{ account.uid }}">{{ account.name }} <{{account.uid }}></a></td>
+                    <td style="text-align:left;"><a href="/?domain={{ domain }}&account={{ account.uid }}">{{ account.name }} &lt;{{ account.uid }}&gt;</a></td>
                 {% if account.active %}
                     <td><span class="glyphicon glyphicon-ok"></span></td>
                 {% else %}
