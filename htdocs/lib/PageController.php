@@ -34,6 +34,20 @@ class PageController extends DefaultController {
         ob_end_flush();
     }
 
+    private static function needSuperAdmin() {
+        if (!self::$server->isSuperAdmin()) {
+            self::$alerts[] = array('type' => 2, 'message' => "Super Administrateur seulement !");
+            print self::$twig->render('403.html', array(
+                'page_name' => self::$config['global']['name']
+                ,'alerts' => self::$alerts
+                ,'login' => self::$server->getLogin()
+                ,'isSuperAdmin' => self::$server->isSuperAdmin()
+                ));
+            header('HTTP/1.1 403 Forbidden');
+            exit(0);
+        }
+    }
+
     private static function filterGet() {
         $allowed_params = array('_all', '_add');
         $static_pages = array('logout', 'help');
@@ -125,14 +139,13 @@ class PageController extends DefaultController {
     }
 
     private static function addDomain() {
-        if (self::needSuperAdmin("Vous n'avez pas le droit d'ajouter un domaine !")) {
-            print self::$twig->render('add_domain.html', array(
-                'page_name' => self::$config['global']['name']
-                ,'alerts' => self::$alerts
-                ,'login' => self::$server->getLogin()
-                ,'isSuperAdmin' => self::$server->isSuperAdmin()
-            ));
-        }
+        self::needSuperAdmin();
+        print self::$twig->render('add_domain.html', array(
+            'page_name' => self::$config['global']['name']
+            ,'alerts' => self::$alerts
+            ,'login' => self::$server->getLogin()
+            ,'isSuperAdmin' => self::$server->isSuperAdmin()
+        ));
     }
 
     private static function listDomains() {

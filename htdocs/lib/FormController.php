@@ -105,7 +105,7 @@ class FormController extends DefaultController {
     }
 
     private static function addDomain() {
-        if (self::needSuperAdmin()) {
+        if (self::$server->isSuperAdmin()) {
             if (!empty(self::$form['cn'])) {
                 try {
                     self::$alerts[] = array('type' => 1, 'message' => 'Ajout en cours du domaine '.self::$form['cn'].' ...');
@@ -119,7 +119,7 @@ class FormController extends DefaultController {
     }
 
     private static function updateDomain() {
-        if (self::needSuperAdmin()) {
+        if (self::$server->isSuperAdmin()) {
             try {
                 self::$domain->update(self::$form['isactive']);
             } catch (Exception $e_ad) {
@@ -129,7 +129,7 @@ class FormController extends DefaultController {
     }
 
     private static function delDomain() {
-       if (self::needSuperAdmin()) {
+       if (self::$server->isSuperAdmin()) {
            self::$alerts[] = array('type' => 1, 'message' => 'Suppression du domaine '.self::$form['cn'].' ...');
            try {
                self::$server->delDomain(self::$form['cn']);

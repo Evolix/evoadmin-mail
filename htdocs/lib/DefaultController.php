@@ -36,11 +36,4 @@ class DefaultController {
             }
         }
     }
-
-    protected static function needSuperAdmin() {
-        if (!self::$server->isSuperAdmin()) {
-            self::$alerts[] = array('type' => 2, 'message' => "Super Adminsitrateur seulement !");
-            return false;
-        } else { return true; }
-    }
 }
