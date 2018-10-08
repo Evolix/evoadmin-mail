@@ -25,7 +25,7 @@ SCRIPT
 
   config.vm.define :packmail do |node|
     node.vm.hostname = "evoadmin-mail"
-    node.vm.box = "vlaborie/packmail"
+    node.vm.box = "evolix/packmail"
 
     node.vm.provision "deps", type: "shell", :inline => $deps
 
