@@ -24,7 +24,7 @@ ln -s /vagrant/ /home/evoadmin-mail/www
 SCRIPT
 
   config.vm.define :packmail do |node|
-    node.vm.hostname = "evoadmin-mail"
+    node.vm.hostname = "evoadmin-mail.example.com"
     node.vm.box = "evolix/packmail"
 
     node.vm.provision "deps", type: "shell", :inline => $deps
