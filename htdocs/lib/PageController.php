@@ -4,6 +4,7 @@ require_once 'Twig/autoload.php';
 
 class PageController extends DefaultController {
     private static $twig, $params=array(), $domain, $account, $alias;
+
     public static function init() {
         $loader = new Twig_Loader_Filesystem('tpl/page');
         self::$twig = new Twig_Environment($loader, array(
@@ -38,7 +39,7 @@ class PageController extends DefaultController {
         if (!self::$server->isSuperAdmin()) {
             self::$alerts[] = array('type' => 2, 'message' => "Super Administrateur seulement !");
             print self::$twig->render('403.html', array(
-                'page_name' => self::$config['global']['name']
+                'page_name' => Config::getName()
                 ,'alerts' => self::$alerts
                 ,'login' => self::$server->getLogin()
                 ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -86,7 +87,7 @@ class PageController extends DefaultController {
 
     private static function login() {
         print self::$twig->render('login.html', array(
-            'page_name' => self::$config['global']['name'].' - Login'
+            'page_name' => Config::getName().' - Login'
             ,'alerts' => self::$alerts
             ,'logout' => false
         ));
@@ -96,7 +97,7 @@ class PageController extends DefaultController {
         session_unset('EVOADMIN_SESS');
         session_destroy();
         print self::$twig->render('login.html', array(
-            'page_name' => self::$config['global']['name'].' - Login'
+            'page_name' => Config::getName().' - Login'
             ,'alerts' => self::$alerts
             ,'logout' => true
         ));
@@ -104,11 +105,11 @@ class PageController extends DefaultController {
 
     private static function help() {
         print self::$twig->render('help.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName() 
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
-            ,'notif_mail' => self::$config['global']['mail']
+            ,'notif_mail' => Config::getMail()
         ));
     }
 
@@ -141,7 +142,7 @@ class PageController extends DefaultController {
     private static function addDomain() {
         self::needSuperAdmin();
         print self::$twig->render('add_domain.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -150,7 +151,7 @@ class PageController extends DefaultController {
 
     private static function listDomains() {
         print self::$twig->render('list_domain.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -160,7 +161,7 @@ class PageController extends DefaultController {
 
     private static function listAccounts() {
         print self::$twig->render('list_account.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -173,7 +174,7 @@ class PageController extends DefaultController {
 
     private static function listAlias() {
         print self::$twig->render('list_alias.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -186,7 +187,7 @@ class PageController extends DefaultController {
 
     private static function Account() {
         print self::$twig->render('account.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()
@@ -205,7 +206,7 @@ class PageController extends DefaultController {
 
     private static function Alias() {
         print self::$twig->render('alias.html', array(
-            'page_name' => self::$config['global']['name']
+            'page_name' => Config::getName()
             ,'alerts' => self::$alerts
             ,'login' => self::$server->getLogin()
             ,'isSuperAdmin' => self::$server->isSuperAdmin()

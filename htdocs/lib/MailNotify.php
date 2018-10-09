@@ -5,13 +5,13 @@ require_once 'Twig/autoload.php';
 class MailNotify {
     private static $twig, $adminmail;
 
-    public static function configure($config) {
+    public static function init() {
         $loader = new Twig_Loader_Filesystem('tpl/mail');
         self::$twig = new Twig_Environment($loader, array(
             'cache' => false
         ));
 
-        self::$adminmail = !empty($config['mail']) ? $config['mail'] : 'root@localhost';
+        self::$adminmail = Config::getMail();
     }
 
     public static function addDomain($domain) {

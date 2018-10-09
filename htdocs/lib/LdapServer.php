@@ -54,24 +54,24 @@ class LdapServer {
         return '{SSHA}'.base64_encode(mhash(MHASH_SHA1, $pass.$salt).$salt);
     }
 
-    public function __construct($login, $config) {
-        $uri = 'ldap://'.$config['host'].':'.$config['port'];
+    public function __construct($login) {
+        $uri = Config::getLdapUri();
         $this->login = $login;
         if (!$this->conn = ldap_connect($uri)) {
-            throw new Exception("Impossible de se connecter au serveur LDAP ".$config['host']);
+            throw new Exception("Impossible de se connecter au serveur LDAP ".$uri);
         }
         if (!ldap_set_option($this->conn, LDAP_OPT_PROTOCOL_VERSION, 3)) {
             throw new Exception("Impossible de modifier la version du protocole LDAP à 3");
         }
-        if (!ldap_bind($this->conn, $config['admin_dn'], $config['admin_pass'])) {
+        if (!ldap_bind($this->conn, Config::getLdapDN(), Config::getLdapPass())) {
             throw new Exception("Authentification LDAP échoué !");
         }
-        if (in_array($this->login, $config['superadmin'])) {
+        if (in_array($this->login, Config::getSuperAdmin())) {
             $this->superadmin = true;
-            $this->base = $config['base'];
+            $this->base = Config::getLdapBase();
         } else {
             $mydomain = preg_replace('/.*@/', '', $login);
-            $this->base = LdapDomain::$dn.'='.$mydomain.','.$config['base'];
+            $this->base = LdapDomain::$dn.'='.$mydomain.','.Config::getBaseDN();
         }
     }
 

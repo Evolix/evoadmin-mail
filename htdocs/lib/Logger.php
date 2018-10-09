@@ -10,8 +10,8 @@ class Logger {
 
     private static $level;
 
-    public static function configure($loglevel) {
-        switch ($loglevel) {
+    public static function init() {
+        switch (Config::getLogLevel()) {
             case 'critical':
                 self::$level = self::CRITICAL;
             case 'error':
