@@ -1,7 +1,7 @@
 <?php
 
 class DefaultController {
-    protected static $logged=false, $config=array(), $alerts=array(),$server;
+    protected static $config=array(), $alerts=array(),$server;
     public static function init() {
         self::$config = parse_ini_file('../config/config.ini', true);
         
@@ -13,12 +13,12 @@ class DefaultController {
 
         // Get content from LDAP
         if (!empty($_SESSION['login'])) {   
-            self::$logged = true;
             try {
                 self::$server = new LdapServer($_SESSION['login'], self::$config['ldap']);
             } catch (Exception $e) {
                 self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
             }
+            FormController::init();
         } else {
             if (!empty($_POST['login'])) {
                 try {
@@ -28,12 +28,12 @@ class DefaultController {
                     ));
                     self::$server = new LdapServer($input['login'], self::$config['ldap']);
                     self::$server->login($input['password']);
-                    self::$logged = true;
                     $_SESSION['login'] = self::$server->getLogin();
                 } catch (Exception $e) {
                     self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
                 }
             }
         }
+        PageController::init();
     }
 }

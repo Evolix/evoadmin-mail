@@ -5,7 +5,5 @@ spl_autoload_register(function ($class) {
 });
 
 DefaultController::init();
-FormController::init();
-PageController::init();
 
 ?>

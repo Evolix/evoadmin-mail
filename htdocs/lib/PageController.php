@@ -12,7 +12,7 @@ class PageController extends DefaultController {
 
         ob_start();
 
-        if (self::$logged) {
+        if (!empty(self::$server)) {
             PageController::filterGet();
             PageController::ldap();
             if (!empty(self::$params['page'])) {

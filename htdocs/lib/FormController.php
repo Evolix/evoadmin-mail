@@ -3,61 +3,59 @@
 class FormController extends DefaultController {
     private static $form=array(), $domain, $account, $alias;
     public static function init() {
-        if (self::$logged) { 
-            self::filterPost();
-            // Get content from LDAP
-            try {
-                if (!empty(self::$form['domain'])) {
-                    self::$domain = new LdapDomain(self::$server, self::$form['domain']);
-                    if (!empty(self::$form['account'])) {
-                        self::$account = new LdapAccount(self::$domain, self::$form['account']);
-                    }
-                    if (!empty(self::$form['alias'])) {
-                        self::$alias = new LdapAlias(self::$domain, self::$form['alias']);
-                    }
+        self::filterPost();
+        // Get content from LDAP
+        try {
+            if (!empty(self::$form['domain'])) {
+                self::$domain = new LdapDomain(self::$server, self::$form['domain']);
+                if (!empty(self::$form['account'])) {
+                    self::$account = new LdapAccount(self::$domain, self::$form['account']);
                 }
-            } catch (Exception $e) {
-                self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+                if (!empty(self::$form['alias'])) {
+                    self::$alias = new LdapAlias(self::$domain, self::$form['alias']);
+                }
             }
+        } catch (Exception $e) {
+            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+        }
 
-            if (!empty(self::$form['delete'])) {
-                switch(self::$form['delete']) {
-                    case 'domain':
-                        FormController::delDomain();
-                        break;
-                    case 'account':
-                        FormController::delAccount();
-                        break;
-                    case 'alias':
-                        FormController::delAlias();
-                        break;
-                }
-            } else if (!empty(self::$form['add'])) {
-                switch(self::$form['add']) {
-                    case 'domain':
-                        FormController::addDomain();
-                        break;
-                    case 'account':
-                        FormController::addAccount();
-                        break;
-                    case 'alias':
-                        FormController::addAlias();
-                        break;
-                }
-            } else if (!empty(self::$form['update'])) {
-                switch(self::$form['update']) {
-                    case 'domain':
-                        FormController::updateDomain();
-                        break;
-                    case 'account':
-                        FormController::updateAccount();
-                        break;
-                    case 'alias':
-                        FormController::updateAlias();
-                        break;
-                }
+        if (!empty(self::$form['delete'])) {
+            switch(self::$form['delete']) {
+                case 'domain':
+                    FormController::delDomain();
+                    break;
+                case 'account':
+                    FormController::delAccount();
+                    break;
+                case 'alias':
+                    FormController::delAlias();
+                    break;
             }
-        } 
+        } else if (!empty(self::$form['add'])) {
+            switch(self::$form['add']) {
+                case 'domain':
+                    FormController::addDomain();
+                    break;
+                case 'account':
+                    FormController::addAccount();
+                    break;
+                case 'alias':
+                    FormController::addAlias();
+                    break;
+            }
+        } else if (!empty(self::$form['update'])) {
+            switch(self::$form['update']) {
+                case 'domain':
+                    FormController::updateDomain();
+                    break;
+                case 'account':
+                    FormController::updateAccount();
+                    break;
+                case 'alias':
+                    FormController::updateAlias();
+                    break;
+            }
+        }
     }
 
     private static function filterPassword() {
