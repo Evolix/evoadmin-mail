@@ -1,8 +1,10 @@
 <?php
 
-class FormController extends DefaultController {
-    private static $form=array(), $domain, $account, $alias;
-    public static function init() {
+class FormController {
+    private static $server, $form=array(), $domain, $account, $alias;
+    public static function init(LdapServer $server) {
+        self::$server = $server;
+
         self::filterPost();
         // Get content from LDAP
         try {
@@ -16,7 +18,7 @@ class FormController extends DefaultController {
                 }
             }
         } catch (Exception $e) {
-            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+            PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
 
         if (!empty(self::$form['delete'])) {
@@ -60,7 +62,7 @@ class FormController extends DefaultController {
 
     private static function filterPassword() {
         if (count(self::$form['password']) != 2 || self::$form['password'][0] != self::$form['password'][1]) {
-            self::$alerts[] = array('type' => 2, 'message' => "Confirmation du mot de passe inccorrecte !");
+            PageController::$alerts[] = array('type' => 2, 'message' => "Confirmation du mot de passe inccorrecte !");
             return false;
 
         }
@@ -106,11 +108,11 @@ class FormController extends DefaultController {
         if (self::$server->isSuperAdmin()) {
             if (!empty(self::$form['cn'])) {
                 try {
-                    self::$alerts[] = array('type' => 1, 'message' => 'Ajout en cours du domaine '.self::$form['cn'].' ...');
+                    PageController::$alerts[] = array('type' => 1, 'message' => 'Ajout en cours du domaine '.self::$form['cn'].' ...');
                     self::$server->addDomain(self::$form['cn'], self::$form['isactive']);
-                    self::$alerts[] = array('type' => 0, 'message' => "Ajout effectué.");
+                    PageController::$alerts[] = array('type' => 0, 'message' => "Ajout effectué.");
                 } catch (Exception $e_ad) {
-                    self::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
+                    PageController::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
                 }
             }
         }
@@ -121,46 +123,46 @@ class FormController extends DefaultController {
             try {
                 self::$domain->update(self::$form['isactive']);
             } catch (Exception $e_ad) {
-                self::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
+                PageController::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
             }
         }
     }
 
     private static function delDomain() {
        if (self::$server->isSuperAdmin()) {
-           self::$alerts[] = array('type' => 1, 'message' => 'Suppression du domaine '.self::$form['cn'].' ...');
+           PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression du domaine '.self::$form['cn'].' ...');
            try {
                self::$server->delDomain(self::$form['cn']);
-               self::$alerts[] = array('type' => 0, 'message' => 'Suppression effectué.');
+               PageController::$alerts[] = array('type' => 0, 'message' => 'Suppression effectué.');
            } catch (Exception $e_ad) {
-               self::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
+               PageController::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
            }
        }
     }
 
     private static function delAccount() {
-        self::$alerts[] = array('type' => 1, 'message' => 'Suppression du compte '.self::$form['uid'].'...');
+        PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression du compte '.self::$form['uid'].'...');
         try {
             self::$domain->delAccount(self::$form['uid']);
-            self::$alerts[] = array('type' => 0, 'message' => "Suppression effectué.");
+            PageController::$alerts[] = array('type' => 0, 'message' => "Suppression effectué.");
         } catch (Exception $e) {
-            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+            PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
     }
 
     private static function delAlias() {
-        self::$alerts[] = array('type' => 1, 'message' => 'Suppression de l\'alias '.self::$form['cn'].'...');
+        PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression de l\'alias '.self::$form['cn'].'...');
         try {
             self::$domain->delAlias(self::$form['cn']);
-            self::$alerts[] = array('type' => 0, 'message' => "Suppression effectué.");
+            PageController::$alerts[] = array('type' => 0, 'message' => "Suppression effectué.");
         } catch (Exception $e) {
-            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+            PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
     }
 
     private static function addAccount() {
         try {
-            self::$alerts[] = array('type' => 1, 'message' => "Ajout en cours...");
+            PageController::$alerts[] = array('type' => 1, 'message' => "Ajout en cours...");
             self::$domain->addAccount(
                 self::$form['uid']
                 ,self::$form['cn']
@@ -172,15 +174,15 @@ class FormController extends DefaultController {
                 ,self::$form['webmailactive']
                 ,self::$form['authsmtpactive']
             );
-            self::$alerts[] = array('type' => 0, 'message' => 'Ajout effectué');
+            PageController::$alerts[] = array('type' => 0, 'message' => 'Ajout effectué');
         } catch (Exception $e) {
-            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+            PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
     }
 
     private static function updateAccount() {
         try {
-            self::$alerts[] = array('type' => 1, 'message' => "Modification en cours...");
+            PageController::$alerts[] = array('type' => 1, 'message' => "Modification en cours...");
             self::$account->update(
                 self::$form['cn']
                 ,self::$form['password']
@@ -191,38 +193,38 @@ class FormController extends DefaultController {
                 ,self::$form['webmailactive']
                 ,self::$form['authsmtpactive']
             );
-            self::$alerts[] = array('type' => 0, 'message' => "Modification effectué.");
+            PageController::$alerts[] = array('type' => 0, 'message' => "Modification effectué.");
         } catch (Exception $e) {
-            self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+            PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
     }
 
     private static function addAlias() {
         try {
-             self::$alerts[] = array('type' => 1, 'message' => "Ajout en cours...");
+             PageController::$alerts[] = array('type' => 1, 'message' => "Ajout en cours...");
              self::$domain->addAlias(
                  self::$form['cn']
                  ,self::$form['isactive']
                  ,self::$form['mailaccept']
                  ,self::$form['maildrop']
              );
-             self::$alerts[] = array('type' => 0, 'message' => "Ajout effectué");
+             PageController::$alerts[] = array('type' => 0, 'message' => "Ajout effectué");
         } catch (Exception $e) {
-           self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+           PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
     }
 
     private static function updateAlias() {
         try {
-            self::$alerts[] = array('type' => 1, 'message' => "Modification en cours...");
+            PageController::$alerts[] = array('type' => 1, 'message' => "Modification en cours...");
             self::$alias->update(
                 self::$form['isactive']
                 ,self::$form['mailaccept']
                 ,self::$form['maildrop']
             );
-            self::$alerts[] = array('type' => 0, 'message' => "Modification effectué.");
+            PageController::$alerts[] = array('type' => 0, 'message' => "Modification effectué.");
         } catch (Exception $e) {
-           self::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
+           PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
 
     }

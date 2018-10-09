@@ -2,10 +2,13 @@
 
 require_once 'Twig/autoload.php';
 
-class PageController extends DefaultController {
-    private static $twig, $params=array(), $domain, $account, $alias;
+class PageController {
+    public static $alerts=array();
+    private static $server, $twig, $params=array(), $domain, $account, $alias;
 
-    public static function init() {
+    public static function init(LdapServer $server=NULL) {
+        self::$server = $server;
+
         $loader = new Twig_Loader_Filesystem('tpl/page');
         self::$twig = new Twig_Environment($loader, array(
             'cache' => false

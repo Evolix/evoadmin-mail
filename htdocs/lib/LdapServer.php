@@ -71,7 +71,7 @@ class LdapServer {
             $this->base = Config::getLdapBase();
         } else {
             $mydomain = preg_replace('/.*@/', '', $login);
-            $this->base = LdapDomain::$dn.'='.$mydomain.','.Config::getBaseDN();
+            $this->base = LdapDomain::$dn.'='.$mydomain.','.Config::getLdapBase();
         }
     }
 
