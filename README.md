@@ -14,13 +14,13 @@ You can deploy a test environmment with Vagrant :
 vagrant up
 ~~~
 
-Evoadmin mail respond to evoadminmail.evoadmin-mail.example.com domain on localhost, so update your /etc/hosts :
+Evoadmin mail respond to evoadminmail.packmail.example.com domain on localhost, so update your /etc/hosts :
 
 ~~~
-127.0.0.1   evoadminmail.evoadmin-mail.example.com
+127.0.0.1   evoadminmail.packmail.example.com
 ~~~
 
-Congratulation, Evoadmin mail is now accessible throught https://evoadminmail.evoadmin-mail.example.com:8443
+Congratulation, Evoadmin mail is now accessible throught https://evoadminmail.packmail.example.com:8443
 
 ### Authentication
 
