@@ -21,9 +21,17 @@ class LdapAccount extends LdapDomain {
             $this->courier = ($object['courieractive'][0] == 'TRUE') ? true : false;
             $this->webmail = ($object['webmailactive'][0] == 'TRUE') ? true : false;
             $this->authsmtp = ($object['authsmtpactive'][0] == 'TRUE') ? true : false;
-            //$this->quota = getquota($this->domain->getName(),'user');
             $this->aliases = array_filter($object['mailacceptinggeneralid'], "is_string");
             $this->redirections = array_filter($object['maildrop'], "is_string");
+
+            $quota_file = '/home/evoadmin-mail/quota/'.$this->domain->domain.'.csv';
+            if (file_exists($quota_file)) {
+                $short_uid = explode("@", $this->uid)[0];
+                if(preg_match("/^".$short_uid.";([^;]*);(.*)/m", file_get_contents($quota_file), $matches)) {
+                        $this->quota = $matches[1]." / ".$matches[2];
+                }
+            }
+
         } else {
             throw new Exception("Ce compte n'existe pas !");
         }

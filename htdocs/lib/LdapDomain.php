@@ -35,7 +35,12 @@ class LdapDomain extends LdapServer {
                     }
                 }
             }
-            //$this->quota = getquota($this->domain,'group');
+            $quota_file = '/home/evoadmin-mail/quota/all.csv';
+            if (file_exists($quota_file)) {
+                if(preg_match("/^".$this->domain.";([^;]*);(.*)/m", file_get_contents($quota_file), $matches)) {
+			$this->quota = $matches[1]." / ".$matches[2];
+                }
+            }
         } else {
             throw new Exception("Ce domaine n'existe pas !");
         }
