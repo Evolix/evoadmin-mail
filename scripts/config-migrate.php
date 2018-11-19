@@ -29,6 +29,6 @@ admin_dn = "<?php echo LDAP_ADMIN_DN; ?>"
 admin_pass = "<?php echo LDAP_ADMIN_PASS; ?>"
 <?php
 foreach ($conf['admin']['logins'] as $admin) {
-        echo "superadmin[] = \"$admin\"";
+        echo "superadmin[] = \"$admin\"\n";
 }
 ?>
