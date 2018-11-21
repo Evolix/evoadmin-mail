@@ -4,7 +4,11 @@ Evoadmin mail is a Web Interface for manage an LDAP directory designed for mail 
 
 ## Install
 
-See [INSTALL](docs/INSTALL.md).
+Evoadmin-mail requirements are an LDAP server, a Web server and PHP. See [INSTALL](docs/install.md) for configure them.
+
+Multiples services can be configured to use the LDAP directory managed by Evoadmin-mail :
+
+- TODO
 
 ## Test
 
