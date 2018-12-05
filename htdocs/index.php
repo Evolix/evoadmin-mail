@@ -4,8 +4,7 @@ spl_autoload_register(function ($class) {
     if (file_exists("lib/$class.php")) { require_once("lib/$class.php"); }
 });
 
-Config::load('../config/config.ini');
-
+Config::load();
 Logger::init();
 MailNotify::init();
 

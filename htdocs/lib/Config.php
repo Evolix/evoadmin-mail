@@ -2,7 +2,8 @@
 
 class Config {
     private static $name='Evoadmin Mail', $mail='root@localhost', $log_level='error', $ldap=array();
-    public static function load($file) {
+    public static function load() {
+        $file = getenv("EVOADMINMAIL_CONFIG_FILE") or $file = '../config/config.ini';
         $ini = parse_ini_file($file, true);
         self::$name = $ini['global']['name'];
         self::$mail = $ini['global']['mail'];
