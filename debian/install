@@ -1,0 +1,3 @@
+#!/usr/bin/dh-exec
+htdocs/* usr/share/evoadmin-mail
+scripts/* usr/lib/evoadmin-mail

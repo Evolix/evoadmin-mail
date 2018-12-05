@@ -1,0 +1,12 @@
+Source: evoadmin-mail
+Section: utils
+Priority: optional
+Maintainer: Victor Laborie <vlaborie@evolix.fr>
+Build-Depends: debhelper (>= 9), dh-exec
+Standards-Version: 4.0.0
+
+Package: evoadmin-mail
+Architecture: all
+Depends: php, php-twig, ${misc:Depends}
+Description: PHP app for manage LDAP mail accounts
+ evoadmin-mail is a Web Interface for manage an LDAP directory designed for mail accounts.

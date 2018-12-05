@@ -1,0 +1,11 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: evoadmin-mail
+Upstream-Contact: Evolix <equipe@evolix.fr>
+Source: https://forge.evolix.org/projects/evoadmin-mail/repository
+
+Files: *
+Copyright: 2018 Victor Laborie <vlaborie@evolix.fr>
+License: AGPL-3
+
+License: AGPL-3
+ https://www.gnu.org/licenses/agpl.txt
