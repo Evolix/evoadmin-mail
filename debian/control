@@ -7,6 +7,6 @@ Standards-Version: 4.0.0
 
 Package: evoadmin-mail
 Architecture: all
-Depends: php, php-twig, ${misc:Depends}
+Depends: php, php-cli, php-twig, ${misc:Depends}
 Description: PHP app for manage LDAP mail accounts
  evoadmin-mail is a Web Interface for manage an LDAP directory designed for mail accounts.
