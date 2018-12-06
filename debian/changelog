@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.0-3) unstable; urgency=low
+
+  * Create /etc/evoadmin-mail and /var/lib/evoadmin-mail directories
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Thu, 06 Dec 2018 11:16:52 +0100
+
 evoadmin-mail (1.0.0-2) unstable; urgency=low
 
   * Add php-cli to dependencies
