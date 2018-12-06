@@ -1,5 +1,0 @@
-search_base = dc=nobody,dc=evolix,dc=net
-query_filter = (&(mailacceptinggeneralid=%s)(objectClass=mailAccount)(isActive=TRUE)(accountActive=TRUE))
-result_attribute = homeDirectory
-scope = sub
-version = 3
