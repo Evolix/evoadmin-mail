@@ -1,5 +1,0 @@
-search_base = dc=nobody,dc=evolix,dc=net
-query_filter = (&(mailacceptinggeneralid=%u@%d)(isActive=TRUE))
-result_attribute = maildrop
-version = 3
-aliases_scope = sub
