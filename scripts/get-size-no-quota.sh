@@ -3,11 +3,11 @@
 set -eu
 
 DUC=$(command -v duc-nox || command -v duc)
-EVOADMINMAIL_DIR="/home/evoadmin-mail"
+EVOADMINMAIL_DIR=${EVOADMINMAIL_DIR:-'/home/evoadmin-mail'}
+VMAIL_DIR=${VMAIL_DIR:-'/home/vmail'}
+EVOADMINMAIL_GROUP=${EVOADMINMAIL_GROUP:-'evoadmin-mail'}
 CSV_DIR="${EVOADMINMAIL_DIR}/quota"
 IDX_FILE="${EVOADMINMAIL_DIR}/duc-vmail.idx"
-VMAIL_DIR="/home/vmail"
-EVOADMINMAIL_GROUP="evoadmin-mail"
 
 mkdir -p "${CSV_DIR}" && chgrp "${EVOADMINMAIL_GROUP}" "${CSV_DIR}" && chmod 750 "${CSV_DIR}"
 
