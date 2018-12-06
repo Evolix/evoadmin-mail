@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.1-1) unstable; urgency=low
+
+  * get-size-no-quota.sh is configurable by ENV var 
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Thu, 06 Dec 2018 11:21:00 +0100
+
 evoadmin-mail (1.0.0-3) unstable; urgency=low
 
   * Create /etc/evoadmin-mail and /var/lib/evoadmin-mail directories
