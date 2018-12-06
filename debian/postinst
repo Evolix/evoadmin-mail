@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+getent passwd evoadmin-mail >/dev/null
+[ "${?}" -eq 0 ] || useradd --system --user-group --no-create-home --home-dir /var/lib/evoadmin-mail --shell /usr/sbin/nologin evoadmin-mail
+
+exit 0
