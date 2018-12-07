@@ -2,3 +2,6 @@
 
 %:
 	dh $@
+
+override_dh_fixperms:
+	dh_fixperms --exclude /etc/evoadmin-mail /var/lib/evoadmin-mail
