@@ -37,7 +37,7 @@ class LdapAccount extends LdapDomain {
         }
     }
 
-    public function update($name=NULL,$password=NULL,$active=NULL,$admin=NULL,$accountactive=NULL,$courieractive=NULL,$webmailactive=NULL,$authsmtpactive=NULL,$amavisBypassSpamChecks=NULL) {
+    public function update($name=NULL,$password=NULL,$active=NULL,$admin=NULL,$accountactive=NULL,$courieractive=NULL,$webmailactive=NULL,$authsmtpactive=NULL,$mailaccept=array(),$maildrop=array()) {
         $info["cn"] = (!empty($name)) ? $name : $this->name;
         if (!empty($password)) {
             $info["userPassword"] = LdapServer::hashPassword($password);
@@ -49,6 +49,8 @@ class LdapAccount extends LdapDomain {
         $info["webmailActive"] = ($webmailactive) ? 'TRUE' : 'FALSE';
         $info["authsmtpActive"] = ($authsmtpactive) ? 'TRUE' : 'FALSE';
         #$info["amavisBypassSpamChecks"] = ($amavisBypassSpamChecks) ? 'TRUE' : 'FALSE';
+        $info["mailacceptinggeneralid"] = array_filter($mailaccept, function($value) { return $value != ""; });
+        $info["maildrop"] = array_filter($maildrop, function($value) { return $value != ""; });
         if (!ldap_mod_replace($this->conn,  self::getBaseDN($this), $info)) {
             $error = ldap_error($this->conn);
             throw new Exception("Erreur pendant la modification du compte : $error");

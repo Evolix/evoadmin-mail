@@ -192,6 +192,8 @@ class FormController {
                 ,self::$form['courieractive']
                 ,self::$form['webmailactive']
                 ,self::$form['authsmtpactive']
+                ,self::$form['mailaccept']
+                ,self::$form['maildrop']
             );
             PageController::$alerts[] = array('type' => 0, 'message' => "Modification effectué.");
         } catch (Exception $e) {
