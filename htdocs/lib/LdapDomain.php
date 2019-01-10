@@ -82,7 +82,7 @@ class LdapDomain extends LdapServer {
         $info[LdapAccount::$dn] = $mail;
         $info["cn"] = $name;
         $info["homeDirectory"] = "/home/vmail/" .$this->getName(). "/" .$uid. "/";
-        $info["uidNumber"] = 2022;
+        $info["uidNumber"] = 5000;
         $info["gidNumber"] = $this->getGid();
         $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
         $info["isAdmin"] = ($admin) ? 'TRUE' : 'FALSE';
