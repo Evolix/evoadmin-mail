@@ -98,6 +98,12 @@ class FormController {
             ,'mailaccept' => array('filter' => FILTER_DEFAULT, 'flags' => FILTER_FORCE_ARRAY)
         ), true);
 
+        self::$form['mailaccept'] = array_map(function($value) {
+            if (!empty($value)) {
+                return $value.'@'.self::$form['domain'];
+            }
+        }, self::$form['mailaccept']);
+
         if (!empty(self::$form['password'])) { self::filterPassword(); }
 
         unset($_POST);
