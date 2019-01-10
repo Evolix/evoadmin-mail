@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.3-1) unstable; urgency=medium
+
+  * Mailaccept need mail address (add domain) 
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Thu, 10 Jan 2019 14:40:38 +0100
+
 evoadmin-mail (1.0.2-1) unstable; urgency=medium
 
   * Add missing support of alias/redirection edit in account update
