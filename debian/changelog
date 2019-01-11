@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.3-2) unstable; urgency=high
+
+  * Add missing dependency php-ldap
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Fri, 11 Jan 2019 10:00:32 +0100
+
 evoadmin-mail (1.0.3-1) unstable; urgency=medium
 
   * Mailaccept need mail address (add domain) 
