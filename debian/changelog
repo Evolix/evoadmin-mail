@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.3-3) unstable; urgency=low
+
+  * Reduce extended description line length
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Fri, 11 Jan 2019 15:34:49 +0100
+
 evoadmin-mail (1.0.3-2) unstable; urgency=high
 
   * Add missing dependency php-ldap
