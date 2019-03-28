@@ -1,6 +1,11 @@
 <?php
 
-require_once 'Twig/autoload.php';
+if (file_exists(stream_resolve_include_path('Twig/autoload.php'))) {
+    require_once 'Twig/autoload.php';
+} elseif (stream_resolve_include_path(file_exists('Twig/Autoloader.php'))) {
+    require_once 'Twig/Autoloader.php';
+    Twig_Autoloader::register();
+}
 
 class MailNotify {
     private static $twig, $adminmail;
