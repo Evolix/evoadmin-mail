@@ -1,3 +1,11 @@
+evoadmin-mail (1.0.4-1) unstable; urgency=medium
+
+  * Do not use base.html for login page
+  * Fix Twig loading on PHP 5.6
+  * Fix dependencies on Debian Jessie
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Thu, 28 Mar 2019 14:16:14 +0100
+
 evoadmin-mail (1.0.3-3) unstable; urgency=low
 
   * Reduce extended description line length
