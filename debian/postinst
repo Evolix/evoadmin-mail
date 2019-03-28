@@ -45,6 +45,9 @@ base = "${ldap_base}"
 admin_dn = "${ldap_admin_dn}"
 admin_pass = "${ldap_admin_password}"
 superadmin[] = "evoadmin"
+
+[quota]
+path = "/var/lib/evoadmin-mail/quota/"
 EOF
     fi
     chmod 750 /etc/evoadmin-mail /var/lib/evoadmin-mail

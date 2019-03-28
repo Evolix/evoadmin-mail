@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.5-1) unstable; urgency=medium
+
+  * Quota path is now configurable 
+
+ -- Victor Laborie <vlaborie@evolix.fr>  Thu, 28 Mar 2019 15:36:16 +0100
+
 evoadmin-mail (1.0.4-1) unstable; urgency=medium
 
   * Do not use base.html for login page
