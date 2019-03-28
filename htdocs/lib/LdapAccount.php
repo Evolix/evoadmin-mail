@@ -24,7 +24,7 @@ class LdapAccount extends LdapDomain {
             $this->aliases = array_filter($object['mailacceptinggeneralid'], "is_string");
             $this->redirections = array_filter($object['maildrop'], "is_string");
 
-            $quota_file = '/home/evoadmin-mail/quota/'.$this->domain->domain.'.csv';
+            $quota_file = Config::getQuotaPath().$this->domain->domain.'.csv';
             if (file_exists($quota_file)) {
                 $short_uid = explode("@", $this->uid)[0];
                 if(preg_match("/^".$short_uid.";([^;]*);(.*)/m", file_get_contents($quota_file), $matches)) {
