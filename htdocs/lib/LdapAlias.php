@@ -28,11 +28,13 @@ class LdapAlias extends LdapDomain {
     }
 
     public function update($active=false,$mailaccept=array(),$maildrop=array()) {
-        $info["isActive"] = ($active) ? 'TRUE' : 'FALSE';
-        $info["mailacceptinggeneralid"] = $mailaccept;
-        $info["maildrop"] = array_filter($maildrop, function($value) {
+        $info["isactive"] = ($active) ? 'TRUE' : 'FALSE';
+        $info["mailacceptinggeneralid"] = array_values(array_filter($mailaccept, function($value) {
             return filter_var($value, FILTER_VALIDATE_EMAIL);
-        });
+        }));
+        $info["maildrop"] = array_values(array_filter($maildrop, function($value) {
+            return filter_var($value, FILTER_VALIDATE_EMAIL);
+        }));
 
         if (!@ldap_mod_replace($this->conn, self::getBaseDN($this), $info)) {
             $error = ldap_error($this->conn);
