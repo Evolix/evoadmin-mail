@@ -118,7 +118,7 @@ class LdapDomain extends LdapServer {
         }
     }
 
-    public function delAccount($uid) {
+    public function delAccount($uid,$domain) {
         $dn = LdapAccount::getBaseDN($this, $uid);
         if ($sr = @ldap_search($this->conn, $dn, LdapAccount::getClassFilter())) {
             // Delete account
@@ -126,6 +126,7 @@ class LdapDomain extends LdapServer {
                 $error = ldap_error($this->conn);
                 throw new Exception("Erreur dans la suppression du compte $uid : $error");
             }
+            exec( Config::getEvoexec() . " -d -u $uid -D $domain");
         } else {
             throw new Exception("Ce compte n'existe pas !");
         }

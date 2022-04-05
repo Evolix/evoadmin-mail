@@ -128,7 +128,7 @@ class LdapServer {
             }
             // Delete accounts
             foreach($domain->getAccounts() as $account) {
-                $domain->delAccount($account->getUid());
+                $domain->delAccount($account->getUid(),$name);
             }
             // Delete domain
             $dn = LdapDomain::getBaseDN($this, $name);
