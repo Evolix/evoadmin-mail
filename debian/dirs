@@ -1,3 +1,2 @@
-#!/usr/bin/dh-exec
 etc/evoadmin-mail
 var/lib/evoadmin-mail
