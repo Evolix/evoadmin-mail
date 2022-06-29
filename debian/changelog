@@ -1,12 +1,12 @@
 evoadmin-mail (1.0.6-1) unstable; urgency=medium
 
-  * Fix bug when updating aliases 
+  * Fix bug when updating aliases
 
  -- Victor Laborie <vlaborie@evolix.fr>  Thu, 10 Oct 2019 15:16:39 +0200
 
 evoadmin-mail (1.0.5-1) unstable; urgency=medium
 
-  * Quota path is now configurable 
+  * Quota path is now configurable
 
  -- Victor Laborie <vlaborie@evolix.fr>  Thu, 28 Mar 2019 15:36:16 +0100
 
@@ -32,7 +32,7 @@ evoadmin-mail (1.0.3-2) unstable; urgency=high
 
 evoadmin-mail (1.0.3-1) unstable; urgency=medium
 
-  * Mailaccept need mail address (add domain) 
+  * Mailaccept need mail address (add domain)
 
  -- Victor Laborie <vlaborie@evolix.fr>  Thu, 10 Jan 2019 14:40:38 +0100
 
@@ -62,7 +62,7 @@ evoadmin-mail (1.0.1-2) unstable; urgency=low
 
 evoadmin-mail (1.0.1-1) unstable; urgency=low
 
-  * get-size-no-quota.sh is configurable by ENV var 
+  * get-size-no-quota.sh is configurable by ENV var
 
  -- Victor Laborie <vlaborie@evolix.fr>  Thu, 06 Dec 2018 11:21:00 +0100
 
