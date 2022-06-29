@@ -8,7 +8,7 @@ steps:
   - debian
   commands:
   - mk-build-deps --install --remove debian/control
-  - gbp buildpackage
+  - gbp buildpackage -us -uc
   volumes:
   - name: tmp
     path: /tmp
