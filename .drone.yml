@@ -14,9 +14,6 @@ steps:
   commands:
   - mk-build-deps --install --remove debian/control
   - gbp buildpackage -us -uc
-  volumes:
-  - name: tmp
-    path: /tmp
   when:
     branch:
     - debian
@@ -30,16 +27,8 @@ steps:
     key:
       from_secret: drone_private_key
     target: /home/droneci/evoadmin-mail/
-    source: /tmp/evoadmin-mail/
+    source: ../evoadmin-mail*
     delete: true
-  volumes:
-  - name: tmp
-    path: /tmp
   when:
     branch:
     - debian
-
-volumes:
-- name: tmp
-  host:
-    path: /tmp
