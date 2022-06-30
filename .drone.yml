@@ -2,16 +2,18 @@ kind: pipeline
 name: default
 
 steps:
+- name: fetch
+  image: alpine/git
+  commands:
+  - git fetch --tags
+
 - name: build debian package
-  image: evolix/gbp:latest
+  image: evolix/gbp:bullseye
   branches:
   - debian
   commands:
   - mk-build-deps --install --remove debian/control
-  - gbp buildpackage
-  volumes:
-  - name: tmp
-    path: /tmp
+  - gbp buildpackage -us -uc
   when:
     branch:
     - debian
@@ -25,16 +27,8 @@ steps:
     key:
       from_secret: drone_private_key
     target: /home/droneci/evoadmin-mail/
-    source: /tmp/evoadmin-mail/
+    source: ../evoadmin-mail*
     delete: true
-  volumes:
-  - name: tmp
-    path: /tmp
   when:
     branch:
     - debian
-
-volumes:
-- name: tmp
-  host:
-    path: /tmp

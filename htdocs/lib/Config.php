@@ -47,4 +47,9 @@ class Config {
     public static function getQuotaPath() {
         return self::$quota_path;
     }
+
+    public static function getEvoexec() {
+        return self::$evoexec['sudobin'].' '.self::$evoexec['sudoscript'].' -p '.self::$evoexec['sudopass'].' ';
+    }
+
 }
