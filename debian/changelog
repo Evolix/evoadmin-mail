@@ -1,3 +1,33 @@
+evoadmin-mail (1.0.7-1) unstable; urgency=medium
+
+  [ Victor LABORIE ]
+  * Don't force Vagrant::DEFAULT_SERVER_URL (doesn't work with recent Vagrant version)
+
+  [ Gregory Colpart ]
+  * Add sudo script to move pseudo-homedirectory when deleting user
+
+  [ David Prevot ]
+  * CI:
+    + Don’t sign packages
+    + Fetch git tags (needed by gbp)
+    + Build Bullseye package under Bullseye
+    + Don’t rely on /tmp
+    + Add .Jenkinsfile
+  * debian/copyright:
+    + Use secure copyright file specification URI.
+    + Update
+  * debian/control:
+    + Bump debhelper from deprecated 9 to 13.
+    + Set debhelper-compat version in Build-Depends.
+    + Set Rules-Requires-Root: no.
+    + Document Homepage
+    + Update Standards-Version to 4.5.1
+  * debian/postinst: Add #DEBHELPER# token
+  * Improve upstream import
+  * Drop useless dh-exec
+
+ -- David Prévot <dprevot@evolix.fr>  Thu, 30 Jun 2022 11:19:59 +0200
+
 evoadmin-mail (1.0.6-1) unstable; urgency=medium
 
   * Fix bug when updating aliases
