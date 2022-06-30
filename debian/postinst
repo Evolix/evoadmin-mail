@@ -55,4 +55,6 @@ EOF
     chgrp evoadmin-mail /etc/evoadmin-mail /etc/evoadmin-mail/config.ini /var/lib/evoadmin-mail
 fi
 
+#DEBHELPER#
+
 exit 0
