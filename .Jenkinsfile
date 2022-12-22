@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'rsync -avP build-area/evoadmin-mail*.deb build-area/evoadmin-mail*.changes pub.evolix.org:/srv/upload/'
+                    sh 'rsync -avP build-area/evoadmin-mail*.deb build-area/evoadmin-mail*.buildinfo build-area/evoadmin-mail*.changes pub.evolix.org:/srv/upload/'
                 }
             }
         }
