@@ -10,20 +10,20 @@ if [ -f /root/.ldapvirc ]; then
     ldap_admin_dn=$(grep -Eo "^user: (.*)" /root/.ldapvirc | awk '{ print $2 }')
     ldap_admin_password=$(grep -Eo "^password: (.*)" /root/.ldapvirc | awk '{ print $2 }')
     if [ ! -f /etc/evoadmin-mail/config.ini ]; then
-        evoadmin_password=$(apg -n 1 -m 16 -M lcN)
+        evolix_password=$(apg -n 1 -m 16 -M lcN)
 cat > /root/evolinux_evoadminmail_admin.ldif <<EOF
-dn: uid=evoadmin,${ldap_base}
-uid: evoadmin
-cn: Evoadmin ADM
+dn: uid=evolix,${ldap_base}
+uid: evolix
+cn: Evolix admin
 uidNumber: 4242
 gidNumber: 4242
 homeDirectory: /dev/null
 isAdmin: TRUE
-mailacceptinggeneralid: evoadmin@${hostname}
+mailacceptinggeneralid: evolix@${hostname}
 objectClass: mailAccount
 objectClass: organizationalRole
 objectClass: posixAccount
-userPassword: ${evoadmin_password}
+userPassword: ${evolix_password}
 EOF
         ldapvi --noninteractive --add --in /root/evolinux_evoadminmail_admin.ldif
         cat > /etc/evoadmin-mail/config.ini <<EOF
@@ -35,7 +35,7 @@ EOF
 
 [global]
 name = "Evoadmin Mail";
-mail = "evoadmin@${hostname}"
+mail = "evolix@${hostname}"
 log_level = error
 
 [ldap]
@@ -44,7 +44,7 @@ port = 389
 base = "${ldap_base}"
 admin_dn = "${ldap_admin_dn}"
 admin_pass = "${ldap_admin_password}"
-superadmin[] = "evoadmin"
+superadmin[] = "evolix"
 
 [quota]
 path = "/var/lib/evoadmin-mail/quota/"
