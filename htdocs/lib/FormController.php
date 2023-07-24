@@ -149,7 +149,7 @@ class FormController {
     private static function delAccount() {
         PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression du compte '.self::$form['uid'].'...');
         try {
-            self::$domain->delAccount(self::$form['uid'],self::$form['cn']);
+            self::$domain->delAccount(self::$form['uid'],self::$form['domain']);
             PageController::$alerts[] = array('type' => 0, 'message' => "Suppression effectuée."));
         } catch (Exception $e) {
             PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());

@@ -1,7 +1,7 @@
 <?php
 
 class Config {
-    private static $name='Evoadmin Mail', $mail='root@localhost', $log_level='error', $ldap=array(), $quota_path='';
+    private static $name='Evoadmin Mail', $mail='root@localhost', $log_level='error', $ldap=array(), $quota_path='', $evoexec=array();
     public static function load() {
         $file = getenv("EVOADMINMAIL_CONFIG_FILE") or $file = '../config/config.ini';
         $ini = parse_ini_file($file, true);
@@ -10,6 +10,7 @@ class Config {
         self::$log_level = $ini['global']['log_level'];
         self::$ldap = $ini['ldap'];
         self::$quota_path = $ini['quota']['path'];
+        self::$evoexec = $ini['evoexec'];
     }
 
     public static function getName() {
