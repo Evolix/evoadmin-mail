@@ -1,3 +1,11 @@
+evoadmin-mail (1.0.9-1) unstable; urgency=medium
+
+  [ David Prevot ]
+  * Fix typo in FormController.php
+  * Set self as Maintainer
+
+ -- David Prévot <dprevot@evolix.fr>  Wed, 26 Jul 2023 17:52:35 +0200
+
 evoadmin-mail (1.0.8-1) unstable; urgency=medium
 
   [ David Prevot ]
