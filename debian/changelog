@@ -1,3 +1,16 @@
+evoadmin-mail (1.0.8-1) unstable; urgency=medium
+
+  [ David Prevot ]
+  * CI: Clean up before build
+  * Don’t impose local build
+  * CI: Don’t use Drone CI anymore
+  * Fix USERDIR to delete
+
+  [ William Hirigoyen ]
+  * Rename default admin from evoadmin to evolix.
+
+ -- David Prévot <dprevot@evolix.fr>  Wed, 26 Jul 2023 16:11:09 +0200
+
 evoadmin-mail (1.0.7-1) unstable; urgency=medium
 
   [ Victor LABORIE ]
