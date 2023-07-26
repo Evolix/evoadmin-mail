@@ -1,8 +1,5 @@
 evoadmin-mail (1.0.7-1) unstable; urgency=medium
 
-  [ Will ]
-  * Rename default admin from "evoadmin" to "evolix".
-
   [ Victor LABORIE ]
   * Don't force Vagrant::DEFAULT_SERVER_URL (doesn't work with recent Vagrant version)
 
