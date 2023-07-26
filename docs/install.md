@@ -1,8 +1,8 @@
 # Install
 
-Evoadmin-mail need an LDAP server, a Web server and PHP. This documentation explain how to configure OpenLDAP and Apache with mod_php.
+Evoadmin-mail needs an LDAP server, a Web server and PHP. This documentation explains how to configure OpenLDAP and Apache with mod_php.
 
-Following files extract are [Jinja2](http://jinja.pocoo.org) templates, **{{ varname }}** must be replaced by custom value, eg.
+Following files extract are [Jinja2](http://jinja.pocoo.org) templates, **{{ varname }}** must be replaced by custom value, e.g.
 
 ~~~
 ldap_hostname: "mailserver"
@@ -237,7 +237,7 @@ git clone https://forge.evolix.org/evoadmin-mail.git /home/evoadmin-mail/www
 ;
 ; You need to copy and edit config-sample.ini to config.ini.
 ; This INI file is loaded by evoadmin-mail and contains the
-; following configurations :
+; following configurations:
 ;
 ; * Global settings
 ; * LDAP settings
@@ -257,4 +257,4 @@ admin_pass = "{{ ldap_admin_password }}"
 superadmin[] = "evoadmin"
 ~~~
 
-You can now connect to your Evoadmin-mail with **evoadmin** user and your precedently defined password !
+You can now connect to your Evoadmin-mail with **evoadmin** user and your previously defined password!

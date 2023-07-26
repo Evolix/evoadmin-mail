@@ -139,7 +139,7 @@ class FormController {
            PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression du domaine '.self::$form['cn'].' ...');
            try {
                self::$server->delDomain(self::$form['cn']);
-               PageController::$alerts[] = array('type' => 0, 'message' => 'Suppression effectué.');
+               PageController::$alerts[] = array('type' => 0, 'message' => 'Suppression effectuée.');
            } catch (Exception $e_ad) {
                PageController::$alerts[] = array('type' => 2, 'message' => $e_ad->getMessage());
            }
@@ -149,8 +149,8 @@ class FormController {
     private static function delAccount() {
         PageController::$alerts[] = array('type' => 1, 'message' => 'Suppression du compte '.self::$form['uid'].'...');
         try {
-            self::$domain->delAccount(self::$form['uid'],self::$form['cn']);
-            PageController::$alerts[] = array('type' => 0, 'message' => "Suppression effectué.");
+            self::$domain->delAccount(self::$form['uid'],self::$form['domain']);
+            PageController::$alerts[] = array('type' => 0, 'message' => "Suppression effectuée."));
         } catch (Exception $e) {
             PageController::$alerts[] = array('type' => 2, 'message' => $e->getMessage());
         }
