@@ -39,11 +39,12 @@ if [ "$PASSWORD" != "$READPASS" ]; then
 fi
 
 # mv pseudo-homeDir to directory.<date> for deleted users
+USERDIR=${USERIS%%@$DOMAINIS}
 if [ "$DEL" == "on" ]; then
-    if [[ -n $USERIS && -n $DOMAINIS && -e "/home/vmail/$DOMAINIS" && -e "/home/vmail/$DOMAINIS/$USERIS" ]]; then
-        mv /home/vmail/$DOMAINIS/$USERIS /home/vmail/$DOMAINIS/$USERIS.$DATE
-        chown -R root:root /home/vmail/$DOMAINIS/$USERIS.$DATE
-        chmod -R 700 /home/vmail/$DOMAINIS/$USERIS.$DATE
+    if [[ -n $USERIS && -n $DOMAINIS && -n $USERDIR && -e "/home/vmail/$DOMAINIS" && -e "/home/vmail/$DOMAINIS/$USERDIR" ]]; then
+        mv /home/vmail/$DOMAINIS/$USERDIR /home/vmail/$DOMAINIS/$USERDIR.$DATE
+        chown -R root:root /home/vmail/$DOMAINIS/$USERDIR.$DATE
+        chmod -R 700 /home/vmail/$DOMAINIS/$USERDIR.$DATE
     fi
     exit 0
 fi

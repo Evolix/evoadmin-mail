@@ -9,20 +9,20 @@ Evoadmin-mail requirements are an LDAP server, a web server and
 PHP. See [INSTALL](docs/install.md) for instructions.
 
 Multiples services can be configured to use the LDAP directory
-managed by Evoadmin-mail :
+managed by Evoadmin-mail:
 
 - TODO
 
 ## Test
 
-You can deploy a test environment with Vagrant :
+You can deploy a test environment with Vagrant:
 
 ~~~
 vagrant up
 ~~~
 
 Evoadmin-mail uses the evoadminmail.packmail.example.com domain
-on localhost, so update your /etc/hosts :
+on localhost, so update your /etc/hosts:
 
 ~~~
 127.0.0.1   evoadminmail.packmail.example.com
@@ -34,7 +34,7 @@ https://evoadminmail.packmail.example.com:8443
 ### Authentication
 
 The default admin user is "evoadmin", the password is randomly
-generated and can be recovered from LDAP :
+generated and can be recovered from LDAP:
 
 ~~~
 vagrant ssh
@@ -45,7 +45,7 @@ ldapvi --ldapsearch "(uid=evoadmin)" | grep userPassword | awk '{ print $2 }'
 ### Deployment
 
 Launch rsync-auto in a terminal to automatically synchronise your
-local code with the Vagrant VM :
+local code with the Vagrant VM:
 
 ~~~
 vagrant rsync-auto
