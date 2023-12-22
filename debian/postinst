@@ -25,7 +25,7 @@ objectClass: organizationalRole
 objectClass: posixAccount
 userPassword: ${evolix_password}
 EOF
-        ldapvi --noninteractive --add --in /root/evolinux_evoadminmail_admin.ldif
+        slapadd -l /root/evolinux_evoadminmail_admin.ldif
         cat > /etc/evoadmin-mail/config.ini <<EOF
 ; The configuration for evoadmin-mail
 ;
