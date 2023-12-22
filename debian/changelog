@@ -1,3 +1,14 @@
+evoadmin-mail (1.0.9-2) unstable; urgency=medium
+
+  [ William Hirigoyen ]
+  * Use slapd instead of ldapvi command in postinst to fix ncurse error when
+    installing without TTY (e.g. via Ansible)
+
+  [ David Prevot ]
+  * Add slapd dependency
+
+ -- David Prévot <dprevot@evolix.fr>  Fri, 22 Dec 2023 14:49:32 +0100
+
 evoadmin-mail (1.0.9-1) unstable; urgency=medium
 
   [ David Prevot ]
