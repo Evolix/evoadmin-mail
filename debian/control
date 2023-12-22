@@ -15,6 +15,7 @@ Depends: apg,
          php-cli | php5-cli,
          php-ldap | php5-ldap,
          php-twig,
+         slapd,
          ${misc:Depends}
 Description: PHP app for manage LDAP mail accounts
  evoadmin-mail is a Web Interface for manage an LDAP directory
