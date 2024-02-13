@@ -1,11 +1,6 @@
 <?php
 
-if (file_exists(stream_resolve_include_path('/usr/share/php/Twig/autoload.php'))) {
-    require_once '/usr/share/php/Twig/autoload.php';
-} elseif (stream_resolve_include_path(file_exists('/usr/share/php/Twig/Autoloader.php'))) {
-    require_once '/usr/share/php/Twig/Autoloader.php';
-    Twig_Autoloader::register();
-}
+require_once '/usr/share/php/Twig/autoload.php';
 
 class PageController {
     public static $alerts=array();
@@ -14,8 +9,8 @@ class PageController {
     public static function init(LdapServer $server=NULL) {
         self::$server = $server;
 
-        $loader = new Twig_Loader_Filesystem('tpl/page');
-        self::$twig = new Twig_Environment($loader, array(
+        $loader = new Twig\Loader\FilesystemLoader('tpl/page');
+        self::$twig = new Twig\Environment($loader, array(
             'cache' => false
         ));
 

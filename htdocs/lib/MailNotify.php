@@ -1,18 +1,13 @@
 <?php
 
-if (file_exists(stream_resolve_include_path('/usr/share/php/Twig/autoload.php'))) {
-    require_once '/usr/share/php/Twig/autoload.php';
-} elseif (stream_resolve_include_path(file_exists('/usr/share/php/Twig/Autoloader.php'))) {
-    require_once '/usr/share/php/Twig/Autoloader.php';
-    Twig_Autoloader::register();
-}
+require_once '/usr/share/php/Twig/autoload.php';
 
 class MailNotify {
     private static $twig, $adminmail;
 
     public static function init() {
-        $loader = new Twig_Loader_Filesystem('tpl/mail');
-        self::$twig = new Twig_Environment($loader, array(
+        $loader = new Twig\Loader\FilesystemLoader('tpl/mail');
+        self::$twig = new Twig\Environment($loader, array(
             'cache' => false
         ));
 
