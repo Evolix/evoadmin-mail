@@ -1,9 +1,9 @@
 <?php
 
-if (file_exists(stream_resolve_include_path('Twig/autoload.php'))) {
-    require_once 'Twig/autoload.php';
-} elseif (stream_resolve_include_path(file_exists('Twig/Autoloader.php'))) {
-    require_once 'Twig/Autoloader.php';
+if (file_exists(stream_resolve_include_path('/usr/share/php/Twig/autoload.php'))) {
+    require_once '/usr/share/php/Twig/autoload.php';
+} elseif (stream_resolve_include_path(file_exists('/usr/share/php/Twig/Autoloader.php'))) {
+    require_once '/usr/share/php/Twig/Autoloader.php';
     Twig_Autoloader::register();
 }
 
