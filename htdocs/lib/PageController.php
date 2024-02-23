@@ -60,12 +60,14 @@ class PageController {
         if (!empty($_GET['domain']) && in_array($_GET['domain'], $allowed_params)) { self::$params['domain'] = $_GET['domain']; }
         if (!empty($_GET['account']) && in_array($_GET['account'], $allowed_params)) { self::$params['account'] = $_GET['account']; }
         if (!empty($_GET['alias']) && in_array($_GET['alias'], $allowed_params)) { self::$params['alias'] = $_GET['alias']; }
-        self::$params = array_merge(filter_input_array(INPUT_GET, array(
-                'domain' => FILTER_SANITIZE_URL
-                ,'account' => FILTER_SANITIZE_EMAIL
-                ,'alias' => array('filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_HIGH)
-            ), true)
-        , self::$params);
+        if (!empty($_GET['domain'])) {
+            self::$params = array_merge(filter_input_array(INPUT_GET, array(
+                    'domain' => FILTER_SANITIZE_URL
+                    ,'account' => FILTER_SANITIZE_EMAIL
+                    ,'alias' => array('filter' => FILTER_SANITIZE_STRING, 'flags' => FILTER_FLAG_STRIP_HIGH)
+                ), true)
+            , self::$params);
+        }
 
         unset($_GET);
         //die(var_dump(self::$params));
@@ -97,7 +99,7 @@ class PageController {
     }
 
     private static function logout() {
-        session_unset('EVOADMIN_SESS');
+        session_unset();
         session_destroy();
         print self::$twig->render('login.html', array(
             'page_name' => Config::getName().' - Login'
