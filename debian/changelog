@@ -1,3 +1,9 @@
+evoadmin-mail (1.0.11-1) unstable; urgency=medium
+
+  * Fix PHP 8 related issues
+
+ -- David Prévot <dprevot@evolix.fr>  Fri, 23 Feb 2024 17:24:22 +0100
+
 evoadmin-mail (1.0.10-1) unstable; urgency=medium
 
   * Force system dependencies loading
