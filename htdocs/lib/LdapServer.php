@@ -77,10 +77,13 @@ class LdapServer {
 
     public function login($password) {
         $sr=ldap_search($this->conn, self::getBaseDN($this), "(&(uid=".$this->login.")(isAdmin=TRUE))");
+
+        if ($sr !== false) {
         $info = ldap_get_entries($this->conn, $sr);
-        if (!$info['count']) {
-            Logger::error('Invalid login for '.$this->login);
-            throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
+            if ($info == false || !$info['count']) {
+                Logger::error('Invalid login for '.$this->login);
+                throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
+            }
         }
 
         if (!@ldap_bind($this->conn, $info[0]['dn'], $password)) {
