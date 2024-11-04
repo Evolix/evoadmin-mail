@@ -46,7 +46,7 @@ class LdapServer {
     }
 
     static protected function hashPassword($pass) {
-        if (strlen($pass) > 42 || strlen($pass) < 5 || !preg_match('/^([[:graph:]]*)$/',$pass)) {
+	if (strlen($pass) > 42 || strlen($pass) < 5 || !preg_match('/^[[:graph:]]([[:graph:]\s]*[[:graph:]])?$/', $pass)) {
             throw new Exception("Mot de passe invalide, voir page d'aide");
         }
         mt_srand((double)microtime()*1000000);
