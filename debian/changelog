@@ -1,3 +1,19 @@
+evoadmin-mail (1.0.12-1) unstable; urgency=medium
+
+  [ Mathieu Gauthier-Pilote ]
+  * For compatibility with the ldap_*() functions of PHP 8.1+
+
+  [ Cédric Villemain ]
+  * Allow space in password, except beg/end
+
+  [ David Prevot ]
+  * Move export-dir to CI specific hack
+  * .Jenkinsfile: tfix
+  * sudoers(5) file for evolinux-mail
+  * Report [evoexec] config entry
+
+ -- David Prévot <dprevot@evolix.fr>  Mon, 25 Nov 2024 15:49:29 +0100
+
 evoadmin-mail (1.0.11-1) unstable; urgency=medium
 
   * Fix PHP 8 related issues
