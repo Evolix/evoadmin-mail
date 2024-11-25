@@ -1,0 +1,1 @@
+evoadmin-mail   ALL = NOPASSWD: /usr/lib/evoadmin-mail/evoadmin.sh
