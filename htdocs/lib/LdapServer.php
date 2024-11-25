@@ -46,7 +46,7 @@ class LdapServer {
     }
 
     static protected function hashPassword($pass) {
-        if (strlen($pass) > 42 || strlen($pass) < 5 || !preg_match('/^([[:graph:]]*)$/',$pass)) {
+	if (strlen($pass) > 42 || strlen($pass) < 5 || !preg_match('/^[[:graph:]]([[:graph:]\s]*[[:graph:]])?$/', $pass)) {
             throw new Exception("Mot de passe invalide, voir page d'aide");
         }
         mt_srand((double)microtime()*1000000);
@@ -77,10 +77,13 @@ class LdapServer {
 
     public function login($password) {
         $sr=ldap_search($this->conn, self::getBaseDN($this), "(&(uid=".$this->login.")(isAdmin=TRUE))");
+
+        if ($sr !== false) {
         $info = ldap_get_entries($this->conn, $sr);
-        if (!$info['count']) {
-            Logger::error('Invalid login for '.$this->login);
-            throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
+            if ($info == false || !$info['count']) {
+                Logger::error('Invalid login for '.$this->login);
+                throw new Exception("&Eacute;chec de l'authentification, utilisateur ou mot de passe incorrect.");
+            }
         }
 
         if (!@ldap_bind($this->conn, $info[0]['dn'], $password)) {
