@@ -48,6 +48,11 @@ superadmin[] = "evolix"
 
 [quota]
 path = "/var/lib/evoadmin-mail/quota/"
+
+[evoexec]
+sudobin = "/usr/bin/sudo"
+sudoscript = "/usr/lib/evoadmin-mail/evoadmin.sh"
+sudopass = "xxx"
 EOF
     fi
     chmod 750 /etc/evoadmin-mail /var/lib/evoadmin-mail
