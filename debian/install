@@ -1,2 +1,3 @@
 htdocs/* usr/share/evoadmin-mail
 scripts/* usr/lib/evoadmin-mail
+config/evoadmin-mail etc/sudoers.d
